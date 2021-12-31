@@ -1,0 +1,6 @@
+#ifndef SC_CONFIG_H
+#define SC_CONFIG_H
+
+#mesondefine SC_VERSION
+
+#endif
