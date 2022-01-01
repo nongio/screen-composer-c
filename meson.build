@@ -28,7 +28,9 @@ wlroots        = dependency('wlroots', version: '>= 0.15.0', fallback: ['wlroots
 wayland_protos = dependency('wayland-protocols', version: '>=1.14')
 wayland_server = dependency('wayland-server')
 xkbcommon      = dependency('xkbcommon')
+pixman = dependency('pixman-1')
 math           = cc.find_library('m')
+glesv2 = dependency('glesv2')
 
 wl_protocol_dir = wayland_protos.get_pkgconfig_variable('pkgdatadir')
 wayland_scanner = find_program('wayland-scanner')
@@ -97,6 +99,10 @@ sc_sources = [
   'main.c',
   'screencomposer.c',
   'sc_config.c',
+  'screencomposer_backend.c',
+  'screencomposer_renderer.c',
+  'sc_output.c',
+  'sc_output_repaintdelay.c',
 ]
 
 sc_headers = [
@@ -115,7 +121,9 @@ executable(
     wlroots,
     xkbcommon,
     math,
+	pixman,
     inih_dep,
+    glesv2,
   ],
   install: true,
 )

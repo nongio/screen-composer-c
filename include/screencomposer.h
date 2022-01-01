@@ -2,6 +2,7 @@
 #define _SCREENCOMPOSER_H
 
 #include <wlr/backend.h>
+#include <wlr/render/allocator.h>
 #include <wlr/render/gles2.h>
 #include <wlr/types/wlr_compositor.h>
 #include <wlr/types/wlr_cursor.h>
@@ -34,6 +35,7 @@ struct sc_compositor {
 	/* output */
 	struct wl_list outputs;
 	struct wlr_output_layout *output_layout;
+	struct wl_listener new_output;
 };
 
 struct sc_compositor *sc_compositor_init();

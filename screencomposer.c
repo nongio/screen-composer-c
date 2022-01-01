@@ -1,8 +1,10 @@
 #define _POSIX_C_SOURCE 200809L
-#include "screencomposer.h"
-#include "log.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "log.h"
+#include "screencomposer.h"
+#include "screencomposer_backend.h"
 
 static struct sc_compositor *compositor = NULL;
 static char *socket = "";
@@ -24,6 +26,10 @@ sc_compositor_init()
 	compositor->wlr_renderer = wlr_renderer_autocreate(compositor->wlr_backend);
 	wlr_renderer_init_wl_display(compositor->wlr_renderer, compositor->wl_display);
 
+	 compositor->wlr_allocator = wlr_allocator_autocreate(compositor->wlr_backend,
+		compositor->wlr_renderer);
+
+
 	compositor->wlr_compositor =
 		wlr_compositor_create(compositor->wl_display, compositor->wlr_renderer);
 	//	wlr_data_device_manager_create(compositor->wl_display);
@@ -37,6 +43,11 @@ sc_compositor_init()
 
 	/* Configures a single seat */
 	compositor->seat = wlr_seat_create(compositor->wl_display, "seat0");
+
+
+	wl_list_init(&compositor->outputs);
+	compositor->new_output.notify = compositor_backend_on_new_output;
+	wl_signal_add(&compositor->wlr_backend->events.new_output, &compositor->new_output);
 
 	return compositor;
 }
