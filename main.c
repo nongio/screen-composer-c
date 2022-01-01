@@ -6,8 +6,11 @@
 #include <string.h>
 #include <unistd.h>
 
+
 #define DEBUG 1
 #include "log.h"
+#include "sc_config.h"
+
 
 int
 main(int argc, char **argv, char **environ)
@@ -15,21 +18,33 @@ main(int argc, char **argv, char **environ)
 	//	wlr_log_init(WLR_DEBUG, NULL);
 
 	char *startup_cmd = NULL;
+	char *config_file = "~/.scomposer.ini";
 
 	int c;
-	while ((c = getopt(argc, argv, ":s:h")) != -1) {
+	while ((c = getopt(argc, argv, ":s:c:h")) != -1) {
 		switch (c) {
 		case 's':
 			startup_cmd = optarg;
+			break;
+		case 'c':
+			config_file = optarg;
 			break;
 		default:
 			break;
 		}
 	}
 	if (optind < argc) {
-		LOG("Usage: %s [-s startup command]\n", argv[0]);
+		LOG("Usage: %s [-s startup command -c config file path]\n", argv[0]);
 		return 0;
 	}
+	struct sc_configuration configuration;
+
+    if (sc_load_config(config_file, &configuration)) {
+        LOG("Can't load %s\n", config_file);
+    }
+	LOG("Config loaded from '%s'\n"
+		"display:%dx%d:%d\n", config_file, configuration.display_width,
+		configuration.display_height, configuration.display_refresh);
 
 	sc_compositor_init();
 	sc_compositor_start();

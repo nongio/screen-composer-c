@@ -88,12 +88,15 @@ if git.found()
   endif
 endif
 
+inih_dep = subproject('inih', default_options : []).get_variable('inih_dep')
+
 conf_data = configuration_data()
 conf_data.set_quoted('SC_VERSION', version)
 
 sc_sources = [
   'main.c',
-  'screencomposer.c'
+  'screencomposer.c',
+  'sc_config.c',
 ]
 
 sc_headers = [
@@ -112,6 +115,7 @@ executable(
     wlroots,
     xkbcommon,
     math,
+    inih_dep,
   ],
   install: true,
 )
