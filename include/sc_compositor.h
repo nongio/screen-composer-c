@@ -38,8 +38,9 @@ struct sc_compositor {
 	struct wl_listener new_output;
 };
 
-struct sc_compositor *sc_compositor_init();
-void sc_compositor_start();
+struct sc_compositor* sc_compositor_create();
+void sc_compositor_destroy();
+void sc_compositor_start_server();
 void sc_compositor_start_eventloop();
-char *sc_compositor_get_socket();
+char* sc_compositor_get_socket();
 #endif

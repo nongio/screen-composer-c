@@ -2,7 +2,7 @@
 #define _SC_OUTPUT_H
 #include <wlr/types/wlr_output_damage.h>
 
-#include "screencomposer.h"
+#include "sc_compositor.h"
 
 struct sc_output {
 	struct wl_list link;

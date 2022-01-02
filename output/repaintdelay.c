@@ -40,8 +40,9 @@ sc_output_get_ms_until_refresh(struct sc_output *output)
 		// without potential disastrous negative overflows that could occur if
 		// tv_sec was not checked.
 		if (predicted_refresh.tv_sec >= now.tv_sec) {
-			long nsec_until_refresh = (predicted_refresh.tv_sec - now.tv_sec) * NSEC_IN_SECONDS +
-									  (predicted_refresh.tv_nsec - now.tv_nsec);
+			long nsec_until_refresh =
+				(predicted_refresh.tv_sec - now.tv_sec) * NSEC_IN_SECONDS +
+				(predicted_refresh.tv_nsec - now.tv_nsec);
 
 			// We want msec_until_refresh to be conservative, that is, floored.
 			// If we have 7.9 msec until refresh, we better compute the delay

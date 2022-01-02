@@ -1,5 +1,4 @@
 #define _POSIX_C_SOURCE 200809L
-#include "screencomposer.h"
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,8 +8,8 @@
 
 #define DEBUG 1
 #include "log.h"
+#include "sc_compositor.h"
 #include "sc_config.h"
-
 
 int
 main(int argc, char **argv, char **environ)
@@ -40,14 +39,14 @@ main(int argc, char **argv, char **environ)
 	struct sc_configuration configuration;
 
     if (sc_load_config(config_file, &configuration)) {
-        LOG("Can't load %s\n", config_file);
+        LOG("can't load %s\n", config_file);
     }
-	LOG("Config loaded from '%s'\n"
+	LOG("config loaded from '%s'\n"
 		"display:%dx%d:%d\n", config_file, configuration.display_width,
 		configuration.display_height, configuration.display_refresh);
 
-	sc_compositor_init();
-	sc_compositor_start();
+	sc_compositor_create();
+	sc_compositor_start_server();
 
 	setenv("WAYLAND_DISPLAY", sc_compositor_get_socket(), true);
 

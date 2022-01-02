@@ -3,7 +3,9 @@
 
 #include "sc_output.h"
 
-void sc_output_update_presentation(struct sc_output *output, struct wlr_output_event_present *output_event);
+void
+sc_output_update_presentation(struct sc_output *output,
+							  struct wlr_output_event_present *output_event);
 
 int sc_output_get_ms_until_refresh(struct sc_output *output);
 

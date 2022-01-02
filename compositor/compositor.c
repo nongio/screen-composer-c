@@ -3,51 +3,53 @@
 #include <stdlib.h>
 
 #include "log.h"
-#include "screencomposer.h"
-#include "screencomposer_backend.h"
+#include "sc_compositor.h"
+#include "sc_compositor_backend.h"
 
 static struct sc_compositor *compositor = NULL;
 static char *socket = "";
 
 struct sc_compositor *
-sc_compositor_init()
+sc_compositor_create()
 {
 	compositor = calloc(1, sizeof(struct sc_compositor));
 
-	DLOG("ScreenComposer init.\n");
+	DLOG("screen-composer init.\n");
 
 	wl_list_init(&compositor->outputs);
 
 	compositor->wl_display = wl_display_create();
-	compositor->wl_event_loop = wl_display_get_event_loop(compositor->wl_display);
+	compositor->wl_event_loop =
+		wl_display_get_event_loop(compositor->wl_display);
 
 	compositor->wlr_backend = wlr_backend_autocreate(compositor->wl_display);
 
 	compositor->wlr_renderer = wlr_renderer_autocreate(compositor->wlr_backend);
-	wlr_renderer_init_wl_display(compositor->wlr_renderer, compositor->wl_display);
+	wlr_renderer_init_wl_display(compositor->wlr_renderer,
+								 compositor->wl_display);
 
-	 compositor->wlr_allocator = wlr_allocator_autocreate(compositor->wlr_backend,
-		compositor->wlr_renderer);
-
+	compositor->wlr_allocator = wlr_allocator_autocreate(
+		compositor->wlr_backend, compositor->wlr_renderer);
 
 	compositor->wlr_compositor =
 		wlr_compositor_create(compositor->wl_display, compositor->wlr_renderer);
 	//	wlr_data_device_manager_create(compositor->wl_display);
 
-	compositor->wlr_presentation =
-		wlr_presentation_create(compositor->wl_display, compositor->wlr_backend);
+	compositor->wlr_presentation = wlr_presentation_create(
+		compositor->wl_display, compositor->wlr_backend);
 
 	compositor->output_layout = wlr_output_layout_create();
 
-	compositor->egl = (struct wlr_egl *) wlr_gles2_renderer_get_egl(compositor->wlr_renderer);
+	compositor->egl =
+		(struct wlr_egl *) wlr_gles2_renderer_get_egl(compositor->wlr_renderer);
 
 	/* Configures a single seat */
 	compositor->seat = wlr_seat_create(compositor->wl_display, "seat0");
 
-
 	wl_list_init(&compositor->outputs);
 	compositor->new_output.notify = compositor_backend_on_new_output;
-	wl_signal_add(&compositor->wlr_backend->events.new_output, &compositor->new_output);
+	wl_signal_add(&compositor->wlr_backend->events.new_output,
+				  &compositor->new_output);
 
 	return compositor;
 }
@@ -61,7 +63,7 @@ sc_compositor_destroy()
 }
 
 void
-sc_compositor_start()
+sc_compositor_start_server()
 {
 	DLOG("sc_compositor_start\n");
 	const char *s = wl_display_add_socket_auto(compositor->wl_display);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <wlr/util/region.h>
 
-#include "screencomposer.h"
+#include "sc_compositor.h"
 #include "sc_output.h"
 
 void sc_render_output(struct sc_output *output, struct timespec *when,

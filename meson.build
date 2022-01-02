@@ -97,12 +97,12 @@ conf_data.set_quoted('SC_VERSION', version)
 
 sc_sources = [
   'main.c',
-  'screencomposer.c',
   'sc_config.c',
-  'screencomposer_backend.c',
-  'screencomposer_renderer.c',
-  'sc_output.c',
-  'sc_output_repaintdelay.c',
+  'compositor/compositor.c',
+  'compositor/backend.c',
+  'compositor/renderer.c',
+  'output/output.c',
+  'output/repaintdelay.c',
 ]
 
 sc_headers = [

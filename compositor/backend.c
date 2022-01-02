@@ -1,7 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
-#include "screencomposer.h"
-#include "screencomposer_backend.h"
+#include "sc_compositor.h"
+#include "sc_compositor_backend.h"
 #include "sc_output.h"
 
 void compositor_backend_on_new_output(struct wl_listener *listener, void *data)
