@@ -57,7 +57,8 @@ struct sc_compositor {
 	struct wl_listener on_cursor_axis;
 	struct wl_listener on_cursor_frame;
 
-
+	struct wl_listener on_request_cursor;
+	struct wl_listener on_request_set_selection;
 };
 
 struct sc_compositor* sc_compositor_create();
