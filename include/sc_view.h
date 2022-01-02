@@ -2,25 +2,29 @@
 #define _SC_VIEW_H
 
 #include <wlr/types/wlr_xdg_shell.h>
+#include <wlr/util/box.h>
+
+#include "sc_output.h"
 
 struct sc_view {
-  // protocol surfaces
-  struct wlr_surface *surface;
-  struct wlr_subsurface * subsurface;
+	// protocol surfaces
+	struct wlr_surface *surface;
+	struct wlr_subsurface *subsurface;
 
-  // states
-  bool mapped;
-  bool moving;
-  bool resizing;
+	struct sc_output *output;
 
-  // position / size
-  float *matrix;
 
-  struct wl_list children;
+	// states
+	bool mapped;
+
+	// position / size
+	struct wlr_box frame;
+	float *matrix;
+
+	struct sc_view *parent;
+	struct wl_list children;
+
+	struct wl_listener on_surface_commit;
 };
 
-struct sc_view *sc_view_create(struct wlr_surface *surface,
-							   struct sc_view *parent);
-
 #endif
-

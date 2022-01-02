@@ -26,10 +26,13 @@ struct sc_output {
 	struct wl_event_source *repaint_timer;
 };
 
+struct sc_view;
+
 struct sc_output *sc_output_create(struct wlr_output *wlr_output,
-					struct sc_compositor *compositor);
+								   struct sc_compositor *compositor);
 
-void
-sc_output_on_present(struct wl_listener *listener, void *data);
+void sc_output_on_present(struct wl_listener *listener, void *data);
 
+void sc_output_damage_view(struct sc_output *output, struct sc_view *view, bool
+		whole);
 #endif

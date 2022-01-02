@@ -64,6 +64,7 @@ struct sc_compositor {
 	struct wl_listener on_request_set_selection;
 
 	struct wl_listener on_new_xdg_surface;
+	struct wl_listener on_new_layer_surface;
 };
 
 struct sc_compositor* sc_compositor_create();

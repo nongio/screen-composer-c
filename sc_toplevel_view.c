@@ -10,27 +10,29 @@ static void
 xdg_toplevel_map(struct wl_listener *listener, void *data)
 {
 
-	LOG("xdg_toplevel_map\n");
+	DLOG("xdg_toplevel_map\n");
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_map);
-
+	struct sc_view *view = (struct sc_view *) toplevel_view;
+	view->mapped = true;
 	sc_compositor_add_toplevel(toplevel_view->compositor, toplevel_view);
 }
 
 static void
 xdg_toplevel_unmap(struct wl_listener *listener, void *data)
 {
-	LOG("xdg_toplevel_unmap\n");
+	DLOG("xdg_toplevel_unmap\n");
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_unmap);
-
+	struct sc_view *view = (struct sc_view *) toplevel_view;
+	view->mapped = false;
 	wl_list_remove(&toplevel_view->link);
 }
 
 static void
 xdg_toplevel_destroy(struct wl_listener *listener, void *data)
 {
-	LOG("xdg_toplevel_destroy\n");
+	DLOG("xdg_toplevel_destroy\n");
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_destroy);
 
@@ -51,7 +53,6 @@ sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 	struct sc_toplevel_view *toplevel_view =
 		calloc(1, sizeof(struct sc_toplevel_view));
 
-	toplevel_view->view = sc_view_create(xdg_surface->surface, NULL);
 	toplevel_view->compositor = compositor;
 	toplevel_view->xdg_surface = xdg_surface;
 

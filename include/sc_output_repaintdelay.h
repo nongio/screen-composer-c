@@ -1,7 +1,8 @@
 #ifndef _SC_OUTPUT_REPAINTDELAY_H
 #define _SC_OUTPUT_REPAINTDELAY_H
 
-#include "sc_output.h"
+struct sc_output;
+struct wlr_output_event_present;
 
 void
 sc_output_update_presentation(struct sc_output *output,

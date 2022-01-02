@@ -4,9 +4,9 @@
 #include <wlr/types/wlr_output_damage.h>
 
 #include "log.h"
+#include "sc_compositor_renderer.h"
 #include "sc_output.h"
 #include "sc_output_repaintdelay.h"
-#include "sc_compositor_renderer.h"
 
 static int output_repaint_timer_handler(void *data);
 
@@ -53,6 +53,25 @@ sc_output_create(struct wlr_output *wlr_output,
 	wlr_output_damage_whole(output->wlr_output);
 
 	return output;
+}
+
+void
+sc_output_damage_view(struct sc_output *output, struct sc_view *view,
+					  bool whole)
+
+{
+	double ox = 0;
+	double oy = 0;
+	//
+	wlr_output_layout_output_coords(output->compositor->output_layout,
+									output->wlr_output, &ox, &oy);
+
+	// TODO
+	//[view forEachSurface:^(struct wlr_surface *surface, int x, int y) {
+	//  // FIXME the frame position should come from the iterator
+	//  outputDamageSurface(output, surface, (ox + view->frame.origin.x + x),
+	//  		(oy + view->frame.origin.y + y), whole);
+	//}];
 }
 
 static int
@@ -149,8 +168,8 @@ output_on_frame(struct wl_listener *listener, void *data)
 //			- view_max_render_time;
 //
 //	if (output->max_render_time == 0 || view_max_render_time == 0 || delay < 1)
-//{ 		wlr_surface_send_frame_done(surface, &data->when); 	} else { 		struct
-//sway_surface *sway_surface = surface->data;
+//{ 		wlr_surface_send_frame_done(surface, &data->when); 	} else {
+//struct sway_surface *sway_surface = surface->data;
 //		wl_event_source_timer_update(sway_surface->frame_done_timer, delay);
 //	}
 // }

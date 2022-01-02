@@ -7,11 +7,14 @@
 #include "sc_view.h"
 
 struct sc_toplevel_view {
+	struct sc_view super;
 	struct wl_list link;
 	struct sc_compositor *compositor;
-	struct sc_view *view;
 	/* protocol surfaces */
 	struct wlr_xdg_surface *xdg_surface;
+
+	bool moving;
+	bool resizing;
 
 	/* listeners */
 	struct wl_listener on_map;
