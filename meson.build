@@ -103,9 +103,14 @@ sc_sources = [
   'compositor/renderer.c',
   'compositor/cursor.c',
   'compositor/keyboard.c',
+  'compositor/workspace.c',
+  'compositor/xdg_shell.c',
   'output/output.c',
   'output/repaintdelay.c',
   'sc_keyboard.c',
+  'sc_workspace.c',
+  'sc_view.c',
+  'sc_toplevel_view.c',
 ]
 
 sc_headers = [

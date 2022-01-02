@@ -6,6 +6,8 @@
 #include "sc_compositor.h"
 #include "sc_compositor_backend.h"
 #include "sc_compositor_cursor.h"
+#include "sc_compositor_workspace.h"
+#include "sc_compositor_xdgshell.h"
 
 static struct sc_compositor *compositor = NULL;
 static char *socket = "";
@@ -49,6 +51,8 @@ sc_compositor_create()
 
 	sc_compositor_setup_cursor(compositor);
 	sc_compositor_setup_backend(compositor);
+	sc_compositor_setup_workspaces(compositor);
+	sc_compositor_setup_xdgshell(compositor);
 
 	return compositor;
 }

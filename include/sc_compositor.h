@@ -1,5 +1,5 @@
-#ifndef _SCREENCOMPOSER_H
-#define _SCREENCOMPOSER_H
+#ifndef _SC_COMPOSITOR_H
+#define _SC_COMPOSITOR_H
 
 #include <wlr/backend.h>
 #include <wlr/render/allocator.h>
@@ -28,6 +28,9 @@ struct sc_compositor {
 	struct wlr_compositor *wlr_compositor;
 	struct wlr_presentation *wlr_presentation;
 	struct wlr_egl *egl;
+
+	struct sc_workspace *current_workspace;
+	struct wl_list workspaces;
 
 	/* seat */
 	struct wlr_seat *seat;
@@ -59,6 +62,8 @@ struct sc_compositor {
 
 	struct wl_listener on_request_cursor;
 	struct wl_listener on_request_set_selection;
+
+	struct wl_listener on_new_xdg_surface;
 };
 
 struct sc_compositor* sc_compositor_create();

@@ -1,5 +1,5 @@
-#ifndef _SCREENCOMPOSER_BACKEND_H
-#define _SCREENCOMPOSER_BACKEND_H
+#ifndef _SC_COMPOSITOR_BACKEND_H
+#define _SC_COMPOSITOR_BACKEND_H
 
 void sc_compositor_setup_backend(struct sc_compositor *compositor);
 
