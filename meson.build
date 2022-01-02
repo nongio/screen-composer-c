@@ -110,9 +110,9 @@ sc_sources = [
   'output/repaintdelay.c',
   'sc_keyboard.c',
   'sc_workspace.c',
-  'sc_view.c',
-  'sc_toplevel_view.c',
-  'sc_layer_view.c',
+  'view/sc_view.c',
+  'view/sc_toplevel_view.c',
+  'view/sc_layer_view.c',
 ]
 
 sc_headers = [
