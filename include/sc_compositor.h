@@ -13,6 +13,12 @@
 #include <wlr/types/wlr_xcursor_manager.h>
 #include <wlr/types/wlr_xdg_shell.h>
 
+enum sc_cursor_mode {
+	SC_CURSOR_PASSTHROUGH,
+	SC_CURSOR_MOVE,
+	SC_CURSOR_RESIZE,
+};
+
 struct sc_compositor {
 	struct wl_display *wl_display;
 	struct wl_event_loop *wl_event_loop;
@@ -34,6 +40,8 @@ struct sc_compositor {
 	struct wl_list keyboards;
 	struct wlr_cursor *cursor;
 	struct wlr_xcursor_manager *cursor_mgr;
+	enum sc_cursor_mode cursor_mode;
+
 
 	/* output */
 	struct wl_list outputs;
@@ -42,6 +50,13 @@ struct sc_compositor {
 	/* listeners */
 	struct wl_listener on_new_output;
 	struct wl_listener on_new_input;
+
+	struct wl_listener on_cursor_motion;
+	struct wl_listener on_cursor_motion_absolute;
+	struct wl_listener on_cursor_button;
+	struct wl_listener on_cursor_axis;
+	struct wl_listener on_cursor_frame;
+
 
 };
 

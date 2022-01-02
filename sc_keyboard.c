@@ -79,7 +79,8 @@ keyboard_handle_key(struct wl_listener *listener, void *data)
 }
 
 struct sc_keyboard *
-sc_keyboard_create(struct wlr_input_device *device, struct sc_compositor *compositor)
+sc_keyboard_create(struct wlr_input_device *device,
+									   struct sc_compositor *compositor)
 {
 	struct sc_keyboard *keyboard = calloc(1, sizeof(struct sc_keyboard));
 
