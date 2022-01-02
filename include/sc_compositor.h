@@ -25,17 +25,24 @@ struct sc_compositor {
 
 	/* seat */
 	struct wlr_seat *seat;
-	struct wlr_cursor *cursor;
-	struct wlr_xcursor_manager *cursor_mgr;
 
 	/* protocols */
 	struct wlr_xdg_shell *xdg_shell;
 	struct wlr_layer_shell_v1 *layer_shell;
 
+	/* inputs */
+	struct wl_list keyboards;
+	struct wlr_cursor *cursor;
+	struct wlr_xcursor_manager *cursor_mgr;
+
 	/* output */
 	struct wl_list outputs;
 	struct wlr_output_layout *output_layout;
-	struct wl_listener new_output;
+
+	/* listeners */
+	struct wl_listener on_new_output;
+	struct wl_listener on_new_input;
+
 };
 
 struct sc_compositor* sc_compositor_create();

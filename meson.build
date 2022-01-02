@@ -101,8 +101,11 @@ sc_sources = [
   'compositor/compositor.c',
   'compositor/backend.c',
   'compositor/renderer.c',
+  'compositor/cursor.c',
+  'compositor/keyboard.c',
   'output/output.c',
   'output/repaintdelay.c',
+  'sc_keyboard.c',
 ]
 
 sc_headers = [

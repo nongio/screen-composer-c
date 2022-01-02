@@ -5,6 +5,7 @@
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_compositor_backend.h"
+#include "sc_compositor_cursor.h"
 
 static struct sc_compositor *compositor = NULL;
 static char *socket = "";
@@ -46,10 +47,8 @@ sc_compositor_create()
 	/* Configures a single seat */
 	compositor->seat = wlr_seat_create(compositor->wl_display, "seat0");
 
-	wl_list_init(&compositor->outputs);
-	compositor->new_output.notify = compositor_backend_on_new_output;
-	wl_signal_add(&compositor->wlr_backend->events.new_output,
-				  &compositor->new_output);
+	sc_compositor_setup_cursor(compositor);
+	sc_compositor_setup_backend(compositor);
 
 	return compositor;
 }
@@ -91,7 +90,7 @@ sc_compositor_start_eventloop()
 {
 	wl_display_run(compositor->wl_display);
 
-	DLOG("finished running");
+	DLOG("finished running. bye.\n");
 	sc_compositor_destroy();
 }
 
