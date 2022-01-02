@@ -2,7 +2,7 @@ AlignAfterOpenBracket: Align
 AlignTrailingComments: false
 AlwaysBreakAfterReturnType: TopLevelDefinitions
 BreakBeforeBraces: Linux
-ColumnLimit: 100
+ColumnLimit: 80
 ContinuationIndentWidth: 4
 ForEachMacros: [wl_list_for_each, wl_list_for_each_safe, wl_list_for_each_reverse]
 IndentWidth: 4
