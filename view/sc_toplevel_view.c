@@ -14,7 +14,8 @@ xdg_toplevel_map(struct wl_listener *listener, void *data)
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_map);
 	struct sc_view *view = (struct sc_view *) toplevel_view;
-	view->mapped = true;
+
+	sc_view_map(view);
 	sc_compositor_add_toplevel(toplevel_view->compositor, toplevel_view);
 }
 
@@ -55,6 +56,9 @@ sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 
 	toplevel_view->compositor = compositor;
 	toplevel_view->xdg_surface = xdg_surface;
+
+	struct sc_view *view = (struct sc_view *)toplevel_view;
+	sc_view_init(view, xdg_surface->surface);
 
 	toplevel_view->on_map.notify = xdg_toplevel_map;
 	wl_signal_add(&xdg_surface->events.map, &toplevel_view->on_map);

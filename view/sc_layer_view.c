@@ -12,10 +12,13 @@ layer_map(struct wl_listener *listener, void *data)
 {
 
 	LOG("layer_map\n");
+
 	struct sc_layer_view *layer_view =
 		wl_container_of(listener, layer_view, on_map);
+
 	struct sc_view *view = (struct sc_view *) layer_view;
-	view->mapped = true;
+	sc_view_map(view);
+
 	sc_compositor_add_layer(layer_view->compositor, layer_view);
 }
 
@@ -78,6 +81,7 @@ sc_layer_view_create(struct wlr_layer_surface_v1 *layer_surface,
 		.width = layer_surface->pending.desired_width,
 		.height = layer_surface->pending.desired_height,
 	};
+	sc_view_init(view, layer_surface->surface);
 
 	layer_view->compositor = compositor;
 	layer_view->layer_surface = layer_surface;
