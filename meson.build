@@ -108,6 +108,7 @@ sc_sources = [
   'src/compositor/layer_shell.c',
   'src/output/output.c',
   'src/output/repaintdelay.c',
+  'src/output/view_iterators.c',
   'src/sc_keyboard.c',
   'src/sc_workspace.c',
   'src/view/sc_view.c',
