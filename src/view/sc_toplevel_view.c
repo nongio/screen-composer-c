@@ -62,6 +62,27 @@ xdg_toplevel_popup_new(struct wl_listener *listener, void *data)
 	wl_list_insert(&view->children, &popup_view->link);
 }
 
+void
+toplevel_for_each_surface(struct sc_view *view,
+						  wlr_surface_iterator_func_t iterator, void *user_data)
+{
+	struct sc_toplevel_view *toplevel = (struct sc_toplevel_view *) view;
+	wlr_xdg_surface_for_each_surface(toplevel->xdg_surface, iterator,
+									 user_data);
+}
+
+void
+toplevel_for_each_popup_surface(struct sc_view *view,
+								wlr_surface_iterator_func_t iterator,
+								void *user_data)
+{
+}
+
+static struct sc_view_impl toplvel_view_impl = {
+	.for_each_surface = toplevel_for_each_surface,
+	.for_each_popup_surface = toplevel_for_each_popup_surface,
+};
+
 struct sc_toplevel_view *
 sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 						struct sc_compositor *compositor)
@@ -74,7 +95,8 @@ sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 
 	struct sc_view *view = (struct sc_view *)toplevel_view;
 	view->compositor = compositor;
-	sc_view_init(view, xdg_surface->surface);
+
+	sc_view_init(view, &toplvel_view_impl, xdg_surface->surface);
 
 	toplevel_view->on_map.notify = xdg_toplevel_map;
 	wl_signal_add(&xdg_surface->events.map, &toplevel_view->on_map);

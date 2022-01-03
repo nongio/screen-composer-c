@@ -19,7 +19,8 @@ view_surface_commit_handler(struct wl_listener *listener, void *data)
 	view->frame.width = view->surface->current.width;
 	view->frame.height = view->surface->current.height;
 
-	DLOG("surface.frame: %d,%d %dx%d\n", view->frame.x, view->frame.y, view->frame.width, view->frame.height);
+	DLOG("surface.frame: %d,%d %dx%d\n", view->frame.x, view->frame.y,
+		 view->frame.width, view->frame.height);
 
 	if (view->output == NULL) {
 		return;
@@ -55,7 +56,7 @@ static struct sc_view *
 view_subsurface_create(struct wlr_subsurface *subsurface)
 {
 	struct sc_view *subview = calloc(1, sizeof(struct sc_view));
-	sc_view_init(subview, subsurface->surface);
+	sc_view_init(subview, NULL, subsurface->surface);
 
 	subview->on_subview_destroy.notify = subview_destroy_handler;
 	wl_signal_add(&subsurface->events.destroy, &subview->on_subview_destroy);
@@ -76,10 +77,37 @@ view_subsurface_new(struct wl_listener *listener, void *data)
 	wl_list_insert(&view->children, &subview->link);
 }
 
+static void for_each_surface(struct sc_view *view,
+		wlr_surface_iterator_func_t iterator, void *user_data) {
+
+	wlr_surface_for_each_surface(view->surface, iterator,
+		user_data);
+
+}
+
+static void for_each_popup_surface(struct sc_view *view,
+		wlr_surface_iterator_func_t iterator, void *user_data) {
+
+	//wlr_xdg_surface_for_each_popup_surface(view->wlr_xdg_surface, iterator, user_data);
+}
+
+static struct sc_view_impl view_impl = {
+	.for_each_surface = for_each_surface,
+	.for_each_popup_surface = for_each_popup_surface,
+};
+
 void
-sc_view_init(struct sc_view *view, struct wlr_surface *surface)
+sc_view_init(struct sc_view *view, struct sc_view_impl *impl,
+			 struct wlr_surface *surface)
 {
 	DLOG("sc_view_init\n");
+
+	if (impl != NULL) {
+		view->impl = impl;
+	} else {
+		view->impl = &view_impl;
+	}
+
 	view->surface = surface;
 	wl_list_init(&view->children);
 
@@ -110,6 +138,7 @@ sc_view_damage_part(struct sc_view *view)
 void
 sc_view_damage_whole(struct sc_view *view)
 {
+	DLOG("sc_view_damage_whole\n");
 	if (view->output != NULL) {
 		sc_output_damage_view(view->output, view, true);
 	}
@@ -157,3 +186,26 @@ sc_view_map(struct sc_view *view)
 		wl_list_insert(&view->children, &subview->link);
 	}
 }
+
+void sc_view_for_each_surface(struct sc_view *view,
+		wlr_surface_iterator_func_t iterator, void *user_data) {
+	if (!view->surface) {
+		return;
+	}
+	if (view->impl->for_each_surface) {
+		view->impl->for_each_surface(view, iterator, user_data);
+	} else {
+		wlr_surface_for_each_surface(view->surface, iterator, user_data);
+	}
+}
+
+void sc_view_for_each_popup_surface(struct sc_view *view,
+		wlr_surface_iterator_func_t iterator, void *user_data) {
+	if (!view->surface) {
+		return;
+	}
+	if (view->impl->for_each_popup_surface) {
+		view->impl->for_each_popup_surface(view, iterator, user_data);
+	}
+}
+

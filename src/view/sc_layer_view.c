@@ -67,6 +67,25 @@ layer_surface_commit(struct wl_listener *listener, void *data)
 	//	wlr_output_damage_add_box(self.output->damage, &r);
 }
 
+void
+layer_for_each_surface(struct sc_view *view,
+						  wlr_surface_iterator_func_t iterator, void *user_data)
+{
+}
+
+void
+layer_for_each_popup_surface(struct sc_view *view,
+								wlr_surface_iterator_func_t iterator,
+								void *user_data)
+{
+}
+
+static struct sc_view_impl layer_view_impl = {
+	.for_each_surface = layer_for_each_surface,
+	.for_each_popup_surface = layer_for_each_popup_surface,
+};
+
+
 struct sc_layer_view *
 sc_layer_view_create(struct wlr_layer_surface_v1 *layer_surface,
 					 struct sc_compositor *compositor)
@@ -83,7 +102,7 @@ sc_layer_view_create(struct wlr_layer_surface_v1 *layer_surface,
 	};
 
 	view->compositor = compositor;
-	sc_view_init(view, layer_surface->surface);
+	sc_view_init(view, &layer_view_impl, layer_surface->surface);
 
 	layer_view->layer_surface = layer_surface;
 
