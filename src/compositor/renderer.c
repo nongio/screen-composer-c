@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <wlr/util/region.h>
 
+#include "log.h"
 #include "sc_compositor.h"
 #include "sc_output.h"
+#include "sc_workspace.h"
+#include "sc_toplevel_view.h"
 
 void sc_render_output(struct sc_output *output, struct timespec *when,
 		pixman_region32_t *damage) {
@@ -21,6 +24,12 @@ void sc_render_output(struct sc_output *output, struct timespec *when,
 	glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	struct sc_toplevel_view *toplevel;
+	struct sc_workspace *workspace = output->compositor->current_workspace;
+	wl_list_for_each(toplevel, &workspace->views_toplevel, link) {
+
+		LOG("rendering toplevel\n");
+	}
 
 renderer_end:
 	wlr_renderer_scissor(renderer, NULL);
