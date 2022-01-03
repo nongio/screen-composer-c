@@ -72,4 +72,5 @@ void sc_compositor_destroy();
 void sc_compositor_start_server();
 void sc_compositor_start_eventloop();
 char* sc_compositor_get_socket();
+struct sc_output *sc_compositor_output_at(double lx, double ly);
 #endif

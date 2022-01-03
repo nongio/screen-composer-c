@@ -9,6 +9,7 @@
 #include "sc_compositor_workspace.h"
 #include "sc_compositor_xdgshell.h"
 #include "sc_compositor_layershell.h"
+#include "sc_output.h"
 
 static struct sc_compositor *compositor = NULL;
 static char *socket = "";
@@ -104,4 +105,17 @@ char *
 sc_compositor_get_socket()
 {
 	return socket;
+}
+
+struct sc_output *sc_compositor_output_at(double lx, double ly)
+{
+	struct wlr_output *wlr_output = wlr_output_layout_output_at(compositor->output_layout, lx, ly);
+	struct sc_output *output;
+	wl_list_for_each(output, &compositor->outputs, link) {
+
+		if(output->wlr_output == wlr_output) {
+			return output;
+		}
+	}
+	return NULL;
 }

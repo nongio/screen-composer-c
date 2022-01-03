@@ -12,8 +12,8 @@ struct sc_view {
 	struct wlr_surface *surface;
 	struct wlr_subsurface *subsurface;
 
+	struct sc_compositor *compositor;
 	struct sc_output *output;
-
 
 	// states
 	bool mapped;
@@ -30,12 +30,11 @@ struct sc_view {
 	struct wl_listener on_subview_destroy;
 };
 
-void
-sc_view_map(struct sc_view *view);
+void sc_view_map(struct sc_view *view);
 
-void
-sc_view_destroy(struct sc_view *view);
+void sc_view_destroy(struct sc_view *view);
 
-void
-sc_view_init(struct sc_view *view, struct wlr_surface *surface);
+void sc_view_init(struct sc_view *view, struct wlr_surface *surface);
+
+void sc_view_damage_whole(struct sc_view *view);
 #endif

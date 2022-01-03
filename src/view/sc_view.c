@@ -1,16 +1,25 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
+#include <wlr/types/wlr_surface.h>
 
 #include "log.h"
 #include "sc_output.h"
 #include "sc_view.h"
-#include <wlr/types/wlr_surface.h>
+#include "sc_geometry.h"
+#include "sc_compositor.h"
 
 static void
 view_surface_commit_handler(struct wl_listener *listener, void *data)
 {
 	DLOG("view_surface_commit\n");
 	struct sc_view *view = wl_container_of(listener, view, on_surface_commit);
+
+	view->frame.x = view->surface->sx;
+	view->frame.y = view->surface->sy;
+	view->frame.width = view->surface->current.width;
+	view->frame.height = view->surface->current.height;
+
+	DLOG("surface.frame: %d,%d %dx%d\n", view->frame.x, view->frame.y, view->frame.width, view->frame.height);
 
 	if (view->output == NULL) {
 		return;
@@ -106,10 +115,34 @@ sc_view_damage_whole(struct sc_view *view)
 	}
 }
 
+void sc_view_get_absolute_position(struct sc_view *view, struct
+		sc_point * p)
+{
+	p->x = view->frame.x;
+	p->y = view->frame.y;
+
+	if(view->parent) {
+		p->x += view->parent->frame.x;
+		p->y += view->parent->frame.y;
+	}
+}
+
 void
 sc_view_map(struct sc_view *view)
 {
 	view->mapped = true;
+
+	view->frame.x = view->surface->sx;
+	view->frame.y = view->surface->sy;
+	view->frame.width = view->surface->current.width;
+	view->frame.height = view->surface->current.height;
+
+	struct sc_point p;
+	sc_view_get_absolute_position(view, &p);
+
+	struct sc_output *output = sc_compositor_output_at(p.x, p.y);
+	view->output = output;
+
 	struct wlr_subsurface *sub;
 	wl_list_for_each (sub, &view->surface->current.subsurfaces_below,
 					  current.link) {

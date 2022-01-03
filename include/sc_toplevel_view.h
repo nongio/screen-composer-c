@@ -9,7 +9,6 @@
 struct sc_toplevel_view {
 	struct sc_view super;
 	struct wl_list link;
-	struct sc_compositor *compositor;
 	/* protocol surfaces */
 	struct wlr_xdg_surface *xdg_surface;
 
@@ -23,6 +22,8 @@ struct sc_toplevel_view {
 
 	struct wl_listener on_request_move;
 	struct wl_listener on_request_resize;
+
+	struct wl_listener on_new_popup;
 };
 
 struct sc_toplevel_view *

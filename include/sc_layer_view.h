@@ -9,8 +9,7 @@
 struct sc_layer_view {
 	struct sc_view super;
 	struct wl_list link;
-	struct sc_compositor *compositor;
-	struct sc_view *view;
+
 	/* protocol surfaces */
 	struct wlr_layer_surface_v1 *layer_surface;
 
