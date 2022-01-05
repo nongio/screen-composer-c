@@ -1,4 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
+
+#include "log.h"
 #include "sc_output.h"
 #include "sc_output_repaintdelay.h"
 

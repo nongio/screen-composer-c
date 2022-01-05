@@ -35,6 +35,8 @@ struct sc_view {
 	struct sc_view *parent;
 	struct wl_list children;
 
+	int max_render_time; // In milliseconds
+
 	struct wl_listener on_surface_commit;
 	struct wl_listener on_subsurface_new;
 	struct wl_listener on_subview_destroy;
@@ -52,4 +54,7 @@ void sc_view_damage_whole(struct sc_view *view);
 void sc_view_for_each_surface(struct sc_view *view,
 							  wlr_surface_iterator_func_t iterator,
 							  void *user_data);
+
+bool sc_view_is_visible(struct sc_view *view);
+
 #endif

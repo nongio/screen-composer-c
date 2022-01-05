@@ -31,10 +31,11 @@ compositor_backend_on_new_output(struct wl_listener *listener, void *data)
 		wl_container_of(listener, compositor, on_new_output);
 	struct wlr_output *wlr_output = data;
 
+	wlr_output_layout_add_auto(compositor->output_layout, wlr_output);
+
 	struct sc_output *output = sc_output_create(wlr_output, compositor);
 
 	wl_list_insert(&compositor->outputs, &output->link);
-	wlr_output_layout_add_auto(compositor->output_layout, wlr_output);
 }
 
 void

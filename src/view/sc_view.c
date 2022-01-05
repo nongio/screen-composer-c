@@ -26,9 +26,9 @@ view_surface_commit_handler(struct wl_listener *listener, void *data)
 		return;
 	}
 	if (view->parent != NULL) {
-		sc_output_damage_view(view->output, view->parent, false);
+		sc_output_add_damage_from_view(view->output, view->parent, false);
 	} else {
-		sc_output_damage_view(view->output, view, false);
+		sc_output_add_damage_from_view(view->output, view, false);
 	}
 }
 
@@ -43,9 +43,9 @@ subview_destroy_handler(struct wl_listener *listener, void *data)
 	}
 
 	if (subview->parent != NULL) {
-		sc_output_damage_view(subview->output, subview->parent, false);
+		sc_output_add_damage_from_view(subview->output, subview->parent, false);
 	} else {
-		sc_output_damage_view(subview->output, subview, false);
+		sc_output_add_damage_from_view(subview->output, subview, false);
 	}
 
 	sc_view_destroy(subview);
@@ -140,7 +140,7 @@ sc_view_damage_whole(struct sc_view *view)
 {
 	DLOG("sc_view_damage_whole\n");
 	if (view->output != NULL) {
-		sc_output_damage_view(view->output, view, true);
+		sc_output_add_damage_from_view(view->output, view, true);
 	}
 }
 
@@ -209,3 +209,7 @@ void sc_view_for_each_popup_surface(struct sc_view *view,
 	}
 }
 
+bool sc_view_is_visible(struct sc_view *view)
+{
+	return view->mapped;
+}
