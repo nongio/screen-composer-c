@@ -45,7 +45,7 @@ main(int argc, char **argv, char **environ)
 		"display:%dx%d:%d\n", config_file, configuration.display_width,
 		configuration.display_height, configuration.display_refresh);
 
-	sc_compositor_create();
+	sc_compositor_create(&configuration);
 	sc_compositor_start_server();
 
 	setenv("WAYLAND_DISPLAY", sc_compositor_get_socket(), true);

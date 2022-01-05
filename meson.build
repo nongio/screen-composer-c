@@ -109,6 +109,8 @@ sc_sources = [
   'src/output/output.c',
   'src/output/repaintdelay.c',
   'src/output/view_iterators.c',
+  'src/output/utils.c',
+  'src/output/damage.c',
   'src/sc_keyboard.c',
   'src/sc_workspace.c',
   'src/view/sc_view.c',

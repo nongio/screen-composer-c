@@ -16,6 +16,8 @@ static int handler(void* user, const char* section, const char* name,
         pconfig->display_height = atoi(value);
     } else if (MATCH("Display", "resolution_refresh")) {
         pconfig->display_refresh = atoi(value);
+    } else if (MATCH("Display", "max_render_time")) {
+        pconfig->max_render_time = atoi(value);
     } else {
         return 0;  /* unknown section/name, error */
     }

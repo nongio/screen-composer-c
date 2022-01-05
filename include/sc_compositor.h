@@ -13,6 +13,8 @@
 #include <wlr/types/wlr_xcursor_manager.h>
 #include <wlr/types/wlr_xdg_shell.h>
 
+struct sc_configuration;
+
 enum sc_cursor_mode {
 	SC_CURSOR_PASSTHROUGH,
 	SC_CURSOR_MOVE,
@@ -20,6 +22,7 @@ enum sc_cursor_mode {
 };
 
 struct sc_compositor {
+	struct sc_configuration *config;
 	struct wl_display *wl_display;
 	struct wl_event_loop *wl_event_loop;
 	struct wlr_backend *wlr_backend;
@@ -67,7 +70,7 @@ struct sc_compositor {
 	struct wl_listener on_new_layer_surface;
 };
 
-struct sc_compositor* sc_compositor_create();
+struct sc_compositor* sc_compositor_create(struct sc_configuration * config);
 void sc_compositor_destroy();
 void sc_compositor_start_server();
 void sc_compositor_start_eventloop();

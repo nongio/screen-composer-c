@@ -15,12 +15,12 @@ static struct sc_compositor *compositor = NULL;
 static char *socket = "";
 
 struct sc_compositor *
-sc_compositor_create()
+sc_compositor_create(struct sc_configuration * config)
 {
 	compositor = calloc(1, sizeof(struct sc_compositor));
 
 	DLOG("screen-composer init.\n");
-
+	compositor->config = config;
 	wl_list_init(&compositor->outputs);
 
 	compositor->wl_display = wl_display_create();
