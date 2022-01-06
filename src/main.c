@@ -11,6 +11,8 @@
 #include "sc_compositor.h"
 #include "sc_config.h"
 
+extern struct sc_configuration configuration;
+
 int
 main(int argc, char **argv, char **environ)
 {
@@ -36,16 +38,15 @@ main(int argc, char **argv, char **environ)
 		LOG("Usage: %s [-s startup command -c config file path]\n", argv[0]);
 		return 0;
 	}
-	struct sc_configuration configuration;
 
-    if (sc_load_config(config_file, &configuration)) {
+    if (sc_load_config(config_file)) {
         LOG("can't load %s\n", config_file);
     }
-	LOG("config loaded from '%s'\n"
-		"display:%dx%d:%d\n", config_file, configuration.display_width,
+	LOG("config loaded from '%s'\n", config_file);
+	LOG("display:%dx%d:%d\n", configuration.display_width,
 		configuration.display_height, configuration.display_refresh);
 
-	sc_compositor_create(&configuration);
+	sc_compositor_create();
 	sc_compositor_start_server();
 
 	setenv("WAYLAND_DISPLAY", sc_compositor_get_socket(), true);

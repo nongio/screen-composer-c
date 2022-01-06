@@ -8,8 +8,9 @@ struct sc_configuration {
 	int display_height;
 	int display_refresh;
 	int max_render_time;
+	char *shaders_path;
 };
 
-bool sc_load_config(const char * path, struct sc_configuration * config);
+bool sc_load_config(const char * path);
 
 #endif

@@ -10,6 +10,8 @@
 #include "sc_output_repaintdelay.h"
 #include "sc_view.h"
 
+extern struct sc_configuration configuration;
+
 static int output_repaint_timer_handler(void *data);
 
 static void output_on_frame(struct wl_listener *listener, void *data);
@@ -31,7 +33,7 @@ sc_output_create(struct wlr_output *wlr_output,
 	output->compositor = compositor;
 	output->layout = compositor->output_layout;
 	output->damage = wlr_output_damage_create(wlr_output);
-	output->max_render_time = compositor->config->max_render_time;
+	output->max_render_time = configuration.max_render_time;
 	wlr_output_init_render(output->wlr_output, compositor->wlr_allocator,
 						   compositor->wlr_renderer);
 

@@ -9,18 +9,20 @@
 #include "sc_compositor_workspace.h"
 #include "sc_compositor_xdgshell.h"
 #include "sc_compositor_layershell.h"
+#include "sc_compositor_rendering.h"
 #include "sc_output.h"
 
-static struct sc_compositor *compositor = NULL;
+extern struct sc_configuration configuration;
+
+struct sc_compositor *compositor = NULL;
 static char *socket = "";
 
 struct sc_compositor *
-sc_compositor_create(struct sc_configuration * config)
+sc_compositor_create()
 {
 	compositor = calloc(1, sizeof(struct sc_compositor));
 
 	DLOG("screen-composer init.\n");
-	compositor->config = config;
 	wl_list_init(&compositor->outputs);
 
 	compositor->wl_display = wl_display_create();
