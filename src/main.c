@@ -45,6 +45,7 @@ main(int argc, char **argv, char **environ)
 	LOG("config loaded from '%s'\n", config_file);
 	LOG("display:%dx%d:%d\n", configuration.display_width,
 		configuration.display_height, configuration.display_refresh);
+	LOG("shaders:%s\n", configuration.shaders_path);
 
 	sc_compositor_create();
 	sc_compositor_start_server();

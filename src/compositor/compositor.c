@@ -59,6 +59,8 @@ sc_compositor_create()
 	sc_compositor_setup_xdgshell(compositor);
 	sc_compositor_setup_layershell(compositor);
 
+	sc_compositor_setup_gles2();
+
 	return compositor;
 }
 
