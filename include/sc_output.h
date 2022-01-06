@@ -15,10 +15,13 @@ struct sc_output {
 	float *projection_matrix;
 
 	struct wlr_box *output_box;
+	int width;
+	int height;
 
 	/* listeners */
 	struct wl_listener on_frame;
 	struct wl_listener on_present;
+	struct wl_listener on_mode;
 
 	/* repaint delay */
 	struct timespec last_frame;

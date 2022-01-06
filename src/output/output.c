@@ -1,10 +1,11 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
 #include <wlr/interfaces/wlr_output.h>
+#include <wlr/types/wlr_matrix.h>
 #include <wlr/types/wlr_output_damage.h>
 
 #include "log.h"
-#include "sc_compositor_renderer.h"
+#include "sc_compositor_rendering.h"
 #include "sc_config.h"
 #include "sc_output.h"
 #include "sc_output_repaintdelay.h"
@@ -18,9 +19,12 @@ static void output_on_frame(struct wl_listener *listener, void *data);
 
 static void output_on_present(struct wl_listener *listener, void *data);
 
-static void
-output_send_frame_done(struct sc_output *output,
-						  struct timespec *when);
+static void output_on_mode(struct wl_listener *listener, void *data);
+
+static void output_send_frame_done(struct sc_output *output,
+								   struct timespec *when);
+
+static void output_update_matrix(struct sc_output *output);
 
 struct sc_output *
 sc_output_create(struct wlr_output *wlr_output,
@@ -49,13 +53,16 @@ sc_output_create(struct wlr_output *wlr_output,
 	}
 	output->enabled = true;
 
+	output->on_mode.notify = output_on_mode;
+	wl_signal_add(&output->wlr_output->events.mode, &output->on_mode);
+
 	// TODO add listener for layout changes
 	output->output_box =
 		wlr_output_layout_get_box(output->layout, output->wlr_output);
 
 	// TODO calculate projection matrix
 	output->projection_matrix = calloc(1, sizeof(float) * 9);
-
+	output_update_matrix(output);
 
 	output->repaint_timer = wl_event_loop_add_timer(
 		compositor->wl_event_loop, output_repaint_timer_handler, output);
@@ -71,11 +78,10 @@ sc_output_create(struct wlr_output *wlr_output,
 	return output;
 }
 
-
 static int
 output_repaint_timer_handler(void *data)
 {
-	//LOG("output_repaint_timer_handler\n");
+	LOG("output_repaint_timer_handler\n");
 	struct sc_output *output = (struct sc_output *) data;
 	/* Checks if there is a need to render or skip */
 
@@ -109,6 +115,7 @@ repaint_end:
 	// Send frame done to all visible surfaces in the output
 	struct timespec when;
 	clock_gettime(CLOCK_MONOTONIC, &when);
+
 	output_send_frame_done(output, &when);
 	return 0;
 }
@@ -125,7 +132,6 @@ output_on_present(struct wl_listener *listener, void *data)
 	sc_output_update_presentation(output, output_event);
 }
 
-
 static void
 output_on_frame(struct wl_listener *listener, void *data)
 {
@@ -136,8 +142,7 @@ output_on_frame(struct wl_listener *listener, void *data)
 	}
 
 	int delay = sc_output_get_ms_until_refresh(output);
-//	int msec_until_refresh = delay + output->max_render_time;
-
+	//	int msec_until_refresh = delay + output->max_render_time;
 
 	// If the delay is less than 1 millisecond (which is the least we can wait)
 	// then just render right away.
@@ -150,18 +155,33 @@ output_on_frame(struct wl_listener *listener, void *data)
 	}
 }
 
+static void
+output_on_mode(struct wl_listener *listener, void *data)
+{
+	struct sc_output *output = wl_container_of(listener, output, on_mode);
+	output_update_matrix(output);
+}
 
 static void
-send_frame_done_iterator(struct wlr_surface *surface,
-	int sx, int sy, void *user_data)
+send_frame_done_iterator(struct wlr_surface *surface, int sx, int sy,
+						 void *user_data)
 {
-	struct timespec * when = user_data;
+	struct timespec *when = user_data;
 	wlr_surface_send_frame_done(surface, when);
 }
 
 static void
-output_send_frame_done(struct sc_output *output,
-						  struct timespec *when)
+output_send_frame_done(struct sc_output *output, struct timespec *when)
 {
+	LOG("output_send_frame_done\n");
 	sc_output_for_each_view_surface(output, send_frame_done_iterator, when);
+}
+static void
+output_update_matrix(struct sc_output *output)
+{
+	wlr_output_effective_resolution(output->wlr_output, &output->width,
+									&output->height);
+
+	wlr_matrix_projection(output->projection_matrix, output->width,
+						  output->height, WL_OUTPUT_TRANSFORM_NORMAL);
 }
