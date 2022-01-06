@@ -117,6 +117,7 @@ sc_sources = [
   'src/view/sc_toplevel_view.c',
   'src/view/sc_layer_view.c',
   'src/view/sc_popup_view.c',
+  'src/utils/file.c',
 ]
 
 sc_headers = [
