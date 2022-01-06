@@ -21,9 +21,9 @@ sc_compositor_setup_workspaces(struct sc_compositor *compositor)
 
 void
 sc_compositor_add_toplevel(struct sc_compositor *compositor,
-						   struct sc_toplevel_view *view)
+						   struct sc_toplevel_view *toplevelview)
 {
-	wl_list_insert(&compositor->current_workspace->views_toplevel, &view->link);
+	wl_list_insert(&compositor->current_workspace->views_toplevel, &toplevelview->link);
 }
 
 void
@@ -54,4 +54,20 @@ sc_compositor_add_layer(struct sc_compositor *compositor,
 					   &layer->link);
 		break;
 	}
+}
+
+struct sc_view *sc_composer_view_at(struct sc_compositor *compositor, int x, int
+		y, struct wlr_surface **surface, int *sx, int *sy)
+{
+	struct sc_toplevel_view *toplevel_view;
+	struct sc_workspace *workspace = compositor->current_workspace;
+	wl_list_for_each (toplevel_view, &workspace->views_toplevel, link) {
+		struct sc_view *view = &toplevel_view->super;
+		*surface = sc_view_surface_at(view, x, y, sx, sy);
+
+		if (*surface != NULL) {
+			return (struct sc_view *)view;
+		}
+	}
+	return NULL;
 }

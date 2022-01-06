@@ -14,10 +14,9 @@ xdg_toplevel_map(struct wl_listener *listener, void *data)
 	DLOG("xdg_toplevel_map\n");
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_map);
-	struct sc_view *view = (struct sc_view *) toplevel_view;
 
-	sc_view_map(view);
-	sc_compositor_add_toplevel(view->compositor, toplevel_view);
+	sc_view_map(&toplevel_view->super);
+	sc_compositor_add_toplevel(toplevel_view->super.compositor, toplevel_view);
 }
 
 static void
