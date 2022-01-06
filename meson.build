@@ -100,7 +100,7 @@ sc_sources = [
   'src/sc_config.c',
   'src/compositor/compositor.c',
   'src/compositor/backend.c',
-  'src/compositor/renderer.c',
+  'src/compositor/rendering.c',
   'src/compositor/cursor.c',
   'src/compositor/keyboard.c',
   'src/compositor/workspace.c',
@@ -117,6 +117,7 @@ sc_sources = [
   'src/view/sc_toplevel_view.c',
   'src/view/sc_layer_view.c',
   'src/view/sc_popup_view.c',
+  'src/gles2/renderer.c',
   'src/gles2/shader.c',
   'src/utils/file.c',
 ]
