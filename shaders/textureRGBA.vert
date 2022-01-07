@@ -7,4 +7,3 @@ void main() {
 	gl_Position = vec4(proj * vec3(pos, 1.0), 1.0);
 		v_texcoord = texcoord;
 }
-

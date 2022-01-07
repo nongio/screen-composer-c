@@ -123,6 +123,11 @@ sc_shader_create(const char *name)
 	const char *vertex_src = sc_read_file(vertname);
 	shader_link(shader, vertex_src, fragment_src);
 	shader_setup_default_uniforms(shader);
+
+	free((void *)fragname);
+	free((void *)vertname);
+	free((void *)fragment_src);
+	free((void *)vertex_src);
 	return shader;
 }
 
