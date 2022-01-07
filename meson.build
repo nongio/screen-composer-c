@@ -32,7 +32,8 @@ pixman = dependency('pixman-1')
 math           = cc.find_library('m')
 glesv2 = dependency('glesv2')
 
-wl_protocol_dir = wayland_protos.get_pkgconfig_variable('pkgdatadir')
+
+wl_protocol_dir = wayland_protos.get_variable(pkgconfig:'pkgdatadir')
 wayland_scanner = find_program('wayland-scanner')
 wayland_scanner_server = generator(
   wayland_scanner,
@@ -127,6 +128,23 @@ sc_headers = [
                  output: 'config.h',
                  configuration: conf_data),
 ]
+
+sclib = library('sc',
+  sc_sources,
+  include_directories: include_directories('include'),
+  dependencies: [
+    server_protos,
+    wayland_server,
+    wlroots,
+    xkbcommon,
+    math,
+	pixman,
+    inih_dep,
+    glesv2,
+  ],
+)
+
+subdir('test')
 
 executable(
   'scomposer',
