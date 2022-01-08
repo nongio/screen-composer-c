@@ -7,9 +7,10 @@
 #include <errno.h>
 #include <stdio.h>
 
-#define LOG(...) fprintf(stderr, __VA_ARGS__)
+#define LOG(...) fprintf(stdout, __VA_ARGS__)
+#define ELOG(...)  fprintf(stderr, __VA_ARGS__)
 #ifdef DEBUG
-#define DLOG(...) fprintf(stderr, __VA_ARGS__)
+#define DLOG(...) fprintf(stdout, __VA_ARGS__)
 #else
 #define DLOG(...) ()
 #endif

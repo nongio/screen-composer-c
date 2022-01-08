@@ -81,7 +81,6 @@ sc_output_create(struct wlr_output *wlr_output,
 static int
 output_repaint_timer_handler(void *data)
 {
-	LOG("output_repaint_timer_handler\n");
 	struct sc_output *output = (struct sc_output *) data;
 	/* Checks if there is a need to render or skip */
 
@@ -149,7 +148,7 @@ output_on_frame(struct wl_listener *listener, void *data)
 	if (delay < 1) {
 		output_repaint_timer_handler(output);
 	} else {
-		LOG("output_on_frame delay: %d\n", delay);
+		DLOG("output_on_frame delay: %d\n", delay);
 		output->wlr_output->frame_pending = true;
 		wl_event_source_timer_update(output->repaint_timer, delay);
 	}
@@ -170,10 +169,9 @@ send_frame_done_iterator(struct wlr_surface *surface, int sx, int sy,
 	wlr_surface_send_frame_done(surface, when);
 }
 
-static void
-output_send_frame_done(struct sc_output *output, struct timespec *when)
+void
+sc_output_send_frame_done(struct sc_output *output, struct timespec *when)
 {
-	LOG("output_send_frame_done\n");
 	sc_output_for_each_view_surface(output, send_frame_done_iterator, when);
 }
 static void

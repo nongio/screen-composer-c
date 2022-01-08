@@ -30,7 +30,7 @@ GLuint shader_compile(const char *src, GLuint type)
   GLint	 ok;
   if (shader == 0)
     {
-      DLOG("unable to create shader\n");
+      ELOG("error: unable to create shader\n");
       goto shadererror;
     }
   glShaderSource(shader, 1, &src, NULL);
@@ -39,8 +39,8 @@ GLuint shader_compile(const char *src, GLuint type)
   if (ok == GL_FALSE)
     {
     shadererror:
-      DLOG("error compiling\n");
-      DLOG("source:\n%s", src);
+      ELOG("error compiling\n");
+      ELOG("source:\n%s", src);
 
       GLsizei log_length = 0;
       GLchar  message[1024];
@@ -61,14 +61,14 @@ shader_link(struct sc_shader *shader, const char *vert_src,
   shader->_vert = shader_compile(vert_src, GL_VERTEX_SHADER);
   if (!shader->_vert)
     {
-      DLOG("error compile vert\n");
+      ELOG("error: compile vert\n");
       goto error;
     }
 
   shader->_frag = shader_compile(frag_src, GL_FRAGMENT_SHADER);
   if (!shader->_frag)
     {
-      DLOG("error compile frag\n");
+      ELOG("error: compile frag\n");
       glDeleteShader(shader->_vert);
       goto error;
     }

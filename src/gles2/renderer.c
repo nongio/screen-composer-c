@@ -96,7 +96,7 @@ shader_for_texattribs(struct wlr_gles2_texture_attribs *attribs)
       shader = shader_texture_external;
       break;
     default:
-      DLOG("error: can't find shader for texture attributes...\n");
+      ELOG("error: can't find shader for texture attributes...\n");
       shader = shader_texture_rgba;
     }
 
@@ -107,7 +107,6 @@ void
 render_texture_with_matrix(struct wlr_gles2_texture_attribs *texture, int sx,
 						   int sy, int w, int h, float *matrix)
 {
-	DLOG("render_texture_with_matrix %d,%d %dx%d\n", sx, sy, w, h);
 	struct sc_shader *shader = shader_for_texattribs(texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(texture->target, texture->tex);
@@ -146,7 +145,6 @@ sc_render_texture_with_output(struct wlr_gles2_texture_attribs *texture, int sx,
 							  struct sc_output *output)
 {
 
-	DLOG("sc_render_texture_with_output %d,%d %dx%d\n", sx, sy, w, h);
 	double ox = output->output_box->x;
 	double oy = output->output_box->y;
 

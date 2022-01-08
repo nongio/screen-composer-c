@@ -26,7 +26,6 @@ void render_surface(struct wlr_surface *surface, int x, int y,
 		void * data)
 {
 
-	LOG("render_surface %d,%d\n", x, y);
 	struct render_data *rdata = data;
 	pixman_region32_t *ouput_damage = rdata->damage;
 	struct sc_output *output = rdata->output;
@@ -75,7 +74,6 @@ void render_surface(struct wlr_surface *surface, int x, int y,
 
 void sc_render_output(struct sc_output *output, struct timespec *when,
 		pixman_region32_t *damage) {
-	LOG("sc_render_output\n");
 	struct wlr_output *wlr_output = output->wlr_output;
 	struct wlr_renderer *renderer = output->compositor->wlr_renderer;
 
@@ -99,13 +97,7 @@ void sc_render_output(struct sc_output *output, struct timespec *when,
 	struct sc_workspace *workspace = output->compositor->current_workspace;
 	wl_list_for_each(toplevel_view, &workspace->views_toplevel, link) {
 
-		LOG("rendering toplevel\n");
 		render_data.view = &toplevel_view->super;
-		if(&toplevel_view->super.surface == NULL)
-		{
-			LOG("rendering toplevel view NULL\n");
-
-		}
 		sc_view_for_each_surface(&toplevel_view->super, render_surface, &render_data);
 	}
 

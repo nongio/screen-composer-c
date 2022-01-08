@@ -40,7 +40,7 @@ main(int argc, char **argv, char **environ)
 	}
 
     if (sc_load_config(config_file)) {
-        LOG("can't load %s\n", config_file);
+        ELOG("can't load %s\n", config_file);
     }
 	LOG("config loaded from '%s'\n", config_file);
 	LOG("display:%dx%d:%d\n", configuration.display_width,

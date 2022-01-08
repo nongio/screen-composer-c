@@ -30,7 +30,7 @@ static void
 compositor_new_xdg_surface(struct wl_listener *listener, void *data)
 {
 
-	LOG("compositor_new_xdg_surface\n");
+	DLOG("compositor_new_xdg_surface\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_new_xdg_surface);
 	struct wlr_xdg_surface *xdg_surface = data;

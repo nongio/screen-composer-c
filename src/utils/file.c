@@ -14,7 +14,7 @@ sc_read_file(const char *filename)
 	f = fopen(filename, "r");
 
 	if (f == NULL) {
-		DLOG("Unable to open file. %s\n", filename);
+		ELOG("error: Unable to open file. %s\n", filename);
 		return NULL;
 	}
 

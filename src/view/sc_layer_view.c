@@ -11,7 +11,7 @@ static void
 layer_map(struct wl_listener *listener, void *data)
 {
 
-	LOG("layer_map\n");
+	DLOG("layer_map\n");
 
 	struct sc_layer_view *layer_view =
 		wl_container_of(listener, layer_view, on_map);
@@ -25,7 +25,7 @@ layer_map(struct wl_listener *listener, void *data)
 static void
 layer_unmap(struct wl_listener *listener, void *data)
 {
-	LOG("layer_unmap\n");
+	DLOG("layer_unmap\n");
 	struct sc_layer_view *layer_view =
 		wl_container_of(listener, layer_view, on_unmap);
 	struct sc_view *view = (struct sc_view *) layer_view;
@@ -37,7 +37,7 @@ layer_unmap(struct wl_listener *listener, void *data)
 static void
 layer_destroy(struct wl_listener *listener, void *data)
 {
-	LOG("layer_destroy\n");
+	DLOG("layer_destroy\n");
 	struct sc_layer_view *layer_view =
 		wl_container_of(listener, layer_view, on_destroy);
 
@@ -90,7 +90,7 @@ struct sc_layer_view *
 sc_layer_view_create(struct wlr_layer_surface_v1 *layer_surface,
 					 struct sc_compositor *compositor)
 {
-	LOG("sc_layer_view_create\n");
+	DLOG("sc_layer_view_create\n");
 	struct sc_layer_view *layer_view = calloc(1, sizeof(struct sc_layer_view));
 	struct sc_view *view = (struct sc_view *) layer_view;
 

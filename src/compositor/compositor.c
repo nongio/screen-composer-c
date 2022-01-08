@@ -22,8 +22,8 @@ sc_compositor_create()
 {
 	compositor = calloc(1, sizeof(struct sc_compositor));
 
-	DLOG("screen-composer init.\n");
 	wl_list_init(&compositor->outputs);
+	DLOG("screen-composer initializaton.\n");
 
 	compositor->wl_display = wl_display_create();
 	compositor->wl_event_loop =
@@ -75,12 +75,12 @@ sc_compositor_destroy()
 void
 sc_compositor_start_server()
 {
-	DLOG("sc_compositor_start\n");
+	DLOG("starting the server...\n");
 	const char *s = wl_display_add_socket_auto(compositor->wl_display);
 	socket = strdup(s);
 
 	if (!socket) {
-		LOG("error: unable to create socket\n");
+		ELOG("error: unable to create socket\n");
 		wlr_backend_destroy(compositor->wlr_backend);
 		return;
 	}
@@ -88,7 +88,7 @@ sc_compositor_start_server()
 	/* Start the backend. This will enumerate outputs and inputs, become the DRM
 	 * master, etc */
 	if (!wlr_backend_start(compositor->wlr_backend)) {
-		LOG("error: unable to start backend\n");
+		ELOG("error: unable to start backend\n");
 		wlr_backend_destroy(compositor->wlr_backend);
 		wl_display_destroy(compositor->wl_display);
 		return;

@@ -33,7 +33,7 @@ static int handler(void* user, const char* section, const char* name,
 bool sc_load_config(const char * path)
 {
     if (ini_parse(path, handler, &configuration) < 0) {
-        LOG("Can't load %s\n", path);
+        ELOG("Can't load %s\n", path);
         return true;
     }
 	return false;

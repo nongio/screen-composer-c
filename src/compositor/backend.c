@@ -26,7 +26,7 @@ void sc_compositor_setup_backend(struct sc_compositor *compositor)
 void
 compositor_backend_on_new_output(struct wl_listener *listener, void *data)
 {
-	LOG("[backend_on_new_output]\n");
+	DLOG("[backend_on_new_output]\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_new_output);
 	struct wlr_output *wlr_output = data;
@@ -41,7 +41,7 @@ compositor_backend_on_new_output(struct wl_listener *listener, void *data)
 void
 compositor_backend_on_new_input(struct wl_listener *listener, void *data)
 {
-	LOG("[backend_on_new_input]\n");
+	DLOG("[backend_on_new_input]\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_new_input);
 	struct wlr_input_device *device = data;
