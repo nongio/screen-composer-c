@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
+#include <wlr/types/wlr_data_device.h>
 
 #include "log.h"
 #include "sc_compositor.h"
@@ -41,7 +42,6 @@ sc_compositor_create()
 
 	compositor->wlr_compositor =
 		wlr_compositor_create(compositor->wl_display, compositor->wlr_renderer);
-	//	wlr_data_device_manager_create(compositor->wl_display);
 
 	compositor->wlr_presentation = wlr_presentation_create(
 		compositor->wl_display, compositor->wlr_backend);
@@ -51,6 +51,7 @@ sc_compositor_create()
 	compositor->egl =
 		(struct wlr_egl *) wlr_gles2_renderer_get_egl(compositor->wlr_renderer);
 
+    wlr_data_device_manager_create(compositor->wl_display);
 
 	sc_compositor_setup_seat(compositor);
 	sc_compositor_setup_cursor(compositor);
