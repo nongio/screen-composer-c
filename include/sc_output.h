@@ -50,4 +50,7 @@ void
 sc_output_for_each_view_surface(struct sc_output *output,
 								wlr_surface_iterator_func_t surface_iterator,
 								void *data);
+void
+sc_output_send_frame_done(struct sc_output *output, struct timespec *when);
+
 #endif

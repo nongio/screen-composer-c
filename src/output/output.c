@@ -21,9 +21,6 @@ static void output_on_present(struct wl_listener *listener, void *data);
 
 static void output_on_mode(struct wl_listener *listener, void *data);
 
-static void output_send_frame_done(struct sc_output *output,
-								   struct timespec *when);
-
 static void output_update_matrix(struct sc_output *output);
 
 struct sc_output *
@@ -115,7 +112,7 @@ repaint_end:
 	struct timespec when;
 	clock_gettime(CLOCK_MONOTONIC, &when);
 
-	output_send_frame_done(output, &when);
+	sc_output_send_frame_done(output, &when);
 	return 0;
 }
 
