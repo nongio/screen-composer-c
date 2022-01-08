@@ -5,6 +5,7 @@
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_compositor_backend.h"
+#include "sc_compositor_seat.h"
 #include "sc_compositor_cursor.h"
 #include "sc_compositor_workspace.h"
 #include "sc_compositor_xdgshell.h"
@@ -50,9 +51,8 @@ sc_compositor_create()
 	compositor->egl =
 		(struct wlr_egl *) wlr_gles2_renderer_get_egl(compositor->wlr_renderer);
 
-	/* Configures a single seat */
-	compositor->seat = wlr_seat_create(compositor->wl_display, "seat0");
 
+	sc_compositor_setup_seat(compositor);
 	sc_compositor_setup_cursor(compositor);
 	sc_compositor_setup_backend(compositor);
 	sc_compositor_setup_workspaces(compositor);

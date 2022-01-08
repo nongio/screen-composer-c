@@ -49,6 +49,7 @@ compositor_backend_on_new_input(struct wl_listener *listener, void *data)
 	switch (device->type) {
 	case WLR_INPUT_DEVICE_KEYBOARD:
 		DLOG("new keyboard\n");
+		wlr_seat_set_keyboard(compositor->seat, device);
 		wl_list_insert(&compositor->keyboards,
 					   &(sc_keyboard_create(device, compositor))->link);
 		break;

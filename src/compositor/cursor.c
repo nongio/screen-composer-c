@@ -140,28 +140,6 @@ compositor_cursor_frame(struct wl_listener *listener, void *data)
 	wlr_seat_pointer_notify_frame(compositor->seat);
 }
 
-static void seat_request_cursor(struct wl_listener *listener, void *data) {
-	struct sc_compositor *compositor = wl_container_of(
-			listener, compositor, on_request_cursor);
-
-	struct wlr_seat_pointer_request_set_cursor_event *event = data;
-	struct wlr_seat_client *focused_client =
-		compositor->seat->pointer_state.focused_client;
-
-	if (focused_client == event->seat_client) {
-
-		wlr_cursor_set_surface(compositor->cursor, event->surface,
-				event->hotspot_x, event->hotspot_y);
-	}
-}
-
-static void seat_request_set_selection(struct wl_listener *listener, void *data) {
-
-	struct sc_compositor *compositor = wl_container_of(
-			listener, compositor, on_request_set_selection);
-	struct wlr_seat_request_set_selection_event *event = data;
-	wlr_seat_set_selection(compositor->seat, event->source, event->serial);
-}
 
 void
 sc_compositor_setup_cursor(struct sc_compositor *compositor)
@@ -197,12 +175,5 @@ sc_compositor_setup_cursor(struct sc_compositor *compositor)
 	compositor->on_cursor_frame.notify = compositor_cursor_frame;
 	wl_signal_add(&compositor->cursor->events.frame,
 				  &compositor->on_cursor_frame);
-
-	compositor->on_request_cursor.notify = seat_request_cursor;
-	wl_signal_add(&compositor->seat->events.request_set_cursor,
-			&compositor->on_request_cursor);
-	compositor->on_request_set_selection.notify = seat_request_set_selection;
-	wl_signal_add(&compositor->seat->events.request_set_selection,
-			&compositor->on_request_set_selection);
 
 }
