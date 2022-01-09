@@ -50,7 +50,7 @@ void sc_popup_unconstrain(struct sc_popup_view *popup_view)
 	struct wlr_box *popup_box = &popup_view->xdg_popup->geometry;
 
 	struct sc_view *view = (struct sc_view *) popup_view;
-	struct wlr_output_layout *output_layout = view->output->layout;
+	struct wlr_output_layout *output_layout = view->parent->output->layout;
 	struct wlr_output *wlr_output = wlr_output_layout_output_at(
 		output_layout, view->parent->frame.x + popup_box->x,
 		view->parent->frame.y + popup_box->y);

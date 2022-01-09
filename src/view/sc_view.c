@@ -3,30 +3,29 @@
 #include <wlr/types/wlr_surface.h>
 
 #include "log.h"
+#include "sc_compositor.h"
+#include "sc_geometry.h"
 #include "sc_output.h"
 #include "sc_view.h"
-#include "sc_geometry.h"
-#include "sc_compositor.h"
 
 static void
 view_surface_commit_handler(struct wl_listener *listener, void *data)
 {
-	DLOG("view_surface_commit\n");
 	struct sc_view *view = wl_container_of(listener, view, on_surface_commit);
+
+	if (view->impl->commit) {
+		view->impl->commit(view);
+		return;
+	}
 
 	view->frame.x = view->surface->sx;
 	view->frame.y = view->surface->sy;
 	view->frame.width = view->surface->current.width;
 	view->frame.height = view->surface->current.height;
 
-	DLOG("surface.frame: %d,%d %dx%d\n", view->frame.x, view->frame.y,
-		 view->frame.width, view->frame.height);
-
-	if (view->output == NULL) {
-		return;
-	}
 	if (view->parent != NULL) {
-		sc_output_add_damage_from_view(view->output, view->parent, false);
+		sc_output_add_damage_from_view(view->parent->output, view->parent,
+									   false);
 	} else {
 		sc_output_add_damage_from_view(view->output, view, false);
 	}
@@ -43,20 +42,52 @@ subview_destroy_handler(struct wl_listener *listener, void *data)
 	}
 
 	if (subview->parent != NULL) {
-		sc_output_add_damage_from_view(subview->output, subview->parent, false);
-	} else {
-		sc_output_add_damage_from_view(subview->output, subview, false);
+		sc_output_add_damage_from_view(subview->parent->output, subview->parent,
+									   false);
 	}
 
 	sc_view_destroy(subview);
 	free(subview);
 }
 
+
+static void
+for_each_surface(struct sc_view *view, wlr_surface_iterator_func_t iterator,
+				 void *user_data)
+{
+
+	wlr_surface_for_each_surface(view->surface, iterator, user_data);
+}
+
+static void
+for_each_popup_surface(struct sc_view *view,
+					   wlr_surface_iterator_func_t iterator, void *user_data)
+{
+
+	// wlr_xdg_surface_for_each_popup_surface(view->wlr_xdg_surface, iterator,
+	// user_data);
+}
+
+static struct wlr_surface *
+surface_at(struct sc_view *view, double x, double y, double *sx, double *sy)
+{
+	return NULL;
+}
+
+static struct sc_view_impl view_impl = {
+	.for_each_surface = for_each_surface,
+	.for_each_popup_surface = for_each_popup_surface,
+	.surface_at = surface_at,
+};
+
+
 static struct sc_view *
-view_subsurface_create(struct wlr_subsurface *subsurface)
+view_subsurface_create(struct wlr_subsurface *subsurface, struct sc_view *view)
 {
 	struct sc_view *subview = calloc(1, sizeof(struct sc_view));
 	sc_view_init(subview, NULL, subsurface->surface);
+	subview->output = view->output;
+	subview->parent = view;
 
 	subview->on_subview_destroy.notify = subview_destroy_handler;
 	wl_signal_add(&subsurface->events.destroy, &subview->on_subview_destroy);
@@ -71,30 +102,10 @@ view_subsurface_new(struct wl_listener *listener, void *data)
 
 	struct wlr_subsurface *subsurface = data;
 
-	struct sc_view *subview = view_subsurface_create(subsurface);
+	struct sc_view *subview = view_subsurface_create(subsurface, view);
 
-	subview->parent = view;
 	wl_list_insert(&view->children, &subview->link);
 }
-
-static void for_each_surface(struct sc_view *view,
-		wlr_surface_iterator_func_t iterator, void *user_data) {
-
-	wlr_surface_for_each_surface(view->surface, iterator,
-		user_data);
-
-}
-
-static void for_each_popup_surface(struct sc_view *view,
-		wlr_surface_iterator_func_t iterator, void *user_data) {
-
-	//wlr_xdg_surface_for_each_popup_surface(view->wlr_xdg_surface, iterator, user_data);
-}
-
-static struct sc_view_impl view_impl = {
-	.for_each_surface = for_each_surface,
-	.for_each_popup_surface = for_each_popup_surface,
-};
 
 void
 sc_view_init(struct sc_view *view, struct sc_view_impl *impl,
@@ -132,6 +143,7 @@ void
 sc_view_damage_part(struct sc_view *view)
 {
 	if (view->output != NULL) {
+		sc_output_add_damage_from_view(view->output, view, false);
 	}
 }
 
@@ -144,13 +156,13 @@ sc_view_damage_whole(struct sc_view *view)
 	}
 }
 
-void sc_view_get_absolute_position(struct sc_view *view, struct
-		sc_point * p)
+void
+sc_view_get_absolute_position(struct sc_view *view, struct sc_point *p)
 {
 	p->x = view->frame.x;
 	p->y = view->frame.y;
 
-	if(view->parent) {
+	if (view->parent) {
 		p->x += view->parent->frame.x;
 		p->y += view->parent->frame.y;
 	}
@@ -175,20 +187,27 @@ sc_view_map(struct sc_view *view)
 	struct wlr_subsurface *sub;
 	wl_list_for_each (sub, &view->surface->current.subsurfaces_below,
 					  current.link) {
-		struct sc_view *subview = view_subsurface_create(sub);
-		subview->parent = view;
+		struct sc_view *subview = view_subsurface_create(sub, view);
 		wl_list_insert(&view->children, &subview->link);
 	}
 	wl_list_for_each (sub, &view->surface->current.subsurfaces_above,
 					  current.link) {
-		struct sc_view *subview = view_subsurface_create(sub);
-		subview->parent = view;
+		struct sc_view *subview = view_subsurface_create(sub, view);
 		wl_list_insert(&view->children, &subview->link);
 	}
+	sc_view_damage_whole(view);
 }
 
-void sc_view_for_each_surface(struct sc_view *view,
-		wlr_surface_iterator_func_t iterator, void *user_data) {
+void
+sc_view_unmap(struct sc_view *view)
+{
+	sc_view_damage_whole(view);
+	view->mapped = false;
+}
+void
+sc_view_for_each_surface(struct sc_view *view,
+						 wlr_surface_iterator_func_t iterator, void *user_data)
+{
 	if (!view->surface) {
 		return;
 	}
@@ -199,8 +218,11 @@ void sc_view_for_each_surface(struct sc_view *view,
 	}
 }
 
-void sc_view_for_each_popup_surface(struct sc_view *view,
-		wlr_surface_iterator_func_t iterator, void *user_data) {
+void
+sc_view_for_each_popup_surface(struct sc_view *view,
+							   wlr_surface_iterator_func_t iterator,
+							   void *user_data)
+{
 	if (!view->surface) {
 		return;
 	}
@@ -209,7 +231,49 @@ void sc_view_for_each_popup_surface(struct sc_view *view,
 	}
 }
 
-bool sc_view_is_visible(struct sc_view *view)
+bool
+sc_view_is_visible(struct sc_view *view)
 {
 	return view->mapped;
+}
+
+struct wlr_surface *
+sc_view_surface_at(struct sc_view *view, double x, double y, double *sx, double *sy)
+{
+	if (!view->mapped) {
+		return NULL;
+	}
+	if (view->impl->surface_at) {
+		return view->impl->surface_at(view, x, y, sx, sy);
+	}
+
+	return NULL;
+}
+
+void
+sc_view_set_output(struct sc_view *view, struct sc_output *output)
+{
+	view->output = output;
+}
+
+void sc_view_activate(struct sc_view *view)
+{
+	if (!view->mapped) {
+		return;
+	}
+	if (view->impl->activate) {
+		view->impl->activate(view);
+	}
+	sc_view_damage_whole(view);
+}
+
+void sc_view_deactivate(struct sc_view *view)
+{
+	if (!view->mapped) {
+		return;
+	}
+	if (view->impl->deactivate) {
+		view->impl->deactivate(view);
+	}
+	sc_view_damage_whole(view);
 }

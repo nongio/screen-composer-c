@@ -15,8 +15,18 @@ xdg_toplevel_map(struct wl_listener *listener, void *data)
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_map);
 
-	sc_view_map(&toplevel_view->super);
+	struct sc_output *output = sc_compositor_output_at(
+		toplevel_view->super.frame.x, toplevel_view->super.frame.y);
+
+	sc_view_set_output((struct sc_view *)toplevel_view, output);
+
 	sc_compositor_add_toplevel(toplevel_view->super.compositor, toplevel_view);
+	sc_view_map(&toplevel_view->super);
+	DLOG("xdg_toplevel_map [%d,%d %dx%d]\n",
+			toplevel_view->xdg_surface->current.geometry.x,
+			toplevel_view->xdg_surface->current.geometry.y,
+			toplevel_view->xdg_surface->current.geometry.width,
+			toplevel_view->xdg_surface->current.geometry.height);
 }
 
 static void
@@ -26,8 +36,8 @@ xdg_toplevel_unmap(struct wl_listener *listener, void *data)
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_unmap);
 	struct sc_view *view = (struct sc_view *) toplevel_view;
-	view->mapped = false;
 	wl_list_remove(&toplevel_view->link);
+	sc_view_unmap(view);
 }
 
 static void
@@ -61,7 +71,7 @@ xdg_toplevel_popup_new(struct wl_listener *listener, void *data)
 	wl_list_insert(&view->children, &popup_view->link);
 }
 
-void
+static void
 toplevel_for_each_surface(struct sc_view *view,
 						  wlr_surface_iterator_func_t iterator, void *user_data)
 {
@@ -70,23 +80,56 @@ toplevel_for_each_surface(struct sc_view *view,
 									 user_data);
 }
 
-void
+static void
 toplevel_for_each_popup_surface(struct sc_view *view,
 								wlr_surface_iterator_func_t iterator,
 								void *user_data)
 {
+	// TODO
+}
+
+static struct wlr_surface *
+surface_at(struct sc_view *view, double x, double y, double *sx, double *sy)
+{
+	struct sc_toplevel_view *toplevel = (struct sc_toplevel_view *)view;
+
+	struct wlr_surface *s = wlr_xdg_surface_surface_at(toplevel->xdg_surface,
+			x - view->frame.x,
+			y - view->frame.y,
+			sx, sy);
+
+	return s;
+}
+
+static void
+activate(struct sc_view *view)
+{
+	struct sc_toplevel_view *toplevel = (struct sc_toplevel_view *) view;
+
+	wlr_xdg_toplevel_set_activated(toplevel->xdg_surface, true);
+}
+
+static void
+deactivate(struct sc_view *view)
+{
+	struct sc_toplevel_view *toplevel = (struct sc_toplevel_view *) view;
+
+	wlr_xdg_toplevel_set_activated(toplevel->xdg_surface, false);
 }
 
 static struct sc_view_impl toplvel_view_impl = {
 	.for_each_surface = toplevel_for_each_surface,
 	.for_each_popup_surface = toplevel_for_each_popup_surface,
+	.surface_at = surface_at,
+	.activate = activate,
+	.deactivate = deactivate,
 };
 
 struct sc_toplevel_view *
 sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 						struct sc_compositor *compositor)
 {
-	LOG("sc_toplevel_view_create\n");
+	DLOG("sc_toplevel_view_create\n");
 	struct sc_toplevel_view *toplevel_view =
 		calloc(1, sizeof(struct sc_toplevel_view));
 
