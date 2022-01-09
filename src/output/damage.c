@@ -27,7 +27,6 @@ static void add_damage_surface_iterator(struct wlr_surface *surface, int x, int 
 
 	sc_box_from_layout_to_output(output, &surface_box);
 
-	DLOG("damage_surface_iterator %d,%d %dx%d\n", surface_box.x, surface_box.y, surface_box.width, surface_box.height);
 
 	pixman_region32_t damage;
 	pixman_region32_init(&damage);

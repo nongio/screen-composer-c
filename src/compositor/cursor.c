@@ -4,8 +4,11 @@
 #include <wlr/types/wlr_data_device.h>
 
 #include "log.h"
+#include "sc_view.h"
+#include "sc_output.h"
 #include "sc_compositor.h"
 #include "sc_compositor_cursor.h"
+#include "sc_compositor_workspace.h"
 
 
 static void
@@ -31,39 +34,34 @@ process_cursor_motion(struct sc_compositor *compositor, uint32_t time)
 		return;
 	}
 
-	double sx = compositor->cursor->x;
-	double sy = compositor->cursor->y;
+	double sx = 0;
+	double sy = 0;
 	struct wlr_seat *seat = compositor->seat;
-	//struct wlr_surface *surface = NULL;
+	struct wlr_surface *surface = NULL;
 
-	//struct tinywl_view *view = desktop_view_at(
-	//	server, server->cursor->x, server->cursor->y, &surface, &sx, &sy);
-	//if (!view) {
-	//	/* If there's no view under the cursor, set the cursor image to a
-	//	 * default. This is what makes the cursor image appear when you move it
-	//	 * around the screen, not over any views. */
+	struct sc_view *view =
+		sc_composer_view_at(compositor, compositor->cursor->x,
+							compositor->cursor->y, &surface, &sx, &sy);
+
+	if (!view) {
+		/* If there's no view under the cursor, set the cursor image to a
+		 * default. This is what makes the cursor image appear when you move it
+		 * around the screen, not over any views. */
 		wlr_xcursor_manager_set_cursor_image(compositor->cursor_mgr, "left_ptr",
 											 compositor->cursor);
-	//}
-	//if (surface) {
-	//	/*
-	//	 * Send pointer enter and motion events.
-	//	 *
-	//	 * The enter event gives the surface "pointer focus", which is distinct
-	//	 * from keyboard focus. You get pointer focus by moving the pointer over
-	//	 * a window.
-	//	 *
-	//	 * Note that wlroots will avoid sending duplicate enter/motion events if
-	//	 * the surface has already has pointer focus or if the client is already
-	//	 * aware of the coordinates passed.
-	//	 */
-	//	wlr_seat_pointer_notify_enter(seat, surface, sx, sy);
+	}
+	if (view != NULL) {
+		bool focus_changed =
+			wlr_seat_pointer_surface_has_focus(seat, surface) == false;
+
+		if (focus_changed) {
+			wlr_seat_pointer_notify_enter(seat, surface, sx, sy);
+		}
 		wlr_seat_pointer_notify_motion(seat, time, sx, sy);
-	//} else {
-	//	/* Clear pointer focus so future button events and such are not sent to
-	//	 * the last client to have the cursor over it. */
-	//	wlr_seat_pointer_clear_focus(seat);
-	//}
+	} else {
+
+		wlr_seat_pointer_clear_focus(seat);
+	}
 }
 
 static void
@@ -98,22 +96,27 @@ static void
 compositor_cursor_button(struct wl_listener *listener, void *data)
 {
 
+	DLOG("wlr_seat_pointer_notify_button\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_cursor_button);
 	struct wlr_event_pointer_button *event = data;
 
 	wlr_seat_pointer_notify_button(compositor->seat, event->time_msec,
 								   event->button, event->state);
-	//double sx, sy;
-	//struct wlr_surface *surface = NULL;
-	//	struct tinywl_view *view = desktop_view_at(server,
-	//			server->cursor->x, server->cursor->y, &surface, &sx, &sy);
-	//	if (event->state == WLR_BUTTON_RELEASED) {
-	//		/* If you released any buttons, we exit interactive move/resize mode.
-	//*/ 		server->cursor_mode = TINYWL_CURSOR_PASSTHROUGH; 	} else {
-	//		/* Focus that client if the button was _pressed_ */
-	//		focus_view(view, surface);
-	//	}
+
+	double sx = compositor->cursor->x;
+	double sy = compositor->cursor->y;
+	struct wlr_surface *surface = NULL;
+
+	struct sc_view *view = sc_composer_view_at(compositor,
+			compositor->cursor->x, compositor->cursor->y, &surface, &sx, &sy);
+
+	if (event->state == WLR_BUTTON_RELEASED) {
+		compositor->cursor_mode = SC_CURSOR_PASSTHROUGH;
+	} else {
+		sc_composer_focus_view(compositor, view);
+	}
+
 }
 
 static void
@@ -144,7 +147,7 @@ compositor_cursor_frame(struct wl_listener *listener, void *data)
 void
 sc_compositor_setup_cursor(struct sc_compositor *compositor)
 {
-	LOG("[sc_compositor_setup_cursor]\n");
+	DLOG("[sc_compositor_setup_cursor]\n");
 
 	compositor->cursor = wlr_cursor_create();
 	wlr_cursor_attach_output_layout(compositor->cursor,

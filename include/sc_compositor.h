@@ -30,6 +30,7 @@ struct sc_compositor {
 	struct wlr_egl *egl;
 
 	struct sc_workspace *current_workspace;
+	struct sc_view *current_view;
 	struct wl_list workspaces;
 
 	/* seat */
@@ -73,4 +74,7 @@ void sc_compositor_start_server();
 void sc_compositor_start_eventloop();
 char* sc_compositor_get_socket();
 struct sc_output *sc_compositor_output_at(double lx, double ly);
+
+struct sc_view *sc_composer_view_at(struct sc_compositor *compositor, double x, double
+		y, struct wlr_surface **surface, double *sx, double *sy);
 #endif
