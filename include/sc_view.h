@@ -21,7 +21,16 @@ struct sc_view_impl {
 	void (*commit)(struct sc_view *view);
 };
 
+enum sc_view_type {
+	SC_VIEW_NONE,
+	SC_VIEW_TOPLEVEL,
+	SC_VIEW_POPUP,
+	SC_VIEW_SUBVIEW,
+	SC_VIEW_LAYER,
+};
+
 struct sc_view {
+	enum sc_view_type type;
 	struct wl_list link;
 	const struct sc_view_impl *impl;
 	// protocol surfaces
@@ -48,7 +57,7 @@ struct sc_view {
 	struct wl_listener on_subview_destroy;
 };
 
-void sc_view_init(struct sc_view *view, struct sc_view_impl *impl,
+void sc_view_init(struct sc_view *view,  enum sc_view_type type, struct sc_view_impl *impl,
 				  struct wlr_surface *surface);
 
 void sc_view_map(struct sc_view *view);

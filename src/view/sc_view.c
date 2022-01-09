@@ -85,7 +85,7 @@ static struct sc_view *
 view_subsurface_create(struct wlr_subsurface *subsurface, struct sc_view *view)
 {
 	struct sc_view *subview = calloc(1, sizeof(struct sc_view));
-	sc_view_init(subview, NULL, subsurface->surface);
+	sc_view_init(subview, SC_VIEW_SUBVIEW, NULL, subsurface->surface);
 	subview->output = view->output;
 	subview->parent = view;
 
@@ -108,11 +108,11 @@ view_subsurface_new(struct wl_listener *listener, void *data)
 }
 
 void
-sc_view_init(struct sc_view *view, struct sc_view_impl *impl,
+sc_view_init(struct sc_view *view, enum sc_view_type type, struct sc_view_impl *impl,
 			 struct wlr_surface *surface)
 {
 	DLOG("sc_view_init\n");
-
+	view->type = type;
 	if (impl != NULL) {
 		view->impl = impl;
 	} else {

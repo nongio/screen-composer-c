@@ -102,7 +102,7 @@ sc_layer_view_create(struct wlr_layer_surface_v1 *layer_surface,
 	};
 
 	view->compositor = compositor;
-	sc_view_init(view, &layer_view_impl, layer_surface->surface);
+	sc_view_init(view, SC_VIEW_LAYER, &layer_view_impl, layer_surface->surface);
 
 	layer_view->layer_surface = layer_surface;
 

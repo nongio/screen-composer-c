@@ -82,7 +82,7 @@ sc_popup_view_create(struct wlr_xdg_popup *xdg_popup,
 	struct sc_view *view = (struct sc_view *)popup_view;
 	view->parent = parent;
 	view->compositor = parent->compositor;
-	sc_view_init(view, NULL, xdg_popup->base->surface);
+	sc_view_init(view, SC_VIEW_POPUP, NULL, xdg_popup->base->surface);
 
 	popup_view->on_map.notify = xdg_popup_map;
 	wl_signal_add(&popup_view->xdg_surface->events.map, &popup_view->on_map);
