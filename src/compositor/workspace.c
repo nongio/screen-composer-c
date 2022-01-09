@@ -98,30 +98,16 @@ sc_composer_focus_view(struct sc_compositor *compositor, struct sc_view *view)
 		sc_view_deactivate(compositor->current_view);
 	}
 	struct wlr_keyboard *keyboard = wlr_seat_get_keyboard(seat);
-
 	compositor->current_view = view;
+	if(view->type == SC_VIEW_TOPLEVEL) {
+		struct sc_toplevel_view * toplevel = (struct sc_toplevel_view *)compositor->current_view;
+		DLOG("moving toplevel on top\n");
+		wl_list_remove(&toplevel->link);
+		wl_list_insert(&compositor->current_workspace->views_toplevel, &toplevel->link);
+	}
 
-	// FIXME if the view is a layer don't add it to the views array!!
-	//
-	//  if ([view isKindOfClass:[SCTopLevelView class]])
-	//    {
-	//      SCTopLevelView * topview = (SCTopLevelView *)view;
-	//
-	//      [self->currentDesktop->topLevelViews removeObject:topview];
-	//      int count = [self->currentDesktop->topLevelViews count];
-	//      [self->currentDesktop->topLevelViews insertObject:topview
-	//      atIndex:(count)];
-	//
-	//      /* Activate the new surface */
-	//      [topview activate];
-	//    }
+
 	sc_view_activate(compositor->current_view);
-
-	/*
-	 * Tell the seat to have the keyboard enter this surface. wlroots will keep
-	 * track of this and automatically send key events to the appropriate
-	 * clients without additional work on your part.
-	 */
 
 	wlr_seat_keyboard_notify_enter(seat, view->surface, keyboard->keycodes,
 								   keyboard->num_keycodes,

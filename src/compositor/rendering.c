@@ -95,7 +95,7 @@ void sc_render_output(struct sc_output *output, struct timespec *when,
 
 	struct sc_toplevel_view *toplevel_view;
 	struct sc_workspace *workspace = output->compositor->current_workspace;
-	wl_list_for_each(toplevel_view, &workspace->views_toplevel, link) {
+	wl_list_for_each_reverse(toplevel_view, &workspace->views_toplevel, link) {
 
 		render_data.view = &toplevel_view->super;
 		sc_view_for_each_surface(&toplevel_view->super, render_surface, &render_data);
