@@ -19,7 +19,7 @@ main(int argc, char **argv, char **environ)
 	//	wlr_log_init(WLR_DEBUG, NULL);
 
 	char *startup_cmd = NULL;
-	char *config_file = "~/.scomposer.ini";
+	char *config_file = "./config.ini";
 
 	int c;
 	while ((c = getopt(argc, argv, ":s:c:h")) != -1) {
