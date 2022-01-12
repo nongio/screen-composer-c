@@ -44,8 +44,13 @@ struct sc_compositor {
 	struct wl_list keyboards;
 	struct wlr_cursor *cursor;
 	struct wlr_xcursor_manager *cursor_mgr;
-	enum sc_cursor_mode cursor_mode;
 
+	/* view grab */
+	enum sc_cursor_mode cursor_mode;
+	struct sc_toplevel_view *grabbed_view;
+	double grab_x, grab_y;
+	struct wlr_box grab_box;
+	uint32_t resize_edges;
 
 	/* output */
 	struct wl_list outputs;

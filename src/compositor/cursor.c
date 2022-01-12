@@ -5,22 +5,93 @@
 
 #include "log.h"
 #include "sc_view.h"
+#include "sc_toplevel_view.h"
 #include "sc_output.h"
 #include "sc_compositor.h"
 #include "sc_compositor_cursor.h"
 #include "sc_compositor_workspace.h"
 
+void
+sc_compositor_begin_interactive(struct sc_compositor *compositor,
+								struct sc_toplevel_view *toplevel_view,
+								enum sc_cursor_mode mode, uint32_t edges)
+{
+	/* This function sets up an interactive move or resize operation, where the
+	 * compositor stops propegating pointer events to clients and instead
+	 * consumes them itself, to move or resize windows. */
+	struct wlr_surface *focused_surface =
+		compositor->seat->pointer_state.focused_surface;
+	struct sc_view *view = (struct sc_view *)toplevel_view;
+	if (toplevel_view->xdg_surface->surface != focused_surface) {
+		/* Deny move/resize requests from unfocused clients. */
+		return;
+	}
+	compositor->grabbed_view = toplevel_view;
+	compositor->cursor_mode = mode;
+
+	wlr_xdg_surface_get_geometry(toplevel_view->xdg_surface, &compositor->grab_box);
+
+	view->frame.width = compositor->grab_box.width;
+	view->frame.height = compositor->grab_box.height;
+
+	compositor->grab_box.x = view->frame.x;
+	compositor->grab_box.y = view->frame.y;
+	compositor->grab_x = compositor->cursor->x;
+	compositor->grab_y = compositor->cursor->y;
+
+	compositor->resize_edges = edges;
+}
 
 static void
 process_cursor_move(struct sc_compositor *compositor, uint32_t time)
 {
+	struct sc_view *view = (struct sc_view *)compositor->grabbed_view;
+	view->frame.x = compositor->grab_box.x + (compositor->cursor->x - compositor->grab_x);
+	view->frame.y = compositor->grab_box.y + (compositor->cursor->y - compositor->grab_y);
 
+	// TODO review
+	sc_output_add_damage_from_view(view->output, view, true);
 }
 
 static void
 process_cursor_resize(struct sc_compositor *compositor, uint32_t time)
 {
+	struct sc_toplevel_view *toplevel = compositor->grabbed_view;
+	struct sc_view *view = (struct sc_view *)compositor->grabbed_view;
 
+	double delta_x = compositor->cursor->x - compositor->grab_x;
+	double delta_y = compositor->cursor->y - compositor->grab_y;
+
+	DLOG("process_cursor_resize [%f,%f]\n", delta_x, delta_y);
+
+
+	int new_x = compositor->grab_box.x;
+	int new_y = compositor->grab_box.y;
+
+	int new_width = compositor->grab_box.width;
+	int new_height = compositor->grab_box.height;
+
+	if (compositor->resize_edges & WLR_EDGE_TOP) {
+		new_y += delta_y;
+		new_height -= delta_y;
+	} else if (compositor->resize_edges & WLR_EDGE_BOTTOM) {
+		new_height += delta_y;
+	}
+	if (compositor->resize_edges & WLR_EDGE_LEFT) {
+		new_x += delta_x;
+		new_width -= delta_x;
+	} else if (compositor->resize_edges & WLR_EDGE_RIGHT) {
+		new_width += delta_x;
+	}
+
+
+	view->frame.x = new_x;
+	view->frame.y = new_y;
+	view->frame.width = new_width;
+	view->frame.height = new_height;
+
+
+	wlr_xdg_toplevel_set_size(toplevel->xdg_surface, new_width, new_height);
 }
 
 static void
@@ -44,9 +115,6 @@ process_cursor_motion(struct sc_compositor *compositor, uint32_t time)
 							compositor->cursor->y, &surface, &sx, &sy);
 
 	if (!view) {
-		/* If there's no view under the cursor, set the cursor image to a
-		 * default. This is what makes the cursor image appear when you move it
-		 * around the screen, not over any views. */
 		wlr_xcursor_manager_set_cursor_image(compositor->cursor_mgr, "left_ptr",
 											 compositor->cursor);
 	}

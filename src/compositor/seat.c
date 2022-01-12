@@ -13,7 +13,6 @@
 static void
 request_set_cursor(struct wl_listener *listener, void *data)
 {
-	DLOG("request_set_cursor\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_request_set_cursor);
 

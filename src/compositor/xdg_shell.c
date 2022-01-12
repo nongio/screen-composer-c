@@ -3,6 +3,7 @@
 
 #include "log.h"
 #include "sc_compositor.h"
+#include "sc_compositor_cursor.h"
 #include "sc_toplevel_view.h"
 #include "sc_view.h"
 
@@ -12,18 +13,23 @@ xdg_toplevel_request_move(struct wl_listener *listener, void *data)
 
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_request_move);
-	// begin_interactive(view, SC_CURSOR_MOVE, 0);
+	struct sc_view *view = (struct sc_view *)toplevel_view;
+	sc_compositor_begin_interactive(view->compositor, toplevel_view, SC_CURSOR_MOVE, 0);
 }
 
 static void
 xdg_toplevel_request_resize(struct wl_listener *listener, void *data)
 {
 
-	//struct wlr_xdg_toplevel_resize_event *event = data;
+	struct wlr_xdg_toplevel_resize_event *event = data;
+
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_request_resize);
 
-	// begin_interactive(view, SC_CURSOR_RESIZE, event->edges);
+	struct sc_view *view = (struct sc_view *) toplevel_view;
+
+	sc_compositor_begin_interactive(view->compositor, toplevel_view,
+									SC_CURSOR_RESIZE, event->edges);
 }
 
 static void
@@ -40,7 +46,6 @@ compositor_new_xdg_surface(struct wl_listener *listener, void *data)
 		struct sc_toplevel_view *toplevel_view =
 			sc_toplevel_view_create(xdg_surface, compositor);
 
-		/* cotd */
 		struct wlr_xdg_toplevel *toplevel = xdg_surface->toplevel;
 		toplevel_view->on_request_move.notify = xdg_toplevel_request_move;
 
