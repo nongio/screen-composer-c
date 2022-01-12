@@ -4,4 +4,3 @@
 #include "sc_compositor.h"
 #include "sc_compositor_keyboard.h"
 #include "sc_keyboard.h"
-

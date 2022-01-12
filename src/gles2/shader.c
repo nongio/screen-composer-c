@@ -1,12 +1,12 @@
 #define _POSIX_C_SOURCE 200809L
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "log.h"
+#include "sc_config.h"
 #include "sc_shader.h"
 #include "utils.h"
-#include "sc_config.h"
 
 extern struct sc_configuration configuration;
 

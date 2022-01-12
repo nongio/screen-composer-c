@@ -5,8 +5,8 @@
 #include "sc_compositor.h"
 #include "sc_compositor_backend.h"
 #include "sc_compositor_keyboard.h"
-#include "sc_output.h"
 #include "sc_keyboard.h"
+#include "sc_output.h"
 
 void sc_compositor_setup_backend(struct sc_compositor *compositor)
 {

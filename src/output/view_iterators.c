@@ -4,11 +4,9 @@
 
 #include "log.h"
 #include "sc_output.h"
-#include "sc_view.h"
 #include "sc_toplevel_view.h"
+#include "sc_view.h"
 #include "sc_workspace.h"
-
-
 
 /* this function iterates across all views intersecting the output */
 void

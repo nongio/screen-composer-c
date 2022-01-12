@@ -14,4 +14,5 @@ void sc_compositor_add_layer(struct sc_compositor *compositor,
 
 void
 sc_composer_focus_view(struct sc_compositor *compositor, struct sc_view *view);
+
 #endif

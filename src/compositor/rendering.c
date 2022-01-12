@@ -1,15 +1,15 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
-#include <wlr/util/region.h>
 #include <wlr/render/gles2.h>
+#include <wlr/util/region.h>
 
+#include "gles2_renderer.h"
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_output.h"
-#include "sc_workspace.h"
-#include "sc_view.h"
 #include "sc_toplevel_view.h"
-#include "gles2_renderer.h"
+#include "sc_view.h"
+#include "sc_workspace.h"
 
 struct render_data {
 	struct sc_output *output;

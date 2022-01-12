@@ -1,9 +1,6 @@
 #ifndef _SC_GEOMETRY_H
 #define _SC_GEOMETRY_H
 
-#include <stdbool.h>
-#include <stdio.h>
-
 struct sc_point {
 	double x;
 	double y;

@@ -1,7 +1,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
-#include <wlr/types/wlr_seat.h>
 #include <wlr/types/wlr_data_device.h>
+#include <wlr/types/wlr_seat.h>
 
 #include "log.h"
 #include "sc_compositor.h"

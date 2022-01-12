@@ -5,7 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 #define DEBUG 1
 #include "log.h"
 #include "sc_compositor.h"

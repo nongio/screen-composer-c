@@ -4,9 +4,9 @@
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_compositor_workspace.h"
-#include "sc_view.h"
 #include "sc_layer_view.h"
 #include "sc_toplevel_view.h"
+#include "sc_view.h"
 #include "sc_workspace.h"
 
 void

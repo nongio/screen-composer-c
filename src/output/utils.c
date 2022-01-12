@@ -1,6 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
-#include <stdlib.h>
 #include <math.h>
+#include <stdlib.h>
 #include <wlr/util/box.h>
 
 #include "sc_output.h"

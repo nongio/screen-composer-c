@@ -1,29 +1,25 @@
 #define _POSIX_C_SOURCE 200809L
 #include <stdlib.h>
-#include <wlr/types/wlr_seat.h>
 #include <wlr/types/wlr_data_device.h>
+#include <wlr/types/wlr_seat.h>
 
 #include "log.h"
-#include "sc_view.h"
-#include "sc_toplevel_view.h"
-#include "sc_output.h"
 #include "sc_compositor.h"
 #include "sc_compositor_cursor.h"
 #include "sc_compositor_workspace.h"
+#include "sc_output.h"
+#include "sc_toplevel_view.h"
+#include "sc_view.h"
 
 void
 sc_compositor_begin_interactive(struct sc_compositor *compositor,
 								struct sc_toplevel_view *toplevel_view,
 								enum sc_cursor_mode mode, uint32_t edges)
 {
-	/* This function sets up an interactive move or resize operation, where the
-	 * compositor stops propegating pointer events to clients and instead
-	 * consumes them itself, to move or resize windows. */
 	struct wlr_surface *focused_surface =
 		compositor->seat->pointer_state.focused_surface;
 	struct sc_view *view = (struct sc_view *)toplevel_view;
 	if (toplevel_view->xdg_surface->surface != focused_surface) {
-		/* Deny move/resize requests from unfocused clients. */
 		return;
 	}
 	compositor->grabbed_view = toplevel_view;

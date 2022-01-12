@@ -1,9 +1,11 @@
 #define _POSIX_C_SOURCE 200809L
+#include <ini.h>
 #include <stdbool.h>
-#include <string.h>
 #include <stdlib.h>
-#include "sc_config.h"
+#include <string.h>
+
 #include "log.h"
+#include "sc_config.h"
 
 struct sc_configuration configuration;
 

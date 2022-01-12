@@ -6,12 +6,12 @@
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_compositor_backend.h"
-#include "sc_compositor_seat.h"
 #include "sc_compositor_cursor.h"
-#include "sc_compositor_workspace.h"
-#include "sc_compositor_xdgshell.h"
 #include "sc_compositor_layershell.h"
 #include "sc_compositor_rendering.h"
+#include "sc_compositor_seat.h"
+#include "sc_compositor_workspace.h"
+#include "sc_compositor_xdgshell.h"
 #include "sc_output.h"
 
 extern struct sc_configuration configuration;

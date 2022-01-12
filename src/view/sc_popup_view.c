@@ -3,8 +3,8 @@
 
 #include "log.h"
 #include "sc_compositor_workspace.h"
-#include "sc_view.h"
 #include "sc_popup_view.h"
+#include "sc_view.h"
 
 static void
 xdg_popup_map(struct wl_listener *listener, void *data)
