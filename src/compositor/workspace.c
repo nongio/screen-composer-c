@@ -24,7 +24,14 @@ void
 sc_compositor_add_toplevel(struct sc_compositor *compositor,
 						   struct sc_toplevel_view *toplevelview)
 {
-	wl_list_insert(&compositor->current_workspace->views_toplevel, &toplevelview->link);
+	wl_list_insert(&compositor->current_workspace->views_toplevel,
+				   &toplevelview->link);
+	int numtoplevels =
+		wl_list_length(&compositor->current_workspace->views_toplevel);
+	// WM
+	struct sc_view *view = (struct sc_view *)toplevelview;
+	view->frame.x = numtoplevels * 50;
+	view->frame.y = numtoplevels * 50;
 }
 
 void
