@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<protocol name="sc_shell_unstable_v1">
+  <copyright>
+    Copyright © 2021 Riccardo Canalicchio
+
+    Permission to use, copy, modify, distribute, and sell this
+    software and its documentation for any purpose is hereby granted
+    without fee, provided that the above copyright notice appear in
+    all copies and that both that copyright notice and this permission
+    notice appear in supporting documentation, and that the name of
+    the copyright holders not be used in advertising or publicity
+    pertaining to distribution of the software without specific,
+    written prior permission.  The copyright holders make no
+    representations about the suitability of this software for any
+    purpose.  It is provided "as is" without express or implied
+    warranty.
+
+    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+    FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+    AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+    ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+    THIS SOFTWARE.
+  </copyright>
+
+  <interface name="sc_shell_unstable_v1" version="1">
+    <description summary="creates layers and animations to run on the compositor">
+
+    </description>
+
+    <request name="get_layer_surface">
+      <description summary="creates a layer surface from a wl_surface">
+
+      </description>
+      <arg name="id" type="new_id" interface="sc_layer_surface_v1"/>
+      <arg name="surface" type="object" interface="wl_surface"/>
+      <arg name="output" type="object" interface="wl_output" allow-null="true"/>
+    </request>
+
+    <request name="get_basic_animation">
+      <description summary="">
+      </description>
+      <arg name="id" type="new_id" interface="sc_basic_animation_v1"/>
+      <arg name="value_type" type="uint" enum="animation_value_type" summary="type of values this animation will interpolate"/>
+      <arg name="animation" type="object" interface="sc_animation_v1" />
+      <arg name="timing" type="object" interface="sc_timing_function_v1" />
+    </request>
+
+    <request name="get_timing_function">
+      <description summary="">
+
+      </description>
+      <arg name="id" type="new_id" interface="sc_timing_function_v1"/>
+    </request>
+
+    <enum name="error">
+      <entry name="role" value="0" summary="wl_surface has another role"/>
+      <entry name="already_constructed" value="2" summary="wl_surface has a buffer attached or committed"/>
+    </enum>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the calayer object">
+        This request indicates that the client will not use the layer_shell
+        object any more. Objects that have been created through this instance
+        are not affected.
+      </description>
+    </request>
+  </interface>
+
+  <interface name="sc_layer_surface_v1" version="1">
+    <description summary="layer metadata interface">
+      An interface that may be implemented by a wl_surface, for surfaces that
+      are designed to be rendered as a layer of a stacked desktop-like
+      environment.
+
+      Layer surface state (layer, size, anchor, exclusive zone,
+      margin, interactivity) is double-buffered, and will be applied at the
+      time wl_surface.commit of the corresponding wl_surface is called.
+    </description>
+
+    <request name="set_bounds">
+      <description summary="The layer’s bounds rectangle. Animatable.">
+      </description>
+      <arg name="x" type="fixed"/>
+      <arg name="y" type="fixed"/>
+      <arg name="width" type="fixed"/>
+      <arg name="height" type="fixed"/>
+    </request>
+
+    <request name="set_position">
+      <description summary="The layer’s position in its superlayer’s coordinate space. Animatable.">
+      </description>
+      <arg name="x" type="fixed"/>
+      <arg name="y" type="fixed"/>
+    </request>
+
+    <request name="set_z_position">
+      <description summary="The layer’s position on the z axis. Animatable.">
+      </description>
+      <arg name="z" type="fixed"/>
+    </request>
+
+    <request name="set_anchor_point">
+      <description summary="Defines the anchor point of the layer's bounds rectangle. Animatable.">
+      </description>
+      <arg name="x" type="fixed"/>
+      <arg name="y" type="fixed"/>
+    </request>
+
+    <request name="set_content_scale">
+      <description summary="Defines the anchor point of the layer's bounds rectangle. Animatable.">
+      </description>
+      <arg name="x" type="fixed"/>
+      <arg name="y" type="fixed"/>
+    </request>
+
+    <request name="set_opacity">
+      <description summary="">
+      </description>
+      <arg name="opacity" type="fixed"/>
+    </request>
+
+    <request name="set_hidden">
+      <description summary="">
+      </description>
+      <arg name="hidden" type="uint"/>
+    </request>
+
+    <request name="set_corner_radius">
+      <description summary="">
+      </description>
+      <arg name="radius" type="fixed"/>
+    </request>
+
+    <request name="set_border_width">
+      <description summary="">
+      </description>
+      <arg name="width" type="fixed"/>
+    </request>
+
+    <request name="set_border_color">
+      <description summary="">
+      </description>
+      <arg name="red" type="fixed"/>
+      <arg name="green" type="fixed"/>
+      <arg name="blue" type="fixed"/>
+      <arg name="alpha" type="fixed"/>
+    </request>
+
+    <request name="set_background_color">
+      <description summary="">
+      </description>
+      <arg name="red" type="fixed"/>
+      <arg name="green" type="fixed"/>
+      <arg name="blue" type="fixed"/>
+      <arg name="alpha" type="fixed"/>
+    </request>
+
+    <request name="set_shadow_opacity">
+      <description summary="">
+      </description>
+      <arg name="opacity" type="fixed"/>
+    </request>
+
+    <request name="set_shadow_radius">
+      <description summary="">
+      </description>
+      <arg name="radius" type="uint"/>
+    </request>
+
+    <request name="set_shadow_offset">
+      <description summary="">
+      </description>
+      <arg name="x" type="fixed"/>
+      <arg name="y" type="fixed"/>
+    </request>
+
+    <request name="set_shadow_color">
+      <description summary="">
+      </description>
+      <arg name="red" type="fixed"/>
+      <arg name="green" type="fixed"/>
+      <arg name="blue" type="fixed"/>
+      <arg name="alpha" type="fixed"/>
+    </request>
+
+    <request name="set_transform">
+      <description summary="">
+      </description>
+      <arg name="m11" type="fixed"/>
+      <arg name="m12" type="fixed"/>
+      <arg name="m13" type="fixed"/>
+      <arg name="m14" type="fixed"/>
+      <arg name="m21" type="fixed"/>
+      <arg name="m22" type="fixed"/>
+      <arg name="m23" type="fixed"/>
+      <arg name="m24" type="fixed"/>
+      <arg name="m31" type="fixed"/>
+      <arg name="m32" type="fixed"/>
+      <arg name="m33" type="fixed"/>
+      <arg name="m34" type="fixed"/>
+      <arg name="m41" type="fixed"/>
+      <arg name="m42" type="fixed"/>
+      <arg name="m43" type="fixed"/>
+      <arg name="m44" type="fixed"/>
+    </request>
+
+    <request name="add_animation">
+      <description summary="Add the specified animation object to the layer.">
+        The animation needs to have an implementation assigned before being added.
+      </description>
+      <arg name="animation" type="object" interface="sc_animation_v1"/>
+      <arg name="for_key" type="string"/>
+    </request>
+
+    <request name="remove_animation">
+      <description summary="Remove the animation object with the specified key.">
+      </description>
+      <arg name="for_key" type="string"/>
+    </request>
+
+    <request name="remove_all_animations">
+      <description summary="Remove all animations attached to the layer.">
+      </description>
+    </request>
+
+    <request name="destroy" type="destructor">
+      <description summary="destroy the layer_surface">
+        This request destroys the layer surface.
+      </description>
+    </request>
+    <event name="frame">
+      <description summary="">
+      </description>
+      <arg name="layer" type="object"  interface="sc_layer_surface_v1" />
+    </event>
+  </interface>
+
+  <interface name="sc_animation_v1" version="1">
+    <description summary="">
+      Base interface for animations, to be used a client needs to attach it to a animation implementation that provides a value.
+    </description>
+    <enum name="animation_value_type">
+      <description summary="">
+        data type for the values to be interpolated
+      </description>
+      <entry name="value" value="0" summary="single float value"/>
+      <entry name="point" value="1" summary="point represented by 2 float values" />
+      <entry name="rect" value="2" summary="rectangle represented by 4 float values (origin and size)" />
+      <entry name="color" value="3" summary="color represented by 4 float values (r,g,b,a)" />
+      <entry name="matrix" value="4" summary="4x4 matrix represented by 16 float values" />
+    </enum>
+    <request name="set_duration">
+      <description summary="">
+        duration of the animation in seconds
+      </description>
+      <arg name="duration" type="fixed"/>
+    </request>
+    <request name="set_keypath">
+      <description summary="">
+        keypath of the property in the layer to be animated
+      </description>
+      <arg name="keypath" type="string"/>
+    </request>
+    <request name="set_cumulative">
+      <description summary="">
+The `cumulative' property affects how repeating animations produce their result. If true then the current value of the animation is the value at the end of the previous repeat cycle, plus the value of the current repeat cycle. If false, the value is simply the value calculated for the current repeat cycle. Defaults to NO.
+      </description>
+      <arg name="cumulative" type="uint"/>
+    </request>
+    <request name="set_additive">
+      <description summary="">
+When true the value specified by the animation will be "added" to the current presentation value of the property to produce the new presentation value. The addition function is type-dependent, e.g. for affine transforms the two matrices are concatenated. Defaults to NO.
+      </description>
+      <arg name="additive" type="uint"/>
+    </request>
+    <request name="set_removed_on_completion">
+      <description summary="">
+        When true, the animation is removed from the render tree once its active duration has passed. Defaults to YES.
+      </description>
+      <arg name="removed_on_completion" type="uint"/>
+    </request>
+  </interface>
+
+  <interface name="sc_timing_function_v1" version="1">
+      <description summary="">
+      A function that defines the pacing of an animation as a timing curve.
+        https://developer.apple.com/documentation/quartzcore/camediatimingfunction
+      </description>
+    <request name="set_name">
+      <arg name="name" type="string"/>
+    </request>
+    <request name="set_control_points">
+      <description summary="">
+The end points of the Bézier curve are automatically set to (0.0,0.0) and (1.0,1.0). The control points defining the Bézier curve are: [(0.0,0.0), (c1x,c1y), (c2x,c2y), (1.0,1.0)].
+      </description>
+      <arg name="c1x" type="fixed" summary="x coordinate for control point 2 of 4 for the bezier curve"/>
+      <arg name="c1y" type="fixed" summary="y coordinate for control point 2 of 4 for the bezier curve"/>
+      <arg name="c2x" type="fixed" summary="x coordinate for control point 3 of 4 for the bezier curve"/>
+      <arg name="c2y" type="fixed" summary="y coordinate for control point 3 of 4 for the bezier curve"/>
+    </request>
+  </interface>
+
+  <interface name="sc_basic_animation_v1" version="1">
+    <description summary="">
+      Basic animation implementation, interpolates between 2 or 3 values using the timing function.
+    </description>
+
+    <request name="set_from_value">
+      <arg name="from_value" type="array" summary="starting value for the animation"/>
+    </request>
+    <request name="set_to_value">
+      <arg name="to_value" type="array" summary="end value for the animation"/>
+    </request>
+    <request name="set_by_value">
+      <arg name="by_value" type="array" summary="additional in between value for the animation"/>
+    </request>
+    <request name="set_timing_function">
+      <arg name="timing_function" type="object" interface="sc_timing_function_v1"/>
+    </request>
+  </interface>
+
+</protocol>

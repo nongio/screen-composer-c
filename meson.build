@@ -44,6 +44,7 @@ wayland_scanner_server = generator(
 server_protocols = [
   [wl_protocol_dir, 'stable/xdg-shell/xdg-shell.xml'],
   ['protocols/wlr-layer-shell-unstable-v1.xml'],
+  ['protocols/sc-layer-unstable-v1.xml'],
 ]
 
 wl_protos_src = []
@@ -122,6 +123,9 @@ sc_sources = [
   'src/gles2/renderer.c',
   'src/gles2/shader.c',
   'src/utils/file.c',
+  'src/layers-composer/layer-shell.c',
+  'src/layers-composer/layer-shell-layer.c',
+  'src/layers-composer/layer-shell-animation.c',
 ]
 
 sc_headers = [
