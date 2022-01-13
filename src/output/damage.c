@@ -11,8 +11,10 @@ struct damage_surface_iterator_data {
 	bool whole;
 };
 
-void add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
-		void * data) {
+void
+add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
+							void *data)
+{
 
 	struct damage_surface_iterator_data *dsi = data;
 	bool whole = dsi->whole;
@@ -29,7 +31,6 @@ void add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
 
 	sc_box_from_layout_to_output(output, &surface_box);
 
-
 	pixman_region32_t damage;
 	pixman_region32_init(&damage);
 	wlr_surface_get_effective_damage(surface, &damage);
@@ -38,7 +39,8 @@ void add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
 		// When scaling up a surface, it'll become blurry so we need to
 		// expand the damage region
 		wlr_region_expand(&damage, &damage,
-			ceil(output->wlr_output->scale) - surface->current.scale);
+						  ceil(output->wlr_output->scale) -
+							  surface->current.scale);
 	}
 	pixman_region32_translate(&damage, surface_box.x, surface_box.y);
 	wlr_output_damage_add(output->damage, &damage);
@@ -48,13 +50,14 @@ void add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
 		wlr_output_damage_add_box(output->damage, &surface_box);
 	}
 
-	//if (!wl_list_empty(&surface->current.frame_callback_list)) {
+	// if (!wl_list_empty(&surface->current.frame_callback_list)) {
 	//	wlr_output_schedule_frame(output->wlr_output);
-	//}
+	// }
 }
 
 void
-sc_output_add_damage_from_view(struct sc_output *output, struct sc_view *view, bool whole)
+sc_output_add_damage_from_view(struct sc_output *output, struct sc_view *view,
+							   bool whole)
 {
 	if (!sc_view_is_visible(view)) {
 		return;
@@ -67,4 +70,3 @@ sc_output_add_damage_from_view(struct sc_output *output, struct sc_view *view, b
 
 	sc_view_for_each_surface(view, add_damage_surface_iterator, &data);
 }
-

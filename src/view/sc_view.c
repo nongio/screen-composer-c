@@ -50,7 +50,6 @@ subview_destroy_handler(struct wl_listener *listener, void *data)
 	free(subview);
 }
 
-
 static void
 for_each_surface(struct sc_view *view, wlr_surface_iterator_func_t iterator,
 				 void *user_data)
@@ -107,8 +106,8 @@ view_subsurface_new(struct wl_listener *listener, void *data)
 }
 
 void
-sc_view_init(struct sc_view *view, enum sc_view_type type, struct sc_view_impl *impl,
-			 struct wlr_surface *surface)
+sc_view_init(struct sc_view *view, enum sc_view_type type,
+			 struct sc_view_impl *impl, struct wlr_surface *surface)
 {
 	DLOG("sc_view_init\n");
 	view->type = type;
@@ -232,7 +231,8 @@ sc_view_is_visible(struct sc_view *view)
 }
 
 struct wlr_surface *
-sc_view_surface_at(struct sc_view *view, double x, double y, double *sx, double *sy)
+sc_view_surface_at(struct sc_view *view, double x, double y, double *sx,
+				   double *sy)
 {
 	if (!view->mapped) {
 		return NULL;
@@ -250,7 +250,8 @@ sc_view_set_output(struct sc_view *view, struct sc_output *output)
 	view->output = output;
 }
 
-void sc_view_activate(struct sc_view *view)
+void
+sc_view_activate(struct sc_view *view)
 {
 	if (!view->mapped) {
 		return;
@@ -261,7 +262,8 @@ void sc_view_activate(struct sc_view *view)
 	sc_view_damage_whole(view);
 }
 
-void sc_view_deactivate(struct sc_view *view)
+void
+sc_view_deactivate(struct sc_view *view)
 {
 	if (!view->mapped) {
 		return;

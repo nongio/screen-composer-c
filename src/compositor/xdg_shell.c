@@ -13,8 +13,9 @@ xdg_toplevel_request_move(struct wl_listener *listener, void *data)
 
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_request_move);
-	struct sc_view *view = (struct sc_view *)toplevel_view;
-	sc_compositor_begin_interactive(view->compositor, toplevel_view, SC_CURSOR_MOVE, 0);
+	struct sc_view *view = (struct sc_view *) toplevel_view;
+	sc_compositor_begin_interactive(view->compositor, toplevel_view,
+									SC_CURSOR_MOVE, 0);
 }
 
 static void

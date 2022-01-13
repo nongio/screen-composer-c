@@ -18,14 +18,14 @@ xdg_toplevel_map(struct wl_listener *listener, void *data)
 	struct sc_output *output = sc_compositor_output_at(
 		toplevel_view->super.frame.x, toplevel_view->super.frame.y);
 
-	sc_view_set_output((struct sc_view *)toplevel_view, output);
+	sc_view_set_output((struct sc_view *) toplevel_view, output);
 
 	struct wlr_box geometry;
 	wlr_xdg_surface_get_geometry(toplevel_view->xdg_surface, &geometry);
 
 	sc_view_map(&toplevel_view->super);
 
-	struct sc_view *view = (struct sc_view *)toplevel_view;
+	struct sc_view *view = (struct sc_view *) toplevel_view;
 
 	view->frame.width = geometry.width;
 	view->frame.height = geometry.height;
@@ -66,11 +66,10 @@ xdg_toplevel_popup_new(struct wl_listener *listener, void *data)
 	DLOG("xdg_toplevel_popup_new\n");
 	struct sc_toplevel_view *toplevel_view =
 		wl_container_of(listener, toplevel_view, on_new_popup);
-	struct sc_view *view = (struct sc_view *)toplevel_view;
+	struct sc_view *view = (struct sc_view *) toplevel_view;
 
 	struct wlr_xdg_popup *xdg_popup = data;
-	struct sc_popup_view *popup_view = sc_popup_view_create(xdg_popup,
-			view);
+	struct sc_popup_view *popup_view = sc_popup_view_create(xdg_popup, view);
 
 	wl_list_insert(&view->children, &popup_view->link);
 }
@@ -95,12 +94,10 @@ toplevel_for_each_popup_surface(struct sc_view *view,
 static struct wlr_surface *
 surface_at(struct sc_view *view, double x, double y, double *sx, double *sy)
 {
-	struct sc_toplevel_view *toplevel = (struct sc_toplevel_view *)view;
+	struct sc_toplevel_view *toplevel = (struct sc_toplevel_view *) view;
 
-	struct wlr_surface *s = wlr_xdg_surface_surface_at(toplevel->xdg_surface,
-			x - view->frame.x,
-			y - view->frame.y,
-			sx, sy);
+	struct wlr_surface *s = wlr_xdg_surface_surface_at(
+		toplevel->xdg_surface, x - view->frame.x, y - view->frame.y, sx, sy);
 
 	return s;
 }
@@ -133,8 +130,6 @@ toplevel_commit(struct sc_view *view)
 	} else {
 		sc_output_add_damage_from_view(view->output, view, false);
 	}
-
-
 }
 
 static struct sc_view_impl toplvel_view_impl = {
@@ -156,10 +151,11 @@ sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 
 	toplevel_view->xdg_surface = xdg_surface;
 
-	struct sc_view *view = (struct sc_view *)toplevel_view;
+	struct sc_view *view = (struct sc_view *) toplevel_view;
 	view->compositor = compositor;
 
-	sc_view_init(view, SC_VIEW_TOPLEVEL, &toplvel_view_impl, xdg_surface->surface);
+	sc_view_init(view, SC_VIEW_TOPLEVEL, &toplvel_view_impl,
+				 xdg_surface->surface);
 
 	toplevel_view->on_map.notify = xdg_toplevel_map;
 	wl_signal_add(&xdg_surface->events.map, &toplevel_view->on_map);

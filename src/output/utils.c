@@ -6,11 +6,15 @@
 #include "sc_output.h"
 #include "sc_view.h"
 
-static int scale_length(int length, int offset, float scale) {
+static int
+scale_length(int length, int offset, float scale)
+{
 	return round((offset + length) * scale) - round(offset * scale);
 }
 
-void sc_output_scale_box(struct sc_output *output, struct wlr_box *box) {
+void
+sc_output_scale_box(struct sc_output *output, struct wlr_box *box)
+{
 	float scale = output->wlr_output->scale;
 
 	box->width = scale_length(box->width, box->x, scale);
@@ -19,9 +23,8 @@ void sc_output_scale_box(struct sc_output *output, struct wlr_box *box) {
 	box->y = round(box->y * scale);
 }
 
-
-void sc_box_from_layout_to_output(struct sc_output *output, struct
-		wlr_box *box)
+void
+sc_box_from_layout_to_output(struct sc_output *output, struct wlr_box *box)
 {
 	struct wlr_box *output_box = output->output_box;
 
@@ -35,6 +38,6 @@ bool
 sc_output_intersect_view(struct sc_output *output, struct sc_view *view)
 {
 	struct wlr_box intersection;
-	return wlr_box_intersection(&intersection, output->output_box, &view->frame);
+	return wlr_box_intersection(&intersection, output->output_box,
+								&view->frame);
 }
-

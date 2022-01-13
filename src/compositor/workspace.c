@@ -29,7 +29,7 @@ sc_compositor_add_toplevel(struct sc_compositor *compositor,
 	int numtoplevels =
 		wl_list_length(&compositor->current_workspace->views_toplevel);
 	// WM
-	struct sc_view *view = (struct sc_view *)toplevelview;
+	struct sc_view *view = (struct sc_view *) toplevelview;
 	view->frame.x = numtoplevels * 50;
 	view->frame.y = numtoplevels * 50;
 }
@@ -64,8 +64,9 @@ sc_compositor_add_layer(struct sc_compositor *compositor,
 	}
 }
 
-struct sc_view *sc_composer_view_at(struct sc_compositor *compositor, double x, double
-		y, struct wlr_surface **surface, double *sx, double *sy)
+struct sc_view *
+sc_composer_view_at(struct sc_compositor *compositor, double x, double y,
+					struct wlr_surface **surface, double *sx, double *sy)
 {
 	struct sc_toplevel_view *toplevel_view;
 	struct sc_workspace *workspace = compositor->current_workspace;
@@ -74,7 +75,7 @@ struct sc_view *sc_composer_view_at(struct sc_compositor *compositor, double x, 
 		*surface = sc_view_surface_at(view, x, y, sx, sy);
 
 		if (*surface != NULL) {
-			return (struct sc_view *)view;
+			return (struct sc_view *) view;
 		}
 	}
 	return NULL;
@@ -106,13 +107,14 @@ sc_composer_focus_view(struct sc_compositor *compositor, struct sc_view *view)
 	}
 	struct wlr_keyboard *keyboard = wlr_seat_get_keyboard(seat);
 	compositor->current_view = view;
-	if(view->type == SC_VIEW_TOPLEVEL) {
-		struct sc_toplevel_view * toplevel = (struct sc_toplevel_view *)compositor->current_view;
+	if (view->type == SC_VIEW_TOPLEVEL) {
+		struct sc_toplevel_view *toplevel =
+			(struct sc_toplevel_view *) compositor->current_view;
 		DLOG("moving toplevel on top\n");
 		wl_list_remove(&toplevel->link);
-		wl_list_insert(&compositor->current_workspace->views_toplevel, &toplevel->link);
+		wl_list_insert(&compositor->current_workspace->views_toplevel,
+					   &toplevel->link);
 	}
-
 
 	sc_view_activate(compositor->current_view);
 

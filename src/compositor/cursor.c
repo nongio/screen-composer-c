@@ -18,14 +18,15 @@ sc_compositor_begin_interactive(struct sc_compositor *compositor,
 {
 	struct wlr_surface *focused_surface =
 		compositor->seat->pointer_state.focused_surface;
-	struct sc_view *view = (struct sc_view *)toplevel_view;
+	struct sc_view *view = (struct sc_view *) toplevel_view;
 	if (toplevel_view->xdg_surface->surface != focused_surface) {
 		return;
 	}
 	compositor->grabbed_view = toplevel_view;
 	compositor->cursor_mode = mode;
 
-	wlr_xdg_surface_get_geometry(toplevel_view->xdg_surface, &compositor->grab_box);
+	wlr_xdg_surface_get_geometry(toplevel_view->xdg_surface,
+								 &compositor->grab_box);
 
 	view->frame.width = compositor->grab_box.width;
 	view->frame.height = compositor->grab_box.height;
@@ -41,13 +42,15 @@ sc_compositor_begin_interactive(struct sc_compositor *compositor,
 static void
 process_cursor_move(struct sc_compositor *compositor, uint32_t time)
 {
-	struct sc_view *view = (struct sc_view *)compositor->grabbed_view;
+	struct sc_view *view = (struct sc_view *) compositor->grabbed_view;
 
 	// TODO optimise this, called 2 times
 	sc_output_add_damage_from_view(view->output, view, true);
 
-	view->frame.x = compositor->grab_box.x + (compositor->cursor->x - compositor->grab_x);
-	view->frame.y = compositor->grab_box.y + (compositor->cursor->y - compositor->grab_y);
+	view->frame.x =
+		compositor->grab_box.x + (compositor->cursor->x - compositor->grab_x);
+	view->frame.y =
+		compositor->grab_box.y + (compositor->cursor->y - compositor->grab_y);
 
 	// TODO review
 	sc_output_add_damage_from_view(view->output, view, true);
@@ -57,7 +60,7 @@ static void
 process_cursor_resize(struct sc_compositor *compositor, uint32_t time)
 {
 	struct sc_toplevel_view *toplevel = compositor->grabbed_view;
-	struct sc_view *view = (struct sc_view *)compositor->grabbed_view;
+	struct sc_view *view = (struct sc_view *) compositor->grabbed_view;
 
 	double delta_x = compositor->cursor->x - compositor->grab_x;
 	double delta_y = compositor->cursor->y - compositor->grab_y;
@@ -81,12 +84,10 @@ process_cursor_resize(struct sc_compositor *compositor, uint32_t time)
 		new_width += delta_x;
 	}
 
-
 	view->frame.x = new_x;
 	view->frame.y = new_y;
 	view->frame.width = new_width;
 	view->frame.height = new_height;
-
 
 	wlr_xdg_toplevel_set_size(toplevel->xdg_surface, new_width, new_height);
 }
@@ -172,15 +173,15 @@ compositor_cursor_button(struct wl_listener *listener, void *data)
 	double sy = compositor->cursor->y;
 	struct wlr_surface *surface = NULL;
 
-	struct sc_view *view = sc_composer_view_at(compositor,
-			compositor->cursor->x, compositor->cursor->y, &surface, &sx, &sy);
+	struct sc_view *view =
+		sc_composer_view_at(compositor, compositor->cursor->x,
+							compositor->cursor->y, &surface, &sx, &sy);
 
 	if (event->state == WLR_BUTTON_RELEASED) {
 		compositor->cursor_mode = SC_CURSOR_PASSTHROUGH;
 	} else {
 		sc_composer_focus_view(compositor, view);
 	}
-
 }
 
 static void
@@ -206,7 +207,6 @@ compositor_cursor_frame(struct wl_listener *listener, void *data)
 
 	wlr_seat_pointer_notify_frame(compositor->seat);
 }
-
 
 void
 sc_compositor_setup_cursor(struct sc_compositor *compositor)
@@ -242,5 +242,4 @@ sc_compositor_setup_cursor(struct sc_compositor *compositor)
 	compositor->on_cursor_frame.notify = compositor_cursor_frame;
 	wl_signal_add(&compositor->cursor->events.frame,
 				  &compositor->on_cursor_frame);
-
 }

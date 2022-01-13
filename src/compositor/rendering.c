@@ -17,13 +17,14 @@ struct render_data {
 	struct sc_view *view;
 };
 
-void sc_compositor_setup_gles2()
+void
+sc_compositor_setup_gles2()
 {
 	sc_renderer_load_shaders();
 }
 
-void render_surface(struct wlr_surface *surface, int x, int y,
-		void * data)
+void
+render_surface(struct wlr_surface *surface, int x, int y, void *data)
 {
 
 	struct render_data *rdata = data;
@@ -53,12 +54,8 @@ void render_surface(struct wlr_surface *surface, int x, int y,
 		wlr_gles2_texture_get_attribs(texture, tex_attribs);
 
 		sc_render_texture_with_output(
-			tex_attribs,
-			sx + x,
-			sy + y,
-			surface->current.width,
-			surface->current.height,
-			surface->current.transform, output);
+			tex_attribs, sx + x, sy + y, surface->current.width,
+			surface->current.height, surface->current.transform, output);
 
 		free(tex_attribs);
 	}
@@ -72,12 +69,14 @@ void render_surface(struct wlr_surface *surface, int x, int y,
 
 	clock_gettime(presentation_clock, &repaint_time);
 
-	wlr_presentation_surface_sampled_on_output(output->compositor->wlr_presentation,
-											   surface, output->wlr_output);
+	wlr_presentation_surface_sampled_on_output(
+		output->compositor->wlr_presentation, surface, output->wlr_output);
 }
 
-void sc_render_output(struct sc_output *output, struct timespec *when,
-		pixman_region32_t *damage) {
+void
+sc_render_output(struct sc_output *output, struct timespec *when,
+				 pixman_region32_t *damage)
+{
 	struct wlr_output *wlr_output = output->wlr_output;
 	struct wlr_renderer *renderer = output->compositor->wlr_renderer;
 
@@ -89,7 +88,8 @@ void sc_render_output(struct sc_output *output, struct timespec *when,
 	}
 
 	float clear_color[] = {0.25f, 0.25f, 0.25f, 1.0f};
-	glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
+	glClearColor(clear_color[0], clear_color[1], clear_color[2],
+				 clear_color[3]);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	struct render_data render_data = {
@@ -99,10 +99,11 @@ void sc_render_output(struct sc_output *output, struct timespec *when,
 
 	struct sc_toplevel_view *toplevel_view;
 	struct sc_workspace *workspace = output->compositor->current_workspace;
-	wl_list_for_each_reverse(toplevel_view, &workspace->views_toplevel, link) {
+	wl_list_for_each_reverse (toplevel_view, &workspace->views_toplevel, link) {
 
 		render_data.view = &toplevel_view->super;
-		sc_view_for_each_surface(&toplevel_view->super, render_surface, &render_data);
+		sc_view_for_each_surface(&toplevel_view->super, render_surface,
+								 &render_data);
 	}
 
 renderer_end:
@@ -118,8 +119,8 @@ renderer_end:
 
 	enum wl_output_transform transform =
 		wlr_output_transform_invert(wlr_output->transform);
-	wlr_region_transform(&frame_damage, &output->damage->current,
-		transform, width, height);
+	wlr_region_transform(&frame_damage, &output->damage->current, transform,
+						 width, height);
 
 	wlr_output_set_damage(wlr_output, &frame_damage);
 	pixman_region32_fini(&frame_damage);
@@ -129,5 +130,3 @@ renderer_end:
 	}
 	output->last_frame = *when;
 }
-
-

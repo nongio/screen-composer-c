@@ -51,7 +51,7 @@ sc_compositor_create()
 	compositor->egl =
 		(struct wlr_egl *) wlr_gles2_renderer_get_egl(compositor->wlr_renderer);
 
-    wlr_data_device_manager_create(compositor->wl_display);
+	wlr_data_device_manager_create(compositor->wl_display);
 
 	sc_compositor_setup_seat(compositor);
 	sc_compositor_setup_cursor(compositor);
@@ -112,13 +112,15 @@ sc_compositor_get_socket()
 	return socket;
 }
 
-struct sc_output *sc_compositor_output_at(double lx, double ly)
+struct sc_output *
+sc_compositor_output_at(double lx, double ly)
 {
-	struct wlr_output *wlr_output = wlr_output_layout_output_at(compositor->output_layout, lx, ly);
+	struct wlr_output *wlr_output =
+		wlr_output_layout_output_at(compositor->output_layout, lx, ly);
 	struct sc_output *output;
-	wl_list_for_each(output, &compositor->outputs, link) {
+	wl_list_for_each (output, &compositor->outputs, link) {
 
-		if(output->wlr_output == wlr_output) {
+		if (output->wlr_output == wlr_output) {
 			return output;
 		}
 	}

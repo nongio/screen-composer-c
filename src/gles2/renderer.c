@@ -28,7 +28,6 @@ static const float flip_180[9] = {
 	1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 };
 
-
 static GLuint vbo_vert;
 static GLuint vbo_texcoord;
 
@@ -79,28 +78,24 @@ sc_renderer_load_shaders()
 struct sc_shader *
 shader_for_texattribs(struct wlr_gles2_texture_attribs *attribs)
 {
-  struct sc_shader *shader;
-  switch (attribs->target)
-    {
-    case GL_TEXTURE_2D:
-      if (attribs->has_alpha)
-	{
-	  shader = shader_texture_rgba;
+	struct sc_shader *shader;
+	switch (attribs->target) {
+	case GL_TEXTURE_2D:
+		if (attribs->has_alpha) {
+			shader = shader_texture_rgba;
+		} else {
+			shader = shader_texture_rgbx;
+		}
+		break;
+	case GL_TEXTURE_EXTERNAL_OES:
+		shader = shader_texture_external;
+		break;
+	default:
+		ELOG("error: can't find shader for texture attributes...\n");
+		shader = shader_texture_rgba;
 	}
-      else
-	{
-	  shader = shader_texture_rgbx;
-	}
-      break;
-    case GL_TEXTURE_EXTERNAL_OES:
-      shader = shader_texture_external;
-      break;
-    default:
-      ELOG("error: can't find shader for texture attributes...\n");
-      shader = shader_texture_rgba;
-    }
 
-  return shader;
+	return shader;
 }
 
 void
@@ -148,8 +143,8 @@ sc_render_texture_with_output(struct wlr_gles2_texture_attribs *texture, int sx,
 	double ox = output->output_box->x;
 	double oy = output->output_box->y;
 
-//  struct wlr_output *o = output->wlr_output;
-//	wlr_output_layout_output_coords(output->layout, o, &ox, &oy);
+	//  struct wlr_output *o = output->wlr_output;
+	//	wlr_output_layout_output_coords(output->layout, o, &ox, &oy);
 
 	ox += sx;
 	oy += sy;
@@ -166,8 +161,8 @@ sc_render_texture_with_output(struct wlr_gles2_texture_attribs *texture, int sx,
 
 	float gl_matrix[9];
 	enum wl_output_transform transform = wlr_output_transform_invert(t);
-	wlr_matrix_project_box(gl_matrix, &box, transform, 0, output->projection_matrix);
-
+	wlr_matrix_project_box(gl_matrix, &box, transform, 0,
+						   output->projection_matrix);
 
 	wlr_matrix_multiply(gl_matrix, flip_180, gl_matrix);
 
