@@ -7,20 +7,22 @@
 
 struct damage_surface_iterator_data {
 	struct sc_output *output;
+	struct sc_view *view;
 	bool whole;
 };
 
-static void add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
+void add_damage_surface_iterator(struct wlr_surface *surface, int x, int y,
 		void * data) {
 
 	struct damage_surface_iterator_data *dsi = data;
 	bool whole = dsi->whole;
+	struct sc_view *view = dsi->view;
 
 	struct sc_output *output = dsi->output;
 
 	struct wlr_box surface_box = {
-		.x = surface->sx,
-		.y = surface->sy,
+		.x = x + view->frame.x + surface->sx,
+		.y = y + view->frame.y + surface->sy,
 		.width = surface->current.width,
 		.height = surface->current.height,
 	};
@@ -54,14 +56,13 @@ static void add_damage_surface_iterator(struct wlr_surface *surface, int x, int 
 void
 sc_output_add_damage_from_view(struct sc_output *output, struct sc_view *view, bool whole)
 {
-
-	DLOG("sc_output_add_damage_from_view \n");
 	if (!sc_view_is_visible(view)) {
 		return;
 	}
 	struct damage_surface_iterator_data data = {
 		.output = output,
 		.whole = whole,
+		.view = view,
 	};
 
 	sc_view_for_each_surface(view, add_damage_surface_iterator, &data);

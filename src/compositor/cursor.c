@@ -42,6 +42,10 @@ static void
 process_cursor_move(struct sc_compositor *compositor, uint32_t time)
 {
 	struct sc_view *view = (struct sc_view *)compositor->grabbed_view;
+
+	// TODO optimise this, called 2 times
+	sc_output_add_damage_from_view(view->output, view, true);
+
 	view->frame.x = compositor->grab_box.x + (compositor->cursor->x - compositor->grab_x);
 	view->frame.y = compositor->grab_box.y + (compositor->cursor->y - compositor->grab_y);
 
@@ -57,9 +61,6 @@ process_cursor_resize(struct sc_compositor *compositor, uint32_t time)
 
 	double delta_x = compositor->cursor->x - compositor->grab_x;
 	double delta_y = compositor->cursor->y - compositor->grab_y;
-
-	DLOG("process_cursor_resize [%f,%f]\n", delta_x, delta_y);
-
 
 	int new_x = compositor->grab_box.x;
 	int new_y = compositor->grab_box.y;
@@ -160,7 +161,6 @@ static void
 compositor_cursor_button(struct wl_listener *listener, void *data)
 {
 
-	DLOG("wlr_seat_pointer_notify_button\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_cursor_button);
 	struct wlr_event_pointer_button *event = data;

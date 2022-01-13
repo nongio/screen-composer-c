@@ -64,7 +64,7 @@ layer_surface_commit(struct wl_listener *listener, void *data)
 		wlr_layer_surface_v1_configure(layer_surface, view->frame.width,
 									   view->frame.height);
 	}
-	//	wlr_output_damage_add_box(self.output->damage, &r);
+	sc_output_add_damage_from_view(view->output, view, true);
 }
 
 void

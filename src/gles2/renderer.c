@@ -164,13 +164,10 @@ sc_render_texture_with_output(struct wlr_gles2_texture_attribs *texture, int sx,
 	float output_transform_matrix[9];
 	wlr_matrix_identity(output_transform_matrix);
 
-	float matrix[9];
-	enum wl_output_transform transform = wlr_output_transform_invert(t);
-	wlr_matrix_project_box(matrix, &box, transform, 0, output_transform_matrix);
-
 	float gl_matrix[9];
+	enum wl_output_transform transform = wlr_output_transform_invert(t);
+	wlr_matrix_project_box(gl_matrix, &box, transform, 0, output->projection_matrix);
 
-	wlr_matrix_multiply(gl_matrix, output->projection_matrix, matrix);
 
 	wlr_matrix_multiply(gl_matrix, flip_180, gl_matrix);
 

@@ -20,13 +20,17 @@ xdg_toplevel_map(struct wl_listener *listener, void *data)
 
 	sc_view_set_output((struct sc_view *)toplevel_view, output);
 
-	sc_compositor_add_toplevel(toplevel_view->super.compositor, toplevel_view);
+	struct wlr_box geometry;
+	wlr_xdg_surface_get_geometry(toplevel_view->xdg_surface, &geometry);
+
 	sc_view_map(&toplevel_view->super);
-	DLOG("xdg_toplevel_map [%d,%d %dx%d]\n",
-			toplevel_view->xdg_surface->current.geometry.x,
-			toplevel_view->xdg_surface->current.geometry.y,
-			toplevel_view->xdg_surface->current.geometry.width,
-			toplevel_view->xdg_surface->current.geometry.height);
+
+	struct sc_view *view = (struct sc_view *)toplevel_view;
+
+	view->frame.width = geometry.width;
+	view->frame.height = geometry.height;
+
+	sc_compositor_add_toplevel(toplevel_view->super.compositor, toplevel_view);
 }
 
 static void
@@ -117,12 +121,29 @@ deactivate(struct sc_view *view)
 	wlr_xdg_toplevel_set_activated(toplevel->xdg_surface, false);
 }
 
+static void
+toplevel_commit(struct sc_view *view)
+{
+	view->frame.width = view->surface->current.width;
+	view->frame.height = view->surface->current.height;
+
+	if (view->parent != NULL) {
+		sc_output_add_damage_from_view(view->parent->output, view->parent,
+									   false);
+	} else {
+		sc_output_add_damage_from_view(view->output, view, false);
+	}
+
+
+}
+
 static struct sc_view_impl toplvel_view_impl = {
 	.for_each_surface = toplevel_for_each_surface,
 	.for_each_popup_surface = toplevel_for_each_popup_surface,
 	.surface_at = surface_at,
 	.activate = activate,
 	.deactivate = deactivate,
+	.commit = toplevel_commit,
 };
 
 struct sc_toplevel_view *

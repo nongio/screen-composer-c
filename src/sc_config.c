@@ -15,7 +15,7 @@ static int handler(void* user, const char* section, const char* name,
     struct sc_configuration* pconfig = (struct sc_configuration*)user;
 
     #define MATCH(s, n) strcmp(section, s) == 0 && strcmp(name, n) == 0
-	//LOG("[%s] %s: '%s' %d\n", section, name, value, atoi(value));
+
     if (MATCH("Display", "resolution_width")) {
         pconfig->display_width = atoi(value);
     } else if (MATCH("Display", "resolution_height")) {

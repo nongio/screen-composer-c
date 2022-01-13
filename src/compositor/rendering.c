@@ -52,9 +52,13 @@ void render_surface(struct wlr_surface *surface, int x, int y,
 			malloc(sizeof(struct wlr_gles2_texture_attribs));
 		wlr_gles2_texture_get_attribs(texture, tex_attribs);
 
-		sc_render_texture_with_output(tex_attribs, sx + x, sy + y, surface->current.width,
-					   surface->current.height, surface->current.transform,
-					   output);
+		sc_render_texture_with_output(
+			tex_attribs,
+			sx + x,
+			sy + y,
+			surface->current.width,
+			surface->current.height,
+			surface->current.transform, output);
 
 		free(tex_attribs);
 	}

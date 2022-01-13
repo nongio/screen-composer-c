@@ -18,8 +18,8 @@ view_surface_commit_handler(struct wl_listener *listener, void *data)
 		return;
 	}
 
-	view->frame.x = view->surface->sx;
-	view->frame.y = view->surface->sy;
+	view->frame.x = 0;
+	view->frame.y = 0;
 	view->frame.width = view->surface->current.width;
 	view->frame.height = view->surface->current.height;
 
@@ -79,7 +79,6 @@ static struct sc_view_impl view_impl = {
 	.for_each_popup_surface = for_each_popup_surface,
 	.surface_at = surface_at,
 };
-
 
 static struct sc_view *
 view_subsurface_create(struct wlr_subsurface *subsurface, struct sc_view *view)
@@ -172,11 +171,6 @@ void
 sc_view_map(struct sc_view *view)
 {
 	view->mapped = true;
-
-	view->frame.x = view->surface->sx;
-	view->frame.y = view->surface->sy;
-	view->frame.width = view->surface->current.width;
-	view->frame.height = view->surface->current.height;
 
 	struct sc_point p;
 	sc_view_get_absolute_position(view, &p);
