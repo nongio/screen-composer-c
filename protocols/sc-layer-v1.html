@@ -1,0 +1,2265 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Protocol sc_shell_unstable_v1</title>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <h1>Protocol <code>sc_shell_unstable_v1</code>
+  
+</h1>
+
+      
+  
+
+
+      
+        <details>
+          <summary role="button">License</summary>
+          <pre>
+    Copyright © 2021 Riccardo Canalicchio
+
+    Permission to use, copy, modify, distribute, and sell this
+    software and its documentation for any purpose is hereby granted
+    without fee, provided that the above copyright notice appear in
+    all copies and that both that copyright notice and this permission
+    notice appear in supporting documentation, and that the name of
+    the copyright holders not be used in advertising or publicity
+    pertaining to distribution of the software without specific,
+    written prior permission.  The copyright holders make no
+    representations about the suitability of this software for any
+    purpose.  It is provided &#34;as is&#34; without express or implied
+    warranty.
+
+    THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+    SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+    FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+    AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+    ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+    THIS SOFTWARE.
+  </pre>
+        </details>
+      
+    </header>
+
+    <main>
+      <nav>
+        <div>
+          <h2>Index</h2>
+
+          <ul>
+            
+              <li>
+                <a href="#sc_shell_unstable_v1" class="interface">sc_shell_unstable_v1</a>
+              </li>
+              <ul>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.get_layer_surface" class="request">get_layer_surface</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.get_animation" class="request">get_animation</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.get_basic_animation" class="request">get_basic_animation</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.get_timing_function" class="request">get_timing_function</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.get_compositing_filter" class="request">get_compositing_filter</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.destroy" class="request">destroy</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_shell_unstable_v1.error" class="enum">error</a>
+                  </li>
+                
+              </ul>
+            
+              <li>
+                <a href="#sc_layer_surface_v1" class="interface">sc_layer_surface_v1</a>
+              </li>
+              <ul>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_compositing_filter" class="request">set_compositing_filter</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.add_sublayer" class="request">add_sublayer</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.insert_sublayer_at_index" class="request">insert_sublayer_at_index</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.remove_from_superlayer" class="request">remove_from_superlayer</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_bounds" class="request">set_bounds</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_position" class="request">set_position</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_z_position" class="request">set_z_position</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_anchor_point" class="request">set_anchor_point</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_content_scale" class="request">set_content_scale</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_opacity" class="request">set_opacity</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_hidden" class="request">set_hidden</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_corner_radius" class="request">set_corner_radius</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_border_width" class="request">set_border_width</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_border_color" class="request">set_border_color</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_background_color" class="request">set_background_color</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_shadow_opacity" class="request">set_shadow_opacity</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_shadow_radius" class="request">set_shadow_radius</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_shadow_offset" class="request">set_shadow_offset</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_shadow_color" class="request">set_shadow_color</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.set_transform" class="request">set_transform</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.add_animation" class="request">add_animation</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.remove_animation" class="request">remove_animation</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.remove_all_animations" class="request">remove_all_animations</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_layer_surface_v1.destroy" class="request">destroy</a>
+                  </li>
+                
+              </ul>
+            
+              <li>
+                <a href="#sc_animation_v1" class="interface">sc_animation_v1</a>
+              </li>
+              <ul>
+                
+                  <li>
+                    <a href="#sc_animation_v1.set_duration" class="request">set_duration</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.set_keypath" class="request">set_keypath</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.set_cumulative" class="request">set_cumulative</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.set_additive" class="request">set_additive</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.set_removed_on_completion" class="request">set_removed_on_completion</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.complete" class="event">complete</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.frame" class="event">frame</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_animation_v1.animation_value_type" class="enum">animation_value_type</a>
+                  </li>
+                
+              </ul>
+            
+              <li>
+                <a href="#sc_timing_function_v1" class="interface">sc_timing_function_v1</a>
+              </li>
+              <ul>
+                
+                  <li>
+                    <a href="#sc_timing_function_v1.set_name" class="request">set_name</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_timing_function_v1.set_control_points" class="request">set_control_points</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_timing_function_v1.destroy" class="request">destroy</a>
+                  </li>
+                
+              </ul>
+            
+              <li>
+                <a href="#sc_basic_animation_v1" class="interface">sc_basic_animation_v1</a>
+              </li>
+              <ul>
+                
+                  <li>
+                    <a href="#sc_basic_animation_v1.set_from_value" class="request">set_from_value</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_basic_animation_v1.set_to_value" class="request">set_to_value</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_basic_animation_v1.set_by_value" class="request">set_by_value</a>
+                  </li>
+                
+                  <li>
+                    <a href="#sc_basic_animation_v1.set_timing_function" class="request">set_timing_function</a>
+                  </li>
+                
+              </ul>
+            
+              <li>
+                <a href="#sc_filter_v1" class="interface">sc_filter_v1</a>
+              </li>
+              <ul>
+                
+                  <li>
+                    <a href="#sc_filter_v1.set_value_for_key" class="request">set_value_for_key</a>
+                  </li>
+                
+              </ul>
+            
+          </ul>
+        </div>
+      </nav>
+
+      <div class="interfaces">
+        
+          <section>
+            <h2 id="sc_shell_unstable_v1">
+  
+  Interface
+  <code><a href="#sc_shell_unstable_v1" class="interface">sc_shell_unstable_v1</a></code>
+  
+  
+    — creates layers and animations to run on the compositor
+  
+
+</h2>
+
+            
+  
+    
+      <p>
+      Screen Composer Shell provides advanced compositing features and animations capabilities.
+      The layer interface provides properties to adjust the rendering of a surface in a 3d environment.
+      Layers can be arranged in a tree structure using parenting and blended together using
+      the available compositing filters.
+      Some properties of the layers are animatable using the animator interface.
+    </p>
+    
+  
+
+
+            
+              
+  <h3 id="sc_shell_unstable_v1.get_layer_surface">
+  
+  Request
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.get_layer_surface" class="request">get_layer_surface</a></code>
+  
+  
+    — creates a layer surface from a wl_surface
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        A layer surface is used to visualize bitmaps generated from the clients. 
+        It provides position, scale, rotation attributes as well some rendering capabilities like:
+        background color, borders, shadows.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_layer_surface.id">
+          <code>id</code>
+        </strong> <code><span class="primitive">new_id</span>&lt;<a href="#sc_layer_surface_v1" class="interface">sc_layer_surface_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_layer_surface.surface">
+          <code>surface</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#wl_surface" class="interface">wl_surface</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_layer_surface.output">
+          <code>output</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#wl_output" class="interface">wl_output</a>&gt;</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_shell_unstable_v1.get_animation">
+  
+  Request
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.get_animation" class="request">get_animation</a></code>
+  
+  
+    — creates an animation object that can run on the compositor
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        An animation interface, defines the basic properties of an animation: duration, speed and
+        how the animation is applied. The be used, it needs to have a value provider (eg. basic animation)
+        and to be attached to an object. The compositor will then take care of running the animation
+        and apply the calculated value to the object.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_animation.id">
+          <code>id</code>
+        </strong> <code><span class="primitive">new_id</span>&lt;<a href="#sc_animation_v1" class="interface">sc_animation_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_animation.duration">
+          <code>duration</code>
+        </strong> <code class="primitive">fixed</code>:
+        duration of the animation
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_animation.speed">
+          <code>speed</code>
+        </strong> <code class="primitive">fixed</code>:
+        speed of the animation
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_animation.repeat_count">
+          <code>repeat_count</code>
+        </strong> <code class="primitive">int</code>:
+        how many times the animation should run
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_animation.autoreverse">
+          <code>autoreverse</code>
+        </strong> <code class="primitive">uint</code>:
+        
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_shell_unstable_v1.get_basic_animation">
+  
+  Request
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.get_basic_animation" class="request">get_basic_animation</a></code>
+  
+  
+    — an animation value provider, it interpolates between 2 or 3 values
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        The basic animation can interpolate 2 or 3 values using the provided timing function.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_basic_animation.id">
+          <code>id</code>
+        </strong> <code><span class="primitive">new_id</span>&lt;<a href="#sc_basic_animation_v1" class="interface">sc_basic_animation_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_basic_animation.value_type">
+          <code>value_type</code>
+        </strong> <code class="primitive">uint</code>:
+        type of values this animation will interpolate
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_basic_animation.animation">
+          <code>animation</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_animation_v1" class="interface">sc_animation_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_basic_animation.timing">
+          <code>timing</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_timing_function_v1" class="interface">sc_timing_function_v1</a>&gt;</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_shell_unstable_v1.get_timing_function">
+  
+  Request
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.get_timing_function" class="request">get_timing_function</a></code>
+  
+  
+    — a timing function described by a bezier curve
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_timing_function.id">
+          <code>id</code>
+        </strong> <code><span class="primitive">new_id</span>&lt;<a href="#sc_timing_function_v1" class="interface">sc_timing_function_v1</a>&gt;</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_shell_unstable_v1.get_compositing_filter">
+  
+  Request
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.get_compositing_filter" class="request">get_compositing_filter</a></code>
+  
+  
+    — built-in compositing filter
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_compositing_filter.id">
+          <code>id</code>
+        </strong> <code><span class="primitive">new_id</span>&lt;<a href="#sc_filter_v1" class="interface">sc_filter_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_shell_unstable_v1.get_compositing_filter.name">
+          <code>name</code>
+        </strong> <code class="primitive">string</code>:
+        name of the filter
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_shell_unstable_v1.destroy">
+  
+  Request
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.destroy" class="request">destroy</a></code>
+  
+  
+    — destroy the layer object
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        This request indicates that the client will not use the layer
+        object any more. Objects that have been created through this instance
+        are not affected.
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+
+            
+
+            
+              <h3 id="sc_shell_unstable_v1.error">
+  
+  Enum
+  <code>sc_shell_unstable_v1.<a href="#sc_shell_unstable_v1.error" class="enum">error</a></code>
+  
+  
+
+</h3>
+
+              
+  
+
+
+              <ul>
+                
+                  <li>
+                    <strong id="sc_shell_unstable_v1.error.role">
+                      <code>role</code></strong>:
+                    wl_surface has another role
+                  </li>
+                
+                  <li>
+                    <strong id="sc_shell_unstable_v1.error.already_constructed">
+                      <code>already_constructed</code></strong>:
+                    wl_surface has a buffer attached or committed
+                  </li>
+                
+              </ul>
+            </section>
+          
+        
+          <section>
+            <h2 id="sc_layer_surface_v1">
+  
+  Interface
+  <code><a href="#sc_layer_surface_v1" class="interface">sc_layer_surface_v1</a></code>
+  
+  
+    — layer metadata interface
+  
+
+</h2>
+
+            
+  
+    
+      <p>
+      An interface that may be implemented by a wl_surface, for surfaces that
+      are designed to be rendered as a layer of a stacked desktop-like
+      environment.</p>
+    
+      <p>      Layer surface state (layer, size, anchor, exclusive zone,
+      margin, interactivity) is double-buffered, and will be applied at the
+      time wl_surface.commit of the corresponding wl_surface is called.
+    </p>
+    
+  
+
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_compositing_filter">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_compositing_filter" class="request">set_compositing_filter</a></code>
+  
+  
+    — filter used to composite the layer and the content behind it
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_compositing_filter.filter">
+          <code>filter</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_filter" class="interface">sc_filter</a>&gt;</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.add_sublayer">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.add_sublayer" class="request">add_sublayer</a></code>
+  
+  
+    — Appends the layer to the layer’s list of sublayers
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.add_sublayer.layer">
+          <code>layer</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_layer_surface_v1" class="interface">sc_layer_surface_v1</a>&gt;</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.insert_sublayer_at_index">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.insert_sublayer_at_index" class="request">insert_sublayer_at_index</a></code>
+  
+  
+    — Inserts the specified layer into the receiver’s list of sublayers at the specified index
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.insert_sublayer_at_index.layer">
+          <code>layer</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_layer_surface_v1" class="interface">sc_layer_surface_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.insert_sublayer_at_index.index">
+          <code>index</code>
+        </strong> <code class="primitive">int</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.remove_from_superlayer">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.remove_from_superlayer" class="request">remove_from_superlayer</a></code>
+  
+  
+    — Detaches the layer from its parent layer
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_bounds">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_bounds" class="request">set_bounds</a></code>
+  
+  
+    — The layer’s bounds rectangle. Animatable.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_bounds.x">
+          <code>x</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_bounds.y">
+          <code>y</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_bounds.width">
+          <code>width</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_bounds.height">
+          <code>height</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_position">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_position" class="request">set_position</a></code>
+  
+  
+    — The layer’s position in its superlayer’s coordinate space. Animatable.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_position.x">
+          <code>x</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_position.y">
+          <code>y</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_z_position">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_z_position" class="request">set_z_position</a></code>
+  
+  
+    — The layer’s position on the z axis. Animatable.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_z_position.z">
+          <code>z</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_anchor_point">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_anchor_point" class="request">set_anchor_point</a></code>
+  
+  
+    — Defines the anchor point of the layer&#39;s bounds rectangle. Animatable.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_anchor_point.x">
+          <code>x</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_anchor_point.y">
+          <code>y</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_content_scale">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_content_scale" class="request">set_content_scale</a></code>
+  
+  
+    — Defines the anchor point of the layer&#39;s bounds rectangle. Animatable.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_content_scale.x">
+          <code>x</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_content_scale.y">
+          <code>y</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_opacity">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_opacity" class="request">set_opacity</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_opacity.opacity">
+          <code>opacity</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_hidden">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_hidden" class="request">set_hidden</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_hidden.hidden">
+          <code>hidden</code>
+        </strong> <code class="primitive">uint</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_corner_radius">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_corner_radius" class="request">set_corner_radius</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_corner_radius.radius">
+          <code>radius</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_border_width">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_border_width" class="request">set_border_width</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_border_width.width">
+          <code>width</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_border_color">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_border_color" class="request">set_border_color</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_border_color.red">
+          <code>red</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_border_color.green">
+          <code>green</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_border_color.blue">
+          <code>blue</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_border_color.alpha">
+          <code>alpha</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_background_color">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_background_color" class="request">set_background_color</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_background_color.red">
+          <code>red</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_background_color.green">
+          <code>green</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_background_color.blue">
+          <code>blue</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_background_color.alpha">
+          <code>alpha</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_shadow_opacity">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_shadow_opacity" class="request">set_shadow_opacity</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_opacity.opacity">
+          <code>opacity</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_shadow_radius">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_shadow_radius" class="request">set_shadow_radius</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_radius.radius">
+          <code>radius</code>
+        </strong> <code class="primitive">uint</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_shadow_offset">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_shadow_offset" class="request">set_shadow_offset</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_offset.x">
+          <code>x</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_offset.y">
+          <code>y</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_shadow_color">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_shadow_color" class="request">set_shadow_color</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_color.red">
+          <code>red</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_color.green">
+          <code>green</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_color.blue">
+          <code>blue</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_shadow_color.alpha">
+          <code>alpha</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.set_transform">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.set_transform" class="request">set_transform</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m11">
+          <code>m11</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m12">
+          <code>m12</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m13">
+          <code>m13</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m14">
+          <code>m14</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m21">
+          <code>m21</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m22">
+          <code>m22</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m23">
+          <code>m23</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m24">
+          <code>m24</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m31">
+          <code>m31</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m32">
+          <code>m32</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m33">
+          <code>m33</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m34">
+          <code>m34</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m41">
+          <code>m41</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m42">
+          <code>m42</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m43">
+          <code>m43</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.set_transform.m44">
+          <code>m44</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.add_animation">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.add_animation" class="request">add_animation</a></code>
+  
+  
+    — Add the specified animation object to the layer.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        The animation needs to have a value provider assigned before being added.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.add_animation.animation">
+          <code>animation</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_animation_v1" class="interface">sc_animation_v1</a>&gt;</code>:
+        None
+      </li>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.add_animation.for_key">
+          <code>for_key</code>
+        </strong> <code class="primitive">string</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.remove_animation">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.remove_animation" class="request">remove_animation</a></code>
+  
+  
+    — Remove the animation object with the specified key.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_layer_surface_v1.remove_animation.for_key">
+          <code>for_key</code>
+        </strong> <code class="primitive">string</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.remove_all_animations">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.remove_all_animations" class="request">remove_all_animations</a></code>
+  
+  
+    — Remove all animations attached to the layer.
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_layer_surface_v1.destroy">
+  
+  Request
+  <code>sc_layer_surface_v1.<a href="#sc_layer_surface_v1.destroy" class="request">destroy</a></code>
+  
+  
+    — destroy the layer_surface
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        This request destroys the layer surface.
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+
+            
+
+            
+        
+          <section>
+            <h2 id="sc_animation_v1">
+  
+  Interface
+  <code><a href="#sc_animation_v1" class="interface">sc_animation_v1</a></code>
+  
+  
+
+</h2>
+
+            
+  
+    
+      <p>
+      Base interface for animations, to be used a client needs to attach it to a animation implementation that provides a value.
+    </p>
+    
+  
+
+
+            
+              
+  <h3 id="sc_animation_v1.set_duration">
+  
+  Request
+  <code>sc_animation_v1.<a href="#sc_animation_v1.set_duration" class="request">set_duration</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        duration of the animation in seconds
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_animation_v1.set_duration.duration">
+          <code>duration</code>
+        </strong> <code class="primitive">fixed</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_animation_v1.set_keypath">
+  
+  Request
+  <code>sc_animation_v1.<a href="#sc_animation_v1.set_keypath" class="request">set_keypath</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        keypath of the property in the layer to be animated
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_animation_v1.set_keypath.keypath">
+          <code>keypath</code>
+        </strong> <code class="primitive">string</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_animation_v1.set_cumulative">
+  
+  Request
+  <code>sc_animation_v1.<a href="#sc_animation_v1.set_cumulative" class="request">set_cumulative</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+The `cumulative&#39; property affects how repeating animations produce their result. If true then the current value of the animation is the value at the end of the previous repeat cycle, plus the value of the current repeat cycle. If false, the value is simply the value calculated for the current repeat cycle. Defaults to NO.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_animation_v1.set_cumulative.cumulative">
+          <code>cumulative</code>
+        </strong> <code class="primitive">uint</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_animation_v1.set_additive">
+  
+  Request
+  <code>sc_animation_v1.<a href="#sc_animation_v1.set_additive" class="request">set_additive</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+When true the value specified by the animation will be &#34;added&#34; to the current presentation value of the property to produce the new presentation value. The addition function is type-dependent, e.g. for affine transforms the two matrices are concatenated. Defaults to NO.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_animation_v1.set_additive.additive">
+          <code>additive</code>
+        </strong> <code class="primitive">uint</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_animation_v1.set_removed_on_completion">
+  
+  Request
+  <code>sc_animation_v1.<a href="#sc_animation_v1.set_removed_on_completion" class="request">set_removed_on_completion</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        When true, the animation is removed from the render tree once its active duration has passed. Defaults to YES.
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_animation_v1.set_removed_on_completion.removed_on_completion">
+          <code>removed_on_completion</code>
+        </strong> <code class="primitive">uint</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+
+            
+              
+  <h3 id="sc_animation_v1.complete">
+  
+  Event
+  <code>sc_animation_v1.<a href="#sc_animation_v1.complete" class="event">complete</a></code>
+  
+  
+    — the animation is complete
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_animation_v1.frame">
+  
+  Event
+  <code>sc_animation_v1.<a href="#sc_animation_v1.frame" class="event">frame</a></code>
+  
+  
+    — called every frame
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+
+            
+              <h3 id="sc_animation_v1.animation_value_type">
+  
+  Enum
+  <code>sc_animation_v1.<a href="#sc_animation_v1.animation_value_type" class="enum">animation_value_type</a></code>
+  
+  
+
+</h3>
+
+              
+  
+    
+      <p>
+        data type for the values to be interpolated
+      </p>
+    
+  
+
+
+              <ul>
+                
+                  <li>
+                    <strong id="sc_animation_v1.animation_value_type.value">
+                      <code>value</code></strong>:
+                    single float value
+                  </li>
+                
+                  <li>
+                    <strong id="sc_animation_v1.animation_value_type.point">
+                      <code>point</code></strong>:
+                    point represented by 2 float values
+                  </li>
+                
+                  <li>
+                    <strong id="sc_animation_v1.animation_value_type.rect">
+                      <code>rect</code></strong>:
+                    rectangle represented by 4 float values (origin and size)
+                  </li>
+                
+                  <li>
+                    <strong id="sc_animation_v1.animation_value_type.color">
+                      <code>color</code></strong>:
+                    color represented by 4 float values (r,g,b,a)
+                  </li>
+                
+                  <li>
+                    <strong id="sc_animation_v1.animation_value_type.matrix">
+                      <code>matrix</code></strong>:
+                    4x4 matrix represented by 16 float values
+                  </li>
+                
+              </ul>
+            </section>
+          
+        
+          <section>
+            <h2 id="sc_timing_function_v1">
+  
+  Interface
+  <code><a href="#sc_timing_function_v1" class="interface">sc_timing_function_v1</a></code>
+  
+  
+
+</h2>
+
+            
+  
+    
+      <p>
+      A function that defines the pacing of an animation as a timing curve.
+        https://developer.apple.com/documentation/quartzcore/camediatimingfunction
+      </p>
+    
+  
+
+
+            
+              
+  <h3 id="sc_timing_function_v1.set_name">
+  
+  Request
+  <code>sc_timing_function_v1.<a href="#sc_timing_function_v1.set_name" class="request">set_name</a></code>
+  
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_timing_function_v1.set_name.name">
+          <code>name</code>
+        </strong> <code class="primitive">string</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_timing_function_v1.set_control_points">
+  
+  Request
+  <code>sc_timing_function_v1.<a href="#sc_timing_function_v1.set_control_points" class="request">set_control_points</a></code>
+  
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+The end points of the Bézier curve are automatically set to (0.0,0.0) and (1.0,1.0). The control points defining the Bézier curve are: [(0.0,0.0), (c1x,c1y), (c2x,c2y), (1.0,1.0)].
+      </p>
+    
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_timing_function_v1.set_control_points.c1x">
+          <code>c1x</code>
+        </strong> <code class="primitive">fixed</code>:
+        x coordinate for control point 2 of 4 for the bezier curve
+      </li>
+    
+      <li>
+        <strong id="sc_timing_function_v1.set_control_points.c1y">
+          <code>c1y</code>
+        </strong> <code class="primitive">fixed</code>:
+        y coordinate for control point 2 of 4 for the bezier curve
+      </li>
+    
+      <li>
+        <strong id="sc_timing_function_v1.set_control_points.c2x">
+          <code>c2x</code>
+        </strong> <code class="primitive">fixed</code>:
+        x coordinate for control point 3 of 4 for the bezier curve
+      </li>
+    
+      <li>
+        <strong id="sc_timing_function_v1.set_control_points.c2y">
+          <code>c2y</code>
+        </strong> <code class="primitive">fixed</code>:
+        y coordinate for control point 3 of 4 for the bezier curve
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_timing_function_v1.destroy">
+  
+  Request
+  <code>sc_timing_function_v1.<a href="#sc_timing_function_v1.destroy" class="request">destroy</a></code>
+  
+  
+    — destroy the timing object
+  
+
+</h3>
+
+  
+  
+    
+      <p>
+        This request indicates that the client will not use the tming
+        object any more.
+      </p>
+    
+  
+
+
+  <ul>
+    
+  </ul>
+
+            
+
+            
+
+            
+        
+          <section>
+            <h2 id="sc_basic_animation_v1">
+  
+  Interface
+  <code><a href="#sc_basic_animation_v1" class="interface">sc_basic_animation_v1</a></code>
+  
+  
+
+</h2>
+
+            
+  
+    
+      <p>
+      Basic animation implementation, interpolates between 2 or 3 values using the timing function.
+    </p>
+    
+  
+
+
+            
+              
+  <h3 id="sc_basic_animation_v1.set_from_value">
+  
+  Request
+  <code>sc_basic_animation_v1.<a href="#sc_basic_animation_v1.set_from_value" class="request">set_from_value</a></code>
+  
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_basic_animation_v1.set_from_value.from_value">
+          <code>from_value</code>
+        </strong> <code class="primitive">array</code>:
+        starting value for the animation
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_basic_animation_v1.set_to_value">
+  
+  Request
+  <code>sc_basic_animation_v1.<a href="#sc_basic_animation_v1.set_to_value" class="request">set_to_value</a></code>
+  
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_basic_animation_v1.set_to_value.to_value">
+          <code>to_value</code>
+        </strong> <code class="primitive">array</code>:
+        end value for the animation
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_basic_animation_v1.set_by_value">
+  
+  Request
+  <code>sc_basic_animation_v1.<a href="#sc_basic_animation_v1.set_by_value" class="request">set_by_value</a></code>
+  
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_basic_animation_v1.set_by_value.by_value">
+          <code>by_value</code>
+        </strong> <code class="primitive">array</code>:
+        additional in between value for the animation
+      </li>
+    
+  </ul>
+
+            
+              
+  <h3 id="sc_basic_animation_v1.set_timing_function">
+  
+  Request
+  <code>sc_basic_animation_v1.<a href="#sc_basic_animation_v1.set_timing_function" class="request">set_timing_function</a></code>
+  
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_basic_animation_v1.set_timing_function.timing_function">
+          <code>timing_function</code>
+        </strong> <code><span class="primitive">object</span>&lt;<a href="#sc_timing_function_v1" class="interface">sc_timing_function_v1</a>&gt;</code>:
+        None
+      </li>
+    
+  </ul>
+
+            
+
+            
+
+            
+        
+          <section>
+            <h2 id="sc_filter_v1">
+  
+  Interface
+  <code><a href="#sc_filter_v1" class="interface">sc_filter_v1</a></code>
+  
+  
+
+</h2>
+
+            
+  
+    
+      <p>
+      Compositing filter
+    </p>
+    
+  
+
+
+            
+              
+  <h3 id="sc_filter_v1.set_value_for_key">
+  
+  Request
+  <code>sc_filter_v1.<a href="#sc_filter_v1.set_value_for_key" class="request">set_value_for_key</a></code>
+  
+  
+
+</h3>
+
+  
+  
+
+
+  <ul>
+    
+      <li>
+        <strong id="sc_filter_v1.set_value_for_key.value">
+          <code>value</code>
+        </strong> <code class="primitive">fixed</code>:
+        value of the field
+      </li>
+    
+      <li>
+        <strong id="sc_filter_v1.set_value_for_key.key">
+          <code>key</code>
+        </strong> <code class="primitive">string</code>:
+        name of the field
+      </li>
+    
+  </ul>
+
+            
+
+            
+
+            
+        
+    </div>
+    </main>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <protocol name="sc_shell_unstable_v1">
   <copyright>
-    Copyright © 2021 Riccardo Canalicchio
+    Copyright © 2022 Riccardo Canalicchio
 
     Permission to use, copy, modify, distribute, and sell this
     software and its documentation for any purpose is hereby granted
@@ -27,20 +27,41 @@
 
   <interface name="sc_shell_unstable_v1" version="1">
     <description summary="creates layers and animations to run on the compositor">
-
+      Screen Composer Shell provides advanced compositing features and animations capabilities.
+      The layer interface provides properties to adjust the rendering of a surface in a 3d environment.
+      Layers can be arranged in a tree structure using parenting and blended together using
+      the available compositing filters.
+      Some properties of the layers are animatable using the animator interface.
     </description>
 
     <request name="get_layer_surface">
       <description summary="creates a layer surface from a wl_surface">
-
+        A layer surface is used to visualize bitmaps generated from the clients. 
+        It provides position, scale, rotation attributes as well some rendering capabilities like:
+        background color, borders, shadows.
       </description>
       <arg name="id" type="new_id" interface="sc_layer_surface_v1"/>
       <arg name="surface" type="object" interface="wl_surface"/>
       <arg name="output" type="object" interface="wl_output" allow-null="true"/>
     </request>
 
+    <request name="get_animation">
+      <description summary="creates an animation object that can run on the compositor">
+        An animation interface, defines the basic properties of an animation: duration, speed and
+        how the animation is applied. The be used, it needs to have a value provider (eg. basic animation)
+        and to be attached to an object. The compositor will then take care of running the animation
+        and apply the calculated value to the object.
+      </description>
+      <arg name="id" type="new_id" interface="sc_animation_v1"/>
+      <arg name="duration" type="fixed" summary="duration of the animation"/>
+      <arg name="speed" type="fixed"  summary="speed of the animation"/>
+      <arg name="repeat_count" type="int"  summary="how many times the animation should run"/>
+      <arg name="autoreverse" type="uint"  summary=""/>
+    </request>
+
     <request name="get_basic_animation">
-      <description summary="">
+      <description summary="an animation value provider, it interpolates between 2 or 3 values">
+        The basic animation can interpolate 2 or 3 values using the provided timing function.
       </description>
       <arg name="id" type="new_id" interface="sc_basic_animation_v1"/>
       <arg name="value_type" type="uint" enum="animation_value_type" summary="type of values this animation will interpolate"/>
@@ -49,10 +70,15 @@
     </request>
 
     <request name="get_timing_function">
-      <description summary="">
-
-      </description>
+      <description summary="a timing function described by a bezier curve"></description>
       <arg name="id" type="new_id" interface="sc_timing_function_v1"/>
+    </request>
+
+    <request name="get_compositing_filter">
+      <description summary="built-in compositing filter">
+      </description>
+      <arg name="id" type="new_id" interface="sc_filter_v1"/>
+      <arg name="name" type="string" summary="name of the filter" />
     </request>
 
     <enum name="error">
@@ -61,8 +87,8 @@
     </enum>
 
     <request name="destroy" type="destructor">
-      <description summary="destroy the calayer object">
-        This request indicates that the client will not use the layer_shell
+      <description summary="destroy the layer object">
+        This request indicates that the client will not use the layer
         object any more. Objects that have been created through this instance
         are not affected.
       </description>
@@ -79,6 +105,26 @@
       margin, interactivity) is double-buffered, and will be applied at the
       time wl_surface.commit of the corresponding wl_surface is called.
     </description>
+    <request name="set_compositing_filter">
+      <description summary="filter used to composite the layer and the content behind it">
+      </description>
+      <arg name="filter" type="object" interface="sc_filter" allow-null="true"/>
+    </request>
+    <request name="add_sublayer">
+      <description summary="Appends the layer to the layer’s list of sublayers">
+      </description>
+      <arg name="layer" type="object" interface="sc_layer_surface_v1" allow-null="false"/>
+    </request>
+    <request name="insert_sublayer_at_index">
+      <description summary="Inserts the specified layer into the receiver’s list of sublayers at the specified index">
+      </description>
+      <arg name="layer" type="object" interface="sc_layer_surface_v1" allow-null="false"/>
+      <arg name="index" type="int" />
+    </request>
+    <request name="remove_from_superlayer">
+      <description summary="Detaches the layer from its parent layer">
+      </description>
+    </request>
 
     <request name="set_bounds">
       <description summary="The layer’s bounds rectangle. Animatable.">
@@ -209,7 +255,7 @@
 
     <request name="add_animation">
       <description summary="Add the specified animation object to the layer.">
-        The animation needs to have an implementation assigned before being added.
+        The animation needs to have a value provider assigned before being added.
       </description>
       <arg name="animation" type="object" interface="sc_animation_v1"/>
       <arg name="for_key" type="string"/>
@@ -231,11 +277,6 @@
         This request destroys the layer surface.
       </description>
     </request>
-    <event name="frame">
-      <description summary="">
-      </description>
-      <arg name="layer" type="object"  interface="sc_layer_surface_v1" />
-    </event>
   </interface>
 
   <interface name="sc_animation_v1" version="1">
@@ -282,6 +323,14 @@ When true the value specified by the animation will be "added" to the current pr
       </description>
       <arg name="removed_on_completion" type="uint"/>
     </request>
+    <event name="complete">
+      <description summary="the animation is complete">
+      </description>
+    </event>
+    <event name="frame">
+      <description summary="called every frame">
+      </description>
+    </event>
   </interface>
 
   <interface name="sc_timing_function_v1" version="1">
@@ -289,9 +338,6 @@ When true the value specified by the animation will be "added" to the current pr
       A function that defines the pacing of an animation as a timing curve.
         https://developer.apple.com/documentation/quartzcore/camediatimingfunction
       </description>
-    <request name="set_name">
-      <arg name="name" type="string"/>
-    </request>
     <request name="set_control_points">
       <description summary="">
 The end points of the Bézier curve are automatically set to (0.0,0.0) and (1.0,1.0). The control points defining the Bézier curve are: [(0.0,0.0), (c1x,c1y), (c2x,c2y), (1.0,1.0)].
@@ -300,6 +346,12 @@ The end points of the Bézier curve are automatically set to (0.0,0.0) and (1.0,
       <arg name="c1y" type="fixed" summary="y coordinate for control point 2 of 4 for the bezier curve"/>
       <arg name="c2x" type="fixed" summary="x coordinate for control point 3 of 4 for the bezier curve"/>
       <arg name="c2y" type="fixed" summary="y coordinate for control point 3 of 4 for the bezier curve"/>
+    </request>
+    <request name="destroy" type="destructor">
+      <description summary="destroy the timing object">
+        This request indicates that the client will not use the tming
+        object any more.
+      </description>
     </request>
   </interface>
 
@@ -322,4 +374,14 @@ The end points of the Bézier curve are automatically set to (0.0,0.0) and (1.0,
     </request>
   </interface>
 
+  <interface name="sc_filter_v1" version="1">
+    <description summary="">
+      Compositing filter
+    </description>
+
+    <request name="set_value_for_key">
+      <arg name="value" type="fixed" summary="value of the field"/>
+      <arg name="key" type="string" summary="name of the field"/>
+    </request>
+  </interface>
 </protocol>

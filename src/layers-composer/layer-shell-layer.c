@@ -352,6 +352,7 @@ layer_surface_handle_set_background_color(struct wl_client	*client,
 }
 
 
+
 static const struct sc_layer_surface_v1_interface
   sc_layer_surface_implementation
   = {

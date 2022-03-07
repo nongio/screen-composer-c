@@ -29,6 +29,9 @@ compositor_backend_on_new_output(struct wl_listener *listener, void *data)
 	DLOG("[backend_on_new_output]\n");
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_new_output);
+	if (!wl_list_empty(&compositor->outputs)) {
+		return;
+	}
 	struct wlr_output *wlr_output = data;
 
 	wlr_output_layout_add_auto(compositor->output_layout, wlr_output);

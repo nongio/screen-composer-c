@@ -123,9 +123,9 @@ sc_sources = [
   'src/gles2/renderer.c',
   'src/gles2/shader.c',
   'src/utils/file.c',
-  'src/layers-composer/layer-shell.c',
-  'src/layers-composer/layer-shell-layer.c',
-  'src/layers-composer/layer-shell-animation.c',
+  'src/layers-composer/shell.c',
+  'src/layers-composer/layer.c',
+  'src/layers-composer/animation.c',
 ]
 
 sc_headers = [

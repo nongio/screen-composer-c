@@ -1,0 +1,81 @@
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0;
+
+  font: 16px/1.4 serif;
+}
+
+* {
+  scrollbar-color: rgba(36,37,39,0.6) transparent;
+}
+
+a {
+  color: #4d76ae;
+}
+
+h1, h2, h3 {
+  font-family: sans-serif;
+}
+
+code {
+  font-family: monospace;
+}
+
+summary[role="button"] {
+  cursor: pointer;
+}
+
+a.interface, a.request, a.event, a.enum {
+  text-decoration: none;
+}
+
+a.interface {
+  color: #ad448e;
+}
+a.request {
+  color: #9a6e31;
+}
+a.event {
+  color: #7c5af3;
+}
+a.enum {
+  color: #508157;
+}
+
+.primitive {
+  color: #2c8093;
+}
+
+header {
+  padding: 0 10px;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.interfaces {
+  padding: 0 30px;
+}
+
+nav > div {
+  position: sticky;
+  top: 0;
+  bottom: 0;
+  overflow: hidden auto;
+  height: 100vh;
+  padding: 0 10px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul ul {
+  padding: 0 0 0 1em;
+}
