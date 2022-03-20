@@ -23,7 +23,7 @@ handle_keybinding(struct sc_compositor *compositor, xkb_keysym_t sym)
 {
 
 	switch (sym) {
-	case XKB_KEY_Escape:
+	case XKB_KEY_q:
 		wl_display_terminate(compositor->wl_display);
 		break;
 	case XKB_KEY_F1:
