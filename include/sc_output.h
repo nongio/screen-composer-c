@@ -3,6 +3,8 @@
 #include <wlr/types/wlr_output_damage.h>
 
 #include "sc_compositor.h"
+#include "sc_fbo.h"
+
 
 struct sc_output {
 	struct wl_list link;
@@ -29,6 +31,8 @@ struct sc_output {
 	uint32_t refresh_nsec;
 	int max_render_time; // In milliseconds
 	struct wl_event_source *repaint_timer;
+
+	struct sc_fbo *fbo;
 };
 
 struct sc_view;

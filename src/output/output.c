@@ -72,6 +72,10 @@ sc_output_create(struct wlr_output *wlr_output,
 	wl_signal_add(&output->wlr_output->events.present, &output->on_present);
 	wlr_output_damage_whole(output->wlr_output);
 
+	int width, height;
+  	wlr_output_effective_resolution(output->wlr_output, &width, &height);
+	
+	output->fbo = fbo_create(width, height);
 	return output;
 }
 
