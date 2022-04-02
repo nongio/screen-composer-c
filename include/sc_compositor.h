@@ -27,6 +27,7 @@ struct sc_compositor {
 	struct wlr_allocator *wlr_allocator;
 	struct wlr_compositor *wlr_compositor;
 	struct wlr_presentation *wlr_presentation;
+	struct wlr_xdg_output_manager_v1 *output_manager;
 	struct wlr_egl *egl;
 
 	struct sc_workspace *current_workspace;

@@ -7,6 +7,7 @@
 #include "sc_compositor_keyboard.h"
 #include "sc_keyboard.h"
 #include "sc_output.h"
+#include <wlr/types/wlr_output_management_v1.h>
 
 void sc_compositor_setup_backend(struct sc_compositor *compositor)
 {

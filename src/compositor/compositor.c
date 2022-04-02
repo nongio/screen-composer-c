@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wlr/types/wlr_data_device.h>
+#include <wlr/types/wlr_xdg_output_v1.h>
 
 #include "log.h"
 #include "sc_compositor.h"
@@ -59,6 +60,9 @@ sc_compositor_create()
 	sc_compositor_setup_workspaces(compositor);
 	sc_compositor_setup_xdgshell(compositor);
 	sc_compositor_setup_layershell(compositor);
+
+	compositor->output_manager = wlr_xdg_output_manager_v1_create(
+	compositor->wl_display, compositor->output_layout);
 
 	sc_compositor_setup_gles2();
 
