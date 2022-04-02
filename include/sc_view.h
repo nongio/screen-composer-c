@@ -55,6 +55,8 @@ struct sc_view {
 	struct wl_listener on_surface_commit;
 	struct wl_listener on_subsurface_new;
 	struct wl_listener on_subview_destroy;
+
+	struct sc_texture_attributes *texture_attributes;
 };
 
 void sc_view_init(struct sc_view *view,  enum sc_view_type type, struct sc_view_impl *impl,

@@ -109,7 +109,7 @@ void
 sc_view_init(struct sc_view *view, enum sc_view_type type,
 			 struct sc_view_impl *impl, struct wlr_surface *surface)
 {
-	DLOG("sc_view_init\n");
+	// DLOG("sc_view_init [%u]\n", wl_resource_get_id(surface->resource));
 	view->type = type;
 	if (impl != NULL) {
 		view->impl = impl;
@@ -118,6 +118,7 @@ sc_view_init(struct sc_view *view, enum sc_view_type type,
 	}
 
 	view->surface = surface;
+	view->texture_attributes = malloc(sizeof(struct sc_texture_attributes));
 	wl_list_init(&view->children);
 
 	view->on_surface_commit.notify = view_surface_commit_handler;
@@ -135,6 +136,7 @@ sc_view_destroy(struct sc_view *view)
 	wl_list_remove(&view->on_subsurface_new.link);
 	wl_list_remove(&view->on_surface_commit.link);
 	wl_list_remove(&view->on_subview_destroy.link);
+	free(view->texture_attributes);
 }
 
 void
