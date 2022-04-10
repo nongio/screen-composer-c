@@ -1,0 +1,6 @@
+[wrap-git]
+url = https://chromium.googlesource.com/chromium/tools/depot_tools.git
+revision = head
+patch_directory = depot_tools
+[provide]
+dependency_names = depot_tools

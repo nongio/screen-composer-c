@@ -11,6 +11,6 @@ headers = [
   './',
   './include',
 ]
-dep = declare_dependency(
-  dependencies : cc.find_library('skia', dirs : meson.current_source_dir() / 'out' / 'Static'),
-  include_directories : include_directories(headers))
+#dep = declare_dependency(
+#  dependencies : cc.find_library('skia', dirs : meson.current_source_dir() / 'out' / 'Static'),
+#  include_directories : include_directories(headers))

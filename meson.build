@@ -40,6 +40,8 @@ pixman = dependency('pixman-1')
 math           = cc.find_library('m')
 glesv2 = dependency('glesv2')
 
+subproject('depot_tools')
+libskia = subproject('skia').get_variable('dep')
 
 wl_protocol_dir = wayland_protos.get_variable(pkgconfig:'pkgdatadir')
 wayland_scanner = find_program('wayland-scanner')
