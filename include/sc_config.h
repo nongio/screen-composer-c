@@ -5,6 +5,7 @@ struct sc_configuration {
 	int display_width;
 	int display_height;
 	int display_refresh;
+	float display_scale;
 	int max_render_time;
 	char *shaders_path;
 };

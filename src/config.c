@@ -24,6 +24,8 @@ static int handler(void* user, const char* section, const char* name,
         pconfig->display_refresh = atoi(value);
     } else if (MATCH("Display", "max_render_time")) {
         pconfig->max_render_time = atoi(value);
+    } else if (MATCH("Display", "scale")) {
+        pconfig->display_scale = atof(value);
     } else if (MATCH("Compositor", "shaders_path")) {
         pconfig->shaders_path = strdup(value);
     } else {
