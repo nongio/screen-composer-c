@@ -26,7 +26,8 @@ enum sc_view_type {
 	SC_VIEW_TOPLEVEL,
 	SC_VIEW_POPUP,
 	SC_VIEW_SUBVIEW,
-	SC_VIEW_LAYER,
+	SC_VIEW_WLRLAYER,
+	SC_VIEW_SCLAYER,
 };
 
 struct sc_view {

@@ -4,7 +4,7 @@
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_compositor_workspace.h"
-#include "sc_layer_view.h"
+#include "sc_wlr_layer_view.h"
 #include "sc_toplevel_view.h"
 #include "sc_view.h"
 #include "sc_workspace.h"
@@ -35,8 +35,8 @@ sc_compositor_add_toplevel(struct sc_compositor *compositor,
 }
 
 void
-sc_compositor_add_layer(struct sc_compositor *compositor,
-						struct sc_layer_view *layer)
+sc_compositor_add_wlr_layer(struct sc_compositor *compositor,
+						struct sc_wlr_layer_view *layer)
 {
 	switch (layer->layer_surface->pending.layer) {
 	case ZWLR_LAYER_SHELL_V1_LAYER_BACKGROUND:
@@ -75,7 +75,7 @@ sc_composer_view_at(struct sc_compositor *compositor, double x, double y,
 		*surface = sc_view_surface_at(view, x, y, sx, sy);
 
 		if (*surface != NULL) {
-			return (struct sc_view *) view;
+			return view;
 		}
 	}
 	return NULL;
@@ -84,14 +84,11 @@ sc_composer_view_at(struct sc_compositor *compositor, double x, double y,
 void
 sc_composer_focus_view(struct sc_compositor *compositor, struct sc_view *view)
 {
-	DLOG("focus view\n");
-
 	if (view == NULL) {
-		DLOG("view == NULL\n");
+		DLOG("focus view == NULL\n");
 		return;
 	}
 	if (view == compositor->current_view) {
-		DLOG("view == compositor->current_view\n");
 		return;
 	}
 	struct wlr_seat *seat = compositor->seat;

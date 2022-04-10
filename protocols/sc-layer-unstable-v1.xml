@@ -108,7 +108,7 @@
     <request name="set_compositing_filter">
       <description summary="filter used to composite the layer and the content behind it">
       </description>
-      <arg name="filter" type="object" interface="sc_filter" allow-null="true"/>
+      <arg name="filter" type="object" interface="sc_filter_v1" allow-null="true"/>
     </request>
     <request name="add_sublayer">
       <description summary="Appends the layer to the layer’s list of sublayers">

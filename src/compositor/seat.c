@@ -6,7 +6,7 @@
 #include "log.h"
 #include "sc_compositor.h"
 #include "sc_compositor_seat.h"
-#include "sc_layer_view.h"
+#include "sc_wlr_layer_view.h"
 #include "sc_toplevel_view.h"
 #include "sc_view.h"
 

@@ -13,6 +13,7 @@
 #include "sc_compositor_seat.h"
 #include "sc_compositor_workspace.h"
 #include "sc_compositor_xdgshell.h"
+#include "sc_compositor_layercompositor.h"
 #include "sc_output.h"
 
 extern struct sc_configuration configuration;
@@ -59,7 +60,8 @@ sc_compositor_create()
 	sc_compositor_setup_backend(compositor);
 	sc_compositor_setup_workspaces(compositor);
 	sc_compositor_setup_xdgshell(compositor);
-	sc_compositor_setup_layershell(compositor);
+	//sc_compositor_setup_layershell(compositor);
+	//sc_compositor_setup_layercomposershell(compositor);
 
 	compositor->output_manager = wlr_xdg_output_manager_v1_create(
 	compositor->wl_display, compositor->output_layout);

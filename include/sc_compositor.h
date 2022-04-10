@@ -13,6 +13,8 @@
 #include <wlr/types/wlr_xcursor_manager.h>
 #include <wlr/types/wlr_xdg_shell.h>
 
+#include "sc-layer-shell.h"
+
 enum sc_cursor_mode {
 	SC_CURSOR_PASSTHROUGH,
 	SC_CURSOR_MOVE,
@@ -40,7 +42,7 @@ struct sc_compositor {
 	/* protocols */
 	struct wlr_xdg_shell *xdg_shell;
 	struct wlr_layer_shell_v1 *layer_shell;
-
+	struct sc_layer_shell_v1 *layer_composer_shell;
 	/* inputs */
 	struct wl_list keyboards;
 	struct wlr_cursor *cursor;
@@ -72,6 +74,7 @@ struct sc_compositor {
 
 	struct wl_listener on_new_xdg_surface;
 	struct wl_listener on_new_layer_surface;
+	struct wl_listener on_new_layercomposer_surface;
 };
 
 struct sc_compositor* sc_compositor_create();

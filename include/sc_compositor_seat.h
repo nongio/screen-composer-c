@@ -3,7 +3,7 @@
 
 struct sc_compositor;
 struct sc_toplevel_view;
-struct sc_layer_view;
+struct sc_wlr_layer_view;
 struct sc_view;
 
 void sc_compositor_setup_seat(struct sc_compositor *compositor);
