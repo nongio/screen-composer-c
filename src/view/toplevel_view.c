@@ -71,7 +71,9 @@ xdg_toplevel_popup_new(struct wl_listener *listener, void *data)
 	struct wlr_xdg_popup *xdg_popup = data;
 	struct sc_popup_view *popup_view = sc_popup_view_create(xdg_popup, view);
 
-	wl_list_insert(&view->children, &popup_view->link);
+	struct sc_view *subview = (struct sc_view *) popup_view;
+
+	wl_list_insert(&view->children, &subview->link);
 }
 
 static void
@@ -145,7 +147,6 @@ struct sc_toplevel_view *
 sc_toplevel_view_create(struct wlr_xdg_surface *xdg_surface,
 						struct sc_compositor *compositor)
 {
-	DLOG("sc_toplevel_view_create\n");
 	struct sc_toplevel_view *toplevel_view =
 		calloc(1, sizeof(struct sc_toplevel_view));
 

@@ -6,7 +6,6 @@
 
 struct sc_popup_view {
 	struct sc_view super;
-	struct wl_list link;
 
 	/* protocol surfaces */
 	struct wlr_xdg_popup *xdg_popup;
@@ -16,6 +15,7 @@ struct sc_popup_view {
 	struct wl_listener on_map;
 	struct wl_listener on_unmap;
 	struct wl_listener on_destroy;
+	struct wl_listener on_new_popup;
 };
 
 struct sc_popup_view *

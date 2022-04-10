@@ -87,4 +87,6 @@ void sc_view_activate(struct sc_view *view);
 
 void sc_view_deactivate(struct sc_view *view);
 
+void
+sc_view_get_absolute_position(struct sc_view *view, struct sc_point *p);
 #endif

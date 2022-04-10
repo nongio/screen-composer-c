@@ -37,7 +37,12 @@ sc_output_create(struct wlr_output *wlr_output,
 	output->max_render_time = configuration.max_render_time;
 	wlr_output_init_render(output->wlr_output, compositor->wlr_allocator,
 						   compositor->wlr_renderer);
+	wlr_output_set_custom_mode(output->wlr_output, configuration.display_width,
+	configuration.display_height, configuration.display_refresh);
+	wlr_output_set_scale(output->wlr_output, configuration.display_scale);
 
+	wlr_output_commit(output->wlr_output);
+	
 	if (!wl_list_empty(&output->wlr_output->modes)) {
 		struct wlr_output_mode *mode =
 			wlr_output_preferred_mode(output->wlr_output);
@@ -73,7 +78,8 @@ sc_output_create(struct wlr_output *wlr_output,
 	wlr_output_damage_whole(output->wlr_output);
 
 	int width, height;
-  	wlr_output_effective_resolution(output->wlr_output, &width, &height);
+  	wlr_output_transformed_resolution(output->wlr_output, &width, &height);
+	
 	
 	output->fbo = fbo_create(width, height);
 	return output;

@@ -12,14 +12,29 @@ static void
 view_surface_commit_handler(struct wl_listener *listener, void *data)
 {
 	struct sc_view *view = wl_container_of(listener, view, on_surface_commit);
+	// subviews informations can be committed together with the parent
+	struct sc_view *subview;
+	wl_list_for_each (subview, &view->children, link) {
+		if (subview->subsurface) {
+			subview->frame.x = subview->subsurface->current.x;
+			subview->frame.y = subview->subsurface->current.y;
+			subview->frame.width = subview->surface->current.width;
+			subview->frame.height = subview->surface->current.height;
+		}
+	}
 
 	if (view->impl->commit) {
 		view->impl->commit(view);
 		return;
 	}
 
-	view->frame.x = 0;
-	view->frame.y = 0;
+	if (view->subsurface) {
+		view->frame.x = view->subsurface->current.x;
+		view->frame.y = view->subsurface->current.y;
+	} else {
+		view->frame.x = 0;
+		view->frame.y = 0;
+	}
 	view->frame.width = view->surface->current.width;
 	view->frame.height = view->surface->current.height;
 
@@ -54,7 +69,6 @@ static void
 for_each_surface(struct sc_view *view, wlr_surface_iterator_func_t iterator,
 				 void *user_data)
 {
-
 	wlr_surface_for_each_surface(view->surface, iterator, user_data);
 }
 
@@ -84,9 +98,12 @@ view_subsurface_create(struct wlr_subsurface *subsurface, struct sc_view *view)
 {
 	struct sc_view *subview = calloc(1, sizeof(struct sc_view));
 	sc_view_init(subview, SC_VIEW_SUBVIEW, NULL, subsurface->surface);
+	subview->subsurface = subsurface;
 	subview->output = view->output;
 	subview->parent = view;
 
+	// subsurfaces are mapped by default
+	subview->mapped = true;
 	subview->on_subview_destroy.notify = subview_destroy_handler;
 	wl_signal_add(&subsurface->events.destroy, &subview->on_subview_destroy);
 
@@ -109,7 +126,6 @@ void
 sc_view_init(struct sc_view *view, enum sc_view_type type,
 			 struct sc_view_impl *impl, struct wlr_surface *surface)
 {
-	// DLOG("sc_view_init [%u]\n", wl_resource_get_id(surface->resource));
 	view->type = type;
 	if (impl != NULL) {
 		view->impl = impl;
@@ -154,7 +170,6 @@ sc_view_damage_part(struct sc_view *view)
 void
 sc_view_damage_whole(struct sc_view *view)
 {
-	DLOG("sc_view_damage_whole\n");
 	if (view->output != NULL) {
 		sc_output_add_damage_from_view(view->output, view, true);
 	}
@@ -163,12 +178,11 @@ sc_view_damage_whole(struct sc_view *view)
 void
 sc_view_get_absolute_position(struct sc_view *view, struct sc_point *p)
 {
-	p->x = view->frame.x;
-	p->y = view->frame.y;
+	p->x += view->frame.x;
+	p->y += view->frame.y;
 
 	if (view->parent) {
-		p->x += view->parent->frame.x;
-		p->y += view->parent->frame.y;
+		sc_view_get_absolute_position(view->parent, p);
 	}
 }
 
@@ -176,24 +190,21 @@ void
 sc_view_map(struct sc_view *view)
 {
 	view->mapped = true;
-
-	struct sc_point p;
+	struct sc_point p = {.x = 0, .y = 0};
 	sc_view_get_absolute_position(view, &p);
 
-	struct sc_output *output = sc_compositor_output_at(p.x, p.y);
-	view->output = output;
+	if (!view->output) {
+		struct sc_output *output = sc_compositor_output_at(p.x, p.y);
+		view->output = output;
+	}
 
-	struct wlr_subsurface *sub;
-	wl_list_for_each (sub, &view->surface->current.subsurfaces_below,
-					  current.link) {
-		struct sc_view *subview = view_subsurface_create(sub, view);
-		wl_list_insert(&view->children, &subview->link);
+
+	struct sc_view *subview;
+	wl_list_for_each (subview, &view->children, link) {
+		subview->output = view->output;
+		subview->mapped = true;
 	}
-	wl_list_for_each (sub, &view->surface->current.subsurfaces_above,
-					  current.link) {
-		struct sc_view *subview = view_subsurface_create(sub, view);
-		wl_list_insert(&view->children, &subview->link);
-	}
+	
 	sc_view_damage_whole(view);
 }
 
