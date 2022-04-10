@@ -132,6 +132,10 @@ sc_view_init(struct sc_view *view, enum sc_view_type type,
 void
 sc_view_destroy(struct sc_view *view)
 {
+	struct sc_view *subview;
+	wl_list_for_each (subview, &view->children, link) {
+		subview->parent = NULL;
+	}
 	wl_list_remove(&view->link);
 	wl_list_remove(&view->on_subsurface_new.link);
 	wl_list_remove(&view->on_surface_commit.link);
