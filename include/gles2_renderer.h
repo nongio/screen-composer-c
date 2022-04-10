@@ -3,6 +3,7 @@
 
 struct sc_output;
 
+void gl_begin();
 void sc_renderer_load_shaders();
 
 void sc_render_texture_with_output(struct wlr_gles2_texture_attribs *texture, int sx, int sy, int w,

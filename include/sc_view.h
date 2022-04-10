@@ -30,6 +30,7 @@ enum sc_view_type {
 	SC_VIEW_SCLAYER,
 };
 
+struct skia_image;
 struct sc_view {
 	enum sc_view_type type;
 	struct wl_list link;
@@ -58,6 +59,7 @@ struct sc_view {
 	struct wl_listener on_subview_destroy;
 
 	struct sc_texture_attributes *texture_attributes;
+	struct skia_image *skia;
 };
 
 void sc_view_init(struct sc_view *view,  enum sc_view_type type, struct sc_view_impl *impl,

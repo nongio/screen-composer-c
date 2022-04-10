@@ -140,14 +140,14 @@ sc_render_texture_with_output(struct wlr_gles2_texture_attribs *texture, int sx,
 							  struct sc_output *output)
 {
 
-	double ox = output->output_box->x;
-	double oy = output->output_box->y;
+	// double ox = output->output_box->x;
+	// double oy = output->output_box->y;
 
 	//  struct wlr_output *o = output->wlr_output;
 	//	wlr_output_layout_output_coords(output->layout, o, &ox, &oy);
 
-	ox += sx;
-	oy += sy;
+	// ox += sx;
+	// oy += sy;
 
 	struct wlr_box box = {
 		.x = sx,

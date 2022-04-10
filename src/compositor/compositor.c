@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <wlr/types/wlr_data_device.h>
 #include <wlr/types/wlr_xdg_output_v1.h>
+#include <wlr/types/wlr_xdg_decoration_v1.h>
 
 #include "log.h"
 #include "sc_compositor.h"
@@ -55,6 +56,9 @@ sc_compositor_create()
 
 	wlr_data_device_manager_create(compositor->wl_display);
 
+	compositor->output_manager = wlr_xdg_output_manager_v1_create(
+		compositor->wl_display, compositor->output_layout);
+	
 	sc_compositor_setup_seat(compositor);
 	sc_compositor_setup_cursor(compositor);
 	sc_compositor_setup_backend(compositor);
@@ -63,8 +67,9 @@ sc_compositor_create()
 	//sc_compositor_setup_layershell(compositor);
 	//sc_compositor_setup_layercomposershell(compositor);
 
-	compositor->output_manager = wlr_xdg_output_manager_v1_create(
-	compositor->wl_display, compositor->output_layout);
+	// struct wlr_xdg_decoration_manager_v1 * decoration_manager =	
+	// wlr_xdg_decoration_manager_v1_create(compositor->wl_display);
+	// wlr_xdg_toplevel_decoration_v1_set_mode()
 
 	sc_compositor_setup_gles2();
 

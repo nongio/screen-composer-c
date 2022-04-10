@@ -6,12 +6,50 @@
 #include "sc_compositor.h"
 #include "sc_geometry.h"
 #include "sc_output.h"
+#include "sc_skia.h"
 #include "sc_view.h"
+
+void
+view_surface_map_skia_image(struct sc_view *view)
+{
+	struct wlr_surface *surface = view->surface;
+	struct wlr_texture *texture = wlr_surface_get_texture(surface);
+	struct sc_output *output = view->output;
+	if (view->parent != NULL) {
+		output = view->parent->output;
+	}
+	if (output == NULL) {
+		// we need an output with a skia context to map a skia image
+		return;
+	}
+	if (texture) {
+		struct wlr_gles2_texture_attribs *tex_attribs =
+			malloc(sizeof(struct wlr_gles2_texture_attribs));
+		wlr_gles2_texture_get_attribs(texture, tex_attribs);
+
+		if (view->texture_attributes->target != tex_attribs->target ||
+			view->texture_attributes->tex != tex_attribs->tex ||
+			view->texture_attributes->width != texture->width ||
+			view->texture_attributes->height != texture->height) {
+			// we should create a new skia_image
+			view->texture_attributes->target = tex_attribs->target;
+			view->texture_attributes->tex = tex_attribs->tex;
+			view->texture_attributes->width = texture->width;
+			view->texture_attributes->height = texture->height;
+
+			skia_image_from_texture(output->skia, surface,
+									view->texture_attributes);
+		}
+		free(tex_attribs);
+	}
+}
 
 static void
 view_surface_commit_handler(struct wl_listener *listener, void *data)
 {
 	struct sc_view *view = wl_container_of(listener, view, on_surface_commit);
+	view_surface_map_skia_image(view);
+
 	// subviews informations can be committed together with the parent
 	struct sc_view *subview;
 	wl_list_for_each (subview, &view->children, link) {
@@ -40,7 +78,7 @@ view_surface_commit_handler(struct wl_listener *listener, void *data)
 
 	if (view->parent != NULL) {
 		sc_output_add_damage_from_view(view->parent->output, view->parent,
-									   false);
+									   true);
 	} else {
 		sc_output_add_damage_from_view(view->output, view, false);
 	}
@@ -104,6 +142,8 @@ view_subsurface_create(struct wlr_subsurface *subsurface, struct sc_view *view)
 
 	// subsurfaces are mapped by default
 	subview->mapped = true;
+	view_surface_map_skia_image(view);
+
 	subview->on_subview_destroy.notify = subview_destroy_handler;
 	wl_signal_add(&subsurface->events.destroy, &subview->on_subview_destroy);
 
@@ -157,6 +197,7 @@ sc_view_destroy(struct sc_view *view)
 	wl_list_remove(&view->on_surface_commit.link);
 	wl_list_remove(&view->on_subview_destroy.link);
 	free(view->texture_attributes);
+	free_skia_image(view->surface);
 }
 
 void
@@ -203,6 +244,7 @@ sc_view_map(struct sc_view *view)
 	wl_list_for_each (subview, &view->children, link) {
 		subview->output = view->output;
 		subview->mapped = true;
+		view_surface_map_skia_image(subview);
 	}
 	
 	sc_view_damage_whole(view);

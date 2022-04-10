@@ -1,9 +1,10 @@
-project('screen-composer', 'c',
+project('screen-composer', 'c', 'cpp',
   version: '0.0.0',
   license: 'MIT',
   meson_version: '>=0.58.1',
   default_options: [
     'c_std=c11',
+    'cpp_std=c++17',
     'warning_level=2',
     'werror=true',
   ],
@@ -15,9 +16,16 @@ add_project_arguments(
     '-Wundef',
     '-Wno-unused-parameter',
   ],
-  language: 'c',
+  language: ['c'],
 )
-
+add_project_arguments(
+  [
+    '-DWLR_USE_UNSTABLE',
+    # '-Wundef',
+    '-Wno-unused-parameter',
+  ],
+  language: ['cpp'],
+)
 if get_option('buildtype').startswith('debug')
   add_project_arguments('-DDEBUG', language : 'c')
 endif
@@ -110,6 +118,7 @@ sc_sources = [
   'src/compositor/wlr_layer_shell.c',
   'src/compositor/sc_layer_shell.c',
   'src/compositor/seat.c',
+  'src/compositor/skia.cpp',
   'src/output/output.c',
   'src/output/repaintdelay.c',
   'src/output/view_iterators.c',
@@ -124,6 +133,7 @@ sc_sources = [
   'src/view/popup_view.c',
   'src/gles2/renderer.c',
   'src/gles2/shader.c',
+  'src/gles2/fbo.c',
   'src/utils/file.c',
   'src/layers-composer/shell.c',
   'src/layers-composer/layer.c',
@@ -148,6 +158,11 @@ sclib = library('sc',
 	pixman,
     inih_dep,
     glesv2,
+    skia,
+    dependency('egl'),
+    dependency('libjpeg'),
+    dependency('libpng'),
+    dependency('fontconfig'),
   ],
 )
 
@@ -166,6 +181,11 @@ executable(
 	pixman,
     inih_dep,
     glesv2,
+    skia,
+    dependency('egl'),
+    dependency('libjpeg'),
+    dependency('libpng'),
+    dependency('fontconfig'),
   ],
   install: true,
 )

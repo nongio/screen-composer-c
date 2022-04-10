@@ -1,0 +1,6 @@
+[wrap-git]
+url = https://skia.googlesource.com/skia.git
+revision = head
+patch_directory = skia
+[provide]
+dependency_names = skia

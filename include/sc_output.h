@@ -5,6 +5,7 @@
 #include "sc_compositor.h"
 #include "sc_fbo.h"
 
+struct skia_context;
 
 struct sc_output {
 	struct wl_list link;
@@ -33,6 +34,7 @@ struct sc_output {
 	struct wl_event_source *repaint_timer;
 
 	struct sc_fbo *fbo;
+	struct skia_context *skia;
 };
 
 struct sc_view;

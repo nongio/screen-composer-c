@@ -10,6 +10,7 @@
 #include "sc_output.h"
 #include "sc_output_repaintdelay.h"
 #include "sc_view.h"
+#include "sc_skia.h"
 
 extern struct sc_configuration configuration;
 
@@ -82,6 +83,8 @@ sc_output_create(struct wlr_output *wlr_output,
 	
 	
 	output->fbo = fbo_create(width, height);
+	output->skia = skia_context_create_for_view(output->fbo);
+
 	return output;
 }
 
