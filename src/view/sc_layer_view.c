@@ -11,15 +11,26 @@ static void
 layer_map(struct wl_listener *listener, void *data)
 {
 
-	DLOG("layer_map\n");
+	LOG("layer_map\n");
 
-	// struct sc_layer_view *layer_view =
-	// 	wl_container_of(listener, layer_view, on_map);
+	struct sc_layer_view *layer_view =
+		wl_container_of(listener, layer_view, on_map);
 
-	// struct sc_view *view = (struct sc_view *) layer_view;
-	// sc_view_map(view);
+	struct sc_view *view = (struct sc_view *) layer_view;
 
-	// sc_compositor_add_layer(view->compositor, layer_view);
+	struct sc_output *output = sc_compositor_output_at(
+		layer_view->layer_surface->current.position.x,
+		layer_view->layer_surface->current.position.y
+	);
+
+	sc_view_set_output(view, output);
+
+	view->frame.width = layer_view->layer_surface->current.bounds.width;
+	view->frame.height = layer_view->layer_surface->current.bounds.height;
+
+	sc_view_map(view);
+
+	sc_compositor_add_layer(view->compositor, layer_view);
 }
 
 static void
@@ -52,26 +63,27 @@ static void
 layer_surface_commit(struct wl_listener *listener, void *data)
 {
 	DLOG("layer_surface_commit\n");
-	// struct sc_layer_view *layer_view =
-	// 	wl_container_of(listener, layer_view, on_surface_commit);
+	struct sc_layer_view *layer_view =
+	 	wl_container_of(listener, layer_view, on_surface_commit);
 
-	// struct sc_view *view = (struct sc_view *) layer_view;
+	struct sc_view *view = (struct sc_view *) layer_view;
 
-	// struct wlr_layer_surface_v1 *layer_surface = layer_view->layer_surface;
-	// if (view->mapped != layer_surface->mapped ||
-	// 	(layer_surface->added && !layer_surface->configured)) {
+	struct sc_layer_surface_v1 *layer_surface = layer_view->layer_surface;
+	if (view->mapped != layer_surface->mapped ||
+		(layer_surface->added && !layer_surface->configured)) {
 
-	// 	wlr_layer_surface_v1_configure(layer_surface, view->frame.width,
-	// 								   view->frame.height);
-	// }
-	// sc_output_add_damage_from_view(view->output, view, true);
+		//sc_layer_surface_v1_configure(layer_surface, view->frame.width,
+		//							   view->frame.height);
+	}
+	LOG("add damage\n");
+	sc_output_add_damage_from_view(view->output, view, true);
 }
 
-static void
-layer_for_each_surface(struct sc_view *view,
-						  wlr_surface_iterator_func_t iterator, void *user_data)
-{
-}
+//static void
+//layer_for_each_surface(struct sc_view *view,
+//						  wlr_surface_iterator_func_t iterator, void *user_data)
+//{
+//}
 
 static void
 layer_for_each_popup_surface(struct sc_view *view,
@@ -81,7 +93,7 @@ layer_for_each_popup_surface(struct sc_view *view,
 }
 
 static struct sc_view_impl layer_view_impl = {
-	.for_each_surface = layer_for_each_surface,
+//	.for_each_surface = layer_for_each_surface,
 	.for_each_popup_surface = layer_for_each_popup_surface,
 };
 
@@ -94,17 +106,11 @@ sc_layer_view_create(struct sc_layer_surface_v1 *layer_surface,
 	struct sc_layer_view *layer_view = calloc(1, sizeof(struct sc_layer_view));
 	struct sc_view *view = (struct sc_view *) layer_view;
 
-	// view->frame = (struct wlr_box){
-	// 	.x = layer_surface->pending.margin.left,
-	// 	.y = layer_surface->pending.margin.top,
-	// 	.width = layer_surface->pending.desired_width,
-	// 	.height = layer_surface->pending.desired_height,
-	// };
 
 	view->compositor = compositor;
 	sc_view_init(view, SC_VIEW_SCLAYER, &layer_view_impl, layer_surface->surface);
 
-	// layer_view->layer_surface = layer_surface;
+	layer_view->layer_surface = layer_surface;
 
 	layer_view->on_map.notify = layer_map;
 	wl_signal_add(&layer_surface->events.map, &layer_view->on_map);

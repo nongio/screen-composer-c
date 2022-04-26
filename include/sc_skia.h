@@ -2,6 +2,7 @@
 #define _SC_SKIA_C_H
 #include "sc_fbo.h"
 
+struct sc_layer_view;
 struct sc_texture_attributes {
 	GLenum target;
 	GLuint tex;
@@ -18,5 +19,6 @@ struct skia_image *skia_image_from_texture(struct skia_context *skia, struct wlr
 void free_skia_image(struct wlr_surface *surface);
 
 void skia_draw_surface(struct skia_context *skia, struct wlr_surface *surface, int x, int y, int w, int h);
+void skia_draw_layer(struct skia_context *skia, struct wlr_surface *surface, struct sc_layer_v1_state *layer);
 
 #endif

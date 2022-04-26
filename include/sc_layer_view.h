@@ -2,8 +2,10 @@
 #define _SC_LAYER_COMPOSER_VIEW_H
 
 
-#include "sc_compositor.h"
+//#include "sc_compositor.h"
 #include "sc_view.h"
+//struct sc_view;
+struct sc_compositor;
 
 struct sc_layer_view {
 	struct sc_view super;
@@ -19,8 +21,8 @@ struct sc_layer_view {
 	struct wl_listener on_surface_commit;
 };
 
-struct sc_layer_composer_view *
-sc_layer_composer_view_create(struct sc_layer_surface_v1 *layer_surface,
+struct sc_layer_view *
+sc_layer_view_create(struct sc_layer_surface_v1 *layer_surface,
 						struct sc_compositor *compositor);
 
 #endif

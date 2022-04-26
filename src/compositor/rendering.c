@@ -9,6 +9,7 @@
 #include "sc_output.h"
 #include "sc_toplevel_view.h"
 #include "sc_wlr_layer_view.h"
+#include "sc_layer_view.h"
 #include "sc_view.h"
 #include "sc_popup_view.h"
 #include "sc_workspace.h"
@@ -164,9 +165,18 @@ sc_render_view(struct sc_view *view, float x, float y, pixman_region32_t *output
 		.height = view->frame.height * view->output->wlr_output->scale,
 	};
 
+	LOG("draw\n");
 	if (output_box_is_damged(view->output, &box, output_damage) || true) {
+
 		if(view->mapped) {
-			skia_draw_surface(view->output->skia, view->surface, box.x, box.y, box.width, box.height);
+			LOG("view mapped\n");
+			if(view->type == SC_VIEW_SCLAYER) {
+				LOG("view layer\n");
+				skia_draw_layer(view->output->skia, view->surface, &((struct sc_layer_view*)view)->layer_surface->current);
+			} else {
+				LOG("view surface\n");
+				skia_draw_surface(view->output->skia, view->surface, box.x, box.y, box.width, box.height);
+			}
 		}
 	}
 	// damage finish
@@ -208,9 +218,15 @@ sc_render_output(struct sc_output *output, struct timespec *when,
 
 	struct sc_workspace *workspace = output->compositor->current_workspace;
 
+	LOG("render output\n");
 	struct sc_toplevel_view *toplevel_view;
 	wl_list_for_each_reverse (toplevel_view, &workspace->views_toplevel, link) {
 		sc_render_view(&toplevel_view->super, 0, 0, output_damage);
+	}
+	struct sc_layer_view *layer_view;
+	wl_list_for_each_reverse (layer_view, &workspace->sc_layers, link) {
+		LOG("render sc layer\n");
+		sc_render_view(&layer_view->super, 0, 0, output_damage);
 	}
 
 	skia_submit(output->skia);

@@ -82,22 +82,6 @@ layer_shell_from_resource(struct wl_resource *resource)
 }
 
 /**
-	* creates a layer surface from a wl_surface
-	*
-	* A layer surface is used to visualize bitmaps generated from
-	* the clients. It provides position, scale, rotation attributes as
-	* well some rendering capabilities like: background color,
-	* borders, shadows.
-	*/
-void shell_handle_get_layer_surface(struct wl_client *client,
-				struct wl_resource *resource,
-				uint32_t id,
-				struct wl_resource *surface,
-				struct wl_resource *output)
-{
-
-}
-/**
 	* creates an animation object that can run on the compositor
 	*
 	* An animation interface, defines the basic properties of an

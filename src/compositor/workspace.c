@@ -6,6 +6,7 @@
 #include "sc_compositor_workspace.h"
 #include "sc_wlr_layer_view.h"
 #include "sc_toplevel_view.h"
+#include "sc_layer_view.h"
 #include "sc_view.h"
 #include "sc_workspace.h"
 
@@ -32,6 +33,15 @@ sc_compositor_add_toplevel(struct sc_compositor *compositor,
 	struct sc_view *view = (struct sc_view *) toplevelview;
 	view->frame.x = numtoplevels * 50;
 	view->frame.y = numtoplevels * 50;
+}
+
+void
+sc_compositor_add_layer(struct sc_compositor *compositor,
+						   struct sc_layer_view *layerview)
+{
+	wl_list_insert(&compositor->current_workspace->sc_layers,
+				   &layerview->link);
+	sc_composer_focus_view(compositor, (struct sc_view*)&layerview->super);
 }
 
 void

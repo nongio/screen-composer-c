@@ -12,6 +12,7 @@ sc_workspace_create()
 	wl_list_init(&workspace->layers_top);
 	wl_list_init(&workspace->layers_bottom);
 	wl_list_init(&workspace->layers_background);
+	wl_list_init(&workspace->sc_layers);
 
 	return workspace;
 }

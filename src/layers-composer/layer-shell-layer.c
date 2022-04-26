@@ -126,8 +126,16 @@ static const struct wlr_surface_role layer_surface_role = {
 	.precommit = layer_surface_role_precommit,
 };
 
+/**
+	* creates a layer surface from a wl_surface
+	*
+	* A layer surface is used to visualize bitmaps generated from
+	* the clients. It provides position, scale, rotation attributes as
+	* well some rendering capabilities like: background color,
+	* borders, shadows.
+	*/
 void
-layer_shell_handle_get_layer_surface(struct wl_client   *wl_client,
+shell_handle_get_layer_surface(struct wl_client   *wl_client,
 				     struct wl_resource *client_resource,
 				     uint32_t		 id,
 				     struct wl_resource *surface_resource,
@@ -177,7 +185,7 @@ layer_shell_handle_get_layer_surface(struct wl_client   *wl_client,
   //		&surface->surface_destroy);
   //	surface->surface_destroy.notify = handle_surface_destroyed;
 
-  DLOG("new layer_surface %p (res %p)\n", surface, surface->resource);
+  LOG("new layer_surface %p (res %p)\n", surface, surface->resource);
   wl_resource_set_implementation(surface->resource,
 				 &sc_layer_surface_implementation, surface,
 				 layer_surface_resource_destroy);
@@ -191,7 +199,7 @@ layer_surface_handle_set_bounds(struct wl_client	*client,
 			       struct wl_resource *resource, wl_fixed_t x,
 			       wl_fixed_t y, wl_fixed_t width, wl_fixed_t height)
 {
-  DLOG("layer_surface_handle_set_bounds\n");
+  LOG("layer_surface_handle_set_bounds\n");
 
   struct sc_layer_surface_v1 *surface = layer_surface_from_resource(resource);
 
@@ -317,7 +325,7 @@ layer_surface_handle_set_border_width(struct wl_client	*client,
 
 static void
 layer_surface_handle_set_border_color(struct wl_client	*client,
-			       struct wl_resource *resource, wl_fixed_t r, wl_fixed_t g, wl_fixed_t b, wl_fixed_t a)
+			       struct wl_resource *resource, uint32_t r, uint32_t g, uint32_t b, uint32_t a)
 {
   struct sc_layer_surface_v1 *surface = layer_surface_from_resource(resource);
 
@@ -326,16 +334,16 @@ layer_surface_handle_set_border_color(struct wl_client	*client,
       return;
     }
   surface->pending.border_color = (struct sc_color){
-    .r = wl_fixed_to_double(r),
-    .g = wl_fixed_to_double(g),
-    .b = wl_fixed_to_double(b),
-    .a = wl_fixed_to_double(a),
+    .r = r,
+    .g = g,
+    .b = b,
+    .a = a,
   };
 }
 
 static void
 layer_surface_handle_set_background_color(struct wl_client	*client,
-			       struct wl_resource *resource, wl_fixed_t r, wl_fixed_t g, wl_fixed_t b, wl_fixed_t a)
+			       struct wl_resource *resource, uint32_t r, uint32_t g, uint32_t b, uint32_t a)
 {
   struct sc_layer_surface_v1 *surface = layer_surface_from_resource(resource);
 
@@ -344,10 +352,10 @@ layer_surface_handle_set_background_color(struct wl_client	*client,
       return;
     }
   surface->pending.background_color = (struct sc_color){
-    .r = wl_fixed_to_double(r),
-    .g = wl_fixed_to_double(g),
-    .b = wl_fixed_to_double(b),
-    .a = wl_fixed_to_double(a),
+    .r = r,
+    .g = g,
+    .b = b,
+    .a = a,
   };
 }
 

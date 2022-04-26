@@ -4,6 +4,8 @@
 #include <wlr/types/wlr_data_device.h>
 #include <wlr/types/wlr_xdg_output_v1.h>
 #include <wlr/types/wlr_xdg_decoration_v1.h>
+#include <wlr/types/wlr_compositor.h>
+#include <wlr/render/gles2.h>
 
 #include "log.h"
 #include "sc_compositor.h"
@@ -64,8 +66,8 @@ sc_compositor_create()
 	sc_compositor_setup_backend(compositor);
 	sc_compositor_setup_workspaces(compositor);
 	sc_compositor_setup_xdgshell(compositor);
-	//sc_compositor_setup_layershell(compositor);
-	//sc_compositor_setup_layercomposershell(compositor);
+	sc_compositor_setup_layershell(compositor);
+	sc_compositor_setup_layercomposershell(compositor);
 
 	// struct wlr_xdg_decoration_manager_v1 * decoration_manager =	
 	// wlr_xdg_decoration_manager_v1_create(compositor->wl_display);

@@ -17,10 +17,10 @@ struct sc_rect {
 };
 
 struct sc_color {
-	float r;
-	float g;
-	float b;
-	float a;
+	uint32_t r;
+	uint32_t g;
+	uint32_t b;
+	uint32_t a;
 };
 
 struct sc_matrix {

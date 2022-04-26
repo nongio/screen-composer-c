@@ -3,7 +3,7 @@
 
 #include "log.h"
 #include "sc_compositor.h"
-// #include "sc_layer_view.h"
+#include "sc_layer_view.h"
 #include "sc_view.h"
 
 static void
@@ -15,9 +15,9 @@ compositor_layercomposer_surface_new(struct wl_listener *listener, void *data)
 	struct sc_compositor *compositor =
 		wl_container_of(listener, compositor, on_new_layercomposer_surface);
 
-	// struct wlr_layer_surface_v1 *layer_surface = data;
+	struct sc_layer_surface_v1 *layer_surface = data;
 
-	// sc_layer_view_create(layer_surface, compositor);
+	sc_layer_view_create(layer_surface, compositor);
 }
 
 void

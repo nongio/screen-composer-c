@@ -11,6 +11,7 @@ struct sc_workspace {
 	struct wl_list layers_top;
 	struct wl_list layers_bottom;
 	struct wl_list layers_background;
+	struct wl_list sc_layers;
 };
 
 struct sc_workspace *sc_workspace_create();

@@ -189,19 +189,19 @@
     <request name="set_border_color">
       <description summary="">
       </description>
-      <arg name="red" type="fixed"/>
-      <arg name="green" type="fixed"/>
-      <arg name="blue" type="fixed"/>
-      <arg name="alpha" type="fixed"/>
+      <arg name="red" type="uint"/>
+      <arg name="green" type="uint"/>
+      <arg name="blue" type="uint"/>
+      <arg name="alpha" type="uint"/>
     </request>
 
     <request name="set_background_color">
       <description summary="">
       </description>
-      <arg name="red" type="fixed"/>
-      <arg name="green" type="fixed"/>
-      <arg name="blue" type="fixed"/>
-      <arg name="alpha" type="fixed"/>
+      <arg name="red" type="uint"/>
+      <arg name="green" type="uint"/>
+      <arg name="blue" type="uint"/>
+      <arg name="alpha" type="uint"/>
     </request>
 
     <request name="set_shadow_opacity">
@@ -226,10 +226,10 @@
     <request name="set_shadow_color">
       <description summary="">
       </description>
-      <arg name="red" type="fixed"/>
-      <arg name="green" type="fixed"/>
-      <arg name="blue" type="fixed"/>
-      <arg name="alpha" type="fixed"/>
+      <arg name="red" type="uint"/>
+      <arg name="green" type="uint"/>
+      <arg name="blue" type="uint"/>
+      <arg name="alpha" type="uint"/>
     </request>
 
     <request name="set_transform">

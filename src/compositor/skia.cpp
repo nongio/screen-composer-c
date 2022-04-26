@@ -25,7 +25,7 @@ extern "C" {
 #include "sc_fbo.h"
 #include <wlr/util/log.h>
 #include "sc_skia.h"
-
+#include "sc-layer-shell.h"
 }
 
 std::map<struct wlr_surface *, struct skia_image *> skia_images_cache;
@@ -190,4 +190,50 @@ extern "C" void skia_draw_surface(struct skia_context *skia, struct wlr_surface 
 
     }
 }
+
+extern "C" void skia_draw_layer(struct skia_context *skia, struct wlr_surface *surface, struct sc_layer_v1_state *layer){
+    LOG("draw layer\n");
+//    struct sc_view *view = layer->base;
+    struct skia_image * skia_image = skia_images_cache[surface];
+
+    if(skia_image != NULL) {
+        SkCanvas *canvas = skia->surface->getCanvas();
+
+        sk_sp<SkImage> image = skia_image->img;
+        
+                                                    // subset, clipBounds, &outSubset, &offset));
+        SkRRect rrect = SkRRect::MakeRectXY({
+            (float)layer->position.x,
+            (float)layer->position.y,
+            (float)layer->bounds.width,
+            (float)layer->bounds.height
+        },
+            (float)layer->border_corner_radius,
+            (float)layer->border_corner_radius);
+        SkPaint p;
+        p.setAntiAlias(true);
+        p.setStyle(SkPaint::kFill_Style);
+        p.setColor(SkColorSetARGB(
+            layer->background_color.a,
+            layer->background_color.r,
+            layer->background_color.g,
+            layer->background_color.b)
+        );
+        canvas->drawRRect(rrect, p);
+        p.setStyle(SkPaint::kStroke_Style);
+        p.setStrokeWidth((float)layer->border_width);
+        p.setColor(SkColorSetARGB(
+            layer->border_color.a,
+            layer->border_color.r,
+            layer->border_color.g,
+            layer->border_color.b)
+        );
+        canvas->drawRRect(rrect, p);
+
+        // draw the surface on top of the layer
+        //canvas->drawImage(image, layer->position.x, layer->position.y);
+
+    }
+}
+
 
