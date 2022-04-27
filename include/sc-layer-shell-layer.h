@@ -1,5 +1,5 @@
-#ifndef _SCLayerShelLayer_
-#define _SCLayerShelLayer_
+#ifndef _SC_LAYER_SHELL_LAYER_H
+#define _SC_LAYER_SHELL_LAYER_H
 
 void
 shell_handle_get_layer_surface(struct wl_client   *wl_client,

@@ -1,5 +1,5 @@
-#ifndef _ScreenComposerLayerShell_
-#define _ScreenComposerLayerShell_
+#ifndef _SC_LAYER_SHELL_H
+#define _SC_LAYER_SHELL_H
 
 #include "sc-layer-unstable-v1-protocol.h"
 #include <wlr/util/box.h>
@@ -118,11 +118,9 @@ struct sc_animation_impl {
 	void (*value)(double fraction);
 };
 
-
 struct sc_animation_v1 {
 	struct wl_resource *resource;
 	struct sc_layer_shell_v1 *shell;
-
 
 	char *keypath;
 
@@ -162,5 +160,7 @@ struct sc_layer_shell_v1 *sc_layer_shell_v1_create(struct wl_display *display);
 
 struct sc_layer_shell_v1 *
 layer_shell_from_resource(struct wl_resource *resource);
+
+struct sc_animation_v1 *animation_from_resource(struct wl_resource *resource);
 
 #endif
