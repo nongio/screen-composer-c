@@ -82,30 +82,6 @@ layer_shell_from_resource(struct wl_resource *resource)
 }
 
 /**
-	* creates an animation object that can run on the compositor
-	*
-	* An animation interface, defines the basic properties of an
-	* animation: duration, speed and how the animation is applied. The
-	* be used, it needs to have a value provider (eg. basic animation)
-	* and to be attached to an object. The compositor will then take
-	* care of running the animation and apply the calculated value to
-	* the object.
-	* @param duration duration of the animation
-	* @param speed speed of the animation
-	* @param repeat_count how many times the animation should run
-	* @param autoreverse
-	*/
-void shell_handle_get_animation(struct wl_client *client,
-				struct wl_resource *resource,
-				uint32_t id,
-				wl_fixed_t duration,
-				wl_fixed_t speed,
-				int32_t repeat_count,
-				uint32_t autoreverse)
-{
-
-}
-/**
 	* an animation value provider, it interpolates between 2 or 3 values
 	*
 	* The basic animation can interpolate 2 or 3 values using the
@@ -167,9 +143,8 @@ static const struct sc_shell_unstable_v1_interface sc_layer_shell_implementation
   = {
     .get_layer_surface = shell_handle_get_layer_surface,
 	.get_animation = shell_handle_get_animation,
-    .get_basic_animation = shell_handle_get_basic_animation,
-	.get_timing_function = shell_handle_get_timing_function,
-	.get_compositing_filter = shell_handle_get_compositing_filter,
+//    .get_basic_animation = shell_handle_get_basic_animation,
+//	.get_timing_function = shell_handle_get_timing_function,
+//	.get_compositing_filter = shell_handle_get_compositing_filter,
     .destroy = shell_handle_destroy,
 };
-
