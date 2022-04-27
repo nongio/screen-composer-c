@@ -82,23 +82,6 @@ layer_shell_from_resource(struct wl_resource *resource)
 }
 
 /**
-	* an animation value provider, it interpolates between 2 or 3 values
-	*
-	* The basic animation can interpolate 2 or 3 values using the
-	* provided timing function.
-	* @param value_type type of values this animation will interpolate
-	*/
-void shell_handle_get_basic_animation(struct wl_client *client,
-				struct wl_resource *resource,
-				uint32_t id,
-				uint32_t value_type,
-				struct wl_resource *animation,
-				struct wl_resource *timing)
-{
-
-}
-
-/**
 	* a timing function described by a bezier curve
 	*
 	*

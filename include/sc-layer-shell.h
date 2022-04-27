@@ -163,4 +163,7 @@ layer_shell_from_resource(struct wl_resource *resource);
 
 struct sc_animation_v1 *animation_from_resource(struct wl_resource *resource);
 
+struct sc_basic_animation_v1 *
+basic_animation_from_resource(struct wl_resource *resource);
+
 #endif
