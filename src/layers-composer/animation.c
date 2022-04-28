@@ -92,6 +92,33 @@ shell_handle_get_animation(struct wl_client *wl_client,
 	animation->autoreverse = autoreverse;
 }
 
+bool animation_set_value_provider(struct sc_animation_v1 *animation,
+		const struct sc_animation_impl *value_provider, void *impl_data,
+		struct wl_resource *error_resource, uint32_t error_code) {
+	assert(value_provider != NULL);
+
+	if (animation->impl != NULL && animation->impl != value_provider) {
+		if (error_resource != NULL) {
+			wl_resource_post_error(error_resource, error_code,
+				"Cannot assign value provider %s to animation@%" PRIu32 ", already has a provider %s\n",
+				value_provider->name, wl_resource_get_id(animation->resource),
+				animation->impl->name);
+		}
+		return false;
+	}
+	if (animation->impl_data != NULL && animation->impl_data != impl_data) {
+		wl_resource_post_error(error_resource, error_code,
+			"Cannot reassign provider %s to animation@%" PRIu32 ","
+			"role object still exists", value_provider->name,
+			wl_resource_get_id(animation->resource));
+		return false;
+	}
+
+	animation->impl = value_provider;
+	animation->impl_data = impl_data;
+	return true;
+}
+
 static void
 animation_handle_set_duration(struct wl_client *client,
 							  struct wl_resource *resource, wl_fixed_t duration)

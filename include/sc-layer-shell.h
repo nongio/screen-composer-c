@@ -115,7 +115,8 @@ struct sc_timing_function_v1 {
 };
 
 struct sc_animation_impl {
-	void (*value)(double fraction);
+	char *name;
+	void *(*value)(double fraction);
 };
 
 struct sc_animation_v1 {
@@ -125,6 +126,7 @@ struct sc_animation_v1 {
 	char *keypath;
 
 	const struct sc_animation_impl *impl;
+	void *impl_data;
 
 	double duration;
 	double begin_time;
@@ -162,6 +164,14 @@ struct sc_layer_shell_v1 *
 layer_shell_from_resource(struct wl_resource *resource);
 
 struct sc_animation_v1 *animation_from_resource(struct wl_resource *resource);
+
+bool animation_set_value_provider(
+	struct sc_animation_v1 *animation,
+	const struct sc_animation_impl *value_provider, void *impl_data,
+	struct wl_resource *error_resource, uint32_t error_code);
+
+struct sc_timing_function_v1 *
+timing_function_from_resource(struct wl_resource *resource);
 
 struct sc_basic_animation_v1 *
 basic_animation_from_resource(struct wl_resource *resource);

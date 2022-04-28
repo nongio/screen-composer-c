@@ -139,6 +139,7 @@ sc_sources = [
   'src/layers-composer/shell.c',
   'src/layers-composer/layer.c',
   'src/layers-composer/animation.c',
+  'src/layers-composer/animation/timing-function.c',
   'src/layers-composer/animation/basic.c',
 ]
 

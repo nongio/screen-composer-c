@@ -36,6 +36,15 @@ basic_animation_resource_destroy(struct wl_resource *resource)
 	}
 }
 
+static void* basic_animation_value_at(double fraction) {
+
+	return 0;
+}
+
+static const struct sc_animation_impl basic_value_provider = {
+	.value = basic_animation_value_at,
+};
+
 /**
 	* an animation value provider, it interpolates between 2 or 3 values
 	*
@@ -47,11 +56,14 @@ void shell_handle_get_basic_animation(struct wl_client *wl_client,
 				struct wl_resource *client_resource,
 				uint32_t id,
 				uint32_t value_type,
-				struct wl_resource *animation,
-				struct wl_resource *timing)
+				struct wl_resource *animation_resource,
+				struct wl_resource *timing_resource)
 {
 	struct sc_layer_shell_v1 *shell =
 		layer_shell_from_resource(client_resource);
+
+	struct sc_animation_v1 *animation = animation_from_resource(animation_resource);
+	struct sc_timing_function_v1 *timing = timing_function_from_resource(timing_resource);
 
 	struct sc_basic_animation_v1 *basic_animation =
 		calloc(1, sizeof(struct sc_basic_animation_v1));
@@ -62,10 +74,20 @@ void shell_handle_get_basic_animation(struct wl_client *wl_client,
 	}
 
 	basic_animation->shell = shell;
+	basic_animation->timing_function = timing;
+	basic_animation->animation = animation;
+
+	// FIXME there should be a different error in the protocol
+	if (!animation_set_value_provider(animation, &basic_value_provider, basic_animation,
+		client_resource, SC_SHELL_UNSTABLE_V1_ERROR_ROLE)) {
+		free(basic_animation);
+		return;
+	}
 
 	basic_animation->resource =
 		wl_resource_create(wl_client, &sc_basic_animation_v1_interface,
 						   wl_resource_get_version(client_resource), id);
+
 	if (basic_animation->resource == NULL) {
 		free(basic_animation);
 		wl_client_post_no_memory(wl_client);
