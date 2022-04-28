@@ -76,6 +76,7 @@ void shell_handle_get_basic_animation(struct wl_client *wl_client,
 	basic_animation->shell = shell;
 	basic_animation->timing_function = timing;
 	basic_animation->animation = animation;
+	basic_animation->type = value_type;
 
 	// FIXME there should be a different error in the protocol
 	if (!animation_set_value_provider(animation, &basic_value_provider, basic_animation,
