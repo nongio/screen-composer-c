@@ -6,6 +6,11 @@ tests = [
         [files('example_file.txt')],
     ],
     [
+        'utils_bezier',
+        [files('utils_bezier.c')],
+        [],
+    ],
+    [
         'output_utils_box_test',
         [files('output_utils_box.c')],
         [],

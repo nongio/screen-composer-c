@@ -136,6 +136,7 @@ sc_sources = [
   'src/gles2/shader.c',
   'src/gles2/fbo.c',
   'src/utils/file.c',
+  'src/utils/bezier.c',
   'src/layers-composer/shell.c',
   'src/layers-composer/layer.c',
   'src/layers-composer/animation.c',
