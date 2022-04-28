@@ -17,10 +17,10 @@ struct sc_rect {
 };
 
 struct sc_color {
-	uint32_t r;
-	uint32_t g;
-	uint32_t b;
-	uint32_t a;
+	float r;
+	float g;
+	float b;
+	float a;
 };
 
 struct sc_matrix {
@@ -100,14 +100,10 @@ struct sc_timing_function_v1 {
 	struct wl_resource *resource;
 	struct sc_layer_shell_v1 *shell;
 
-	float cx0;
-	float cy0;
 	float cx1;
 	float cy1;
 	float cx2;
 	float cy2;
-	float cx3;
-	float cy3;
 
 	struct {
 		struct wl_signal destroy;
