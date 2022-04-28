@@ -50,14 +50,10 @@ void shell_handle_get_timing_function(struct wl_client *wl_client,
 		calloc(1, sizeof(struct sc_timing_function_v1));
 
 	// easeout
-	timing->cx0 = 0.0;
-	timing->cy0 = 0.0;
 	timing->cx1 = 0.0;
 	timing->cy1 = 0.0;
 	timing->cx2 = 0.58;
 	timing->cy2 = 1.0;
-	timing->cx3 = 1.0;
-	timing->cy3 = 1.0;
 
 	if (timing == NULL) {
 		wl_client_post_no_memory(wl_client);
