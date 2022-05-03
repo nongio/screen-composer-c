@@ -219,6 +219,7 @@ extern "C" void skia_draw_layer(struct skia_context *skia, struct wlr_surface *s
             layer->background_color.g,
             layer->background_color.b)
         );
+        p.setAlphaf(layer->opacity);
         canvas->drawRRect(rrect, p);
         p.setStyle(SkPaint::kStroke_Style);
         p.setStrokeWidth((float)layer->border_width);
@@ -228,6 +229,7 @@ extern "C" void skia_draw_layer(struct skia_context *skia, struct wlr_surface *s
             layer->border_color.g,
             layer->border_color.b)
         );
+        p.setAlphaf(layer->opacity);
         canvas->drawRRect(rrect, p);
 
         // draw the surface on top of the layer
