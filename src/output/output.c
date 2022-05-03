@@ -132,7 +132,7 @@ repaint_end:
 static void
 output_on_present(struct wl_listener *listener, void *data)
 {
-	struct sc_output *output = wl_container_of(listener, output, on_frame);
+	struct sc_output *output = wl_container_of(listener, output, on_present);
 	struct wlr_output_event_present *output_event = data;
 
 	if (!output->enabled || !output_event->presented) {
@@ -151,14 +151,13 @@ output_on_frame(struct wl_listener *listener, void *data)
 	}
 
 	int delay = sc_output_get_ms_until_refresh(output);
-	//	int msec_until_refresh = delay + output->max_render_time;
 
 	// If the delay is less than 1 millisecond (which is the least we can wait)
 	// then just render right away.
-	if (delay < 1) {
+	if ((delay - output->max_render_time) <= 1) {
 		output_repaint_timer_handler(output);
 	} else {
-		DLOG("output_on_frame delay: %d\n", delay);
+		// LOG("output_on_frame delay: %d\n", delay);
 		output->wlr_output->frame_pending = true;
 		wl_event_source_timer_update(output->repaint_timer, delay);
 	}

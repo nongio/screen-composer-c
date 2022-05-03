@@ -112,7 +112,7 @@ struct sc_timing_function_v1 {
 
 struct sc_animation_impl {
 	char *name;
-	void *(*value)(double fraction);
+	void *(*value)(double fraction, void *data);
 };
 
 struct sc_animation_v1 {

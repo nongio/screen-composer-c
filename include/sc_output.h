@@ -29,6 +29,9 @@ struct sc_output {
 	/* repaint delay */
 	struct timespec last_frame;
 	struct timespec last_presentation;
+	struct timespec next_presentation;
+	double last_presentation_d;
+	double next_presentation_d;
 	uint32_t refresh_nsec;
 	int max_render_time; // In milliseconds
 	struct wl_event_source *repaint_timer;
