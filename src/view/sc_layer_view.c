@@ -11,7 +11,7 @@ static void
 layer_map(struct wl_listener *listener, void *data)
 {
 
-	LOG("layer_map\n");
+	//LOG("layer_map\n");
 
 	struct sc_layer_view *layer_view =
 		wl_container_of(listener, layer_view, on_map);
@@ -36,7 +36,7 @@ layer_map(struct wl_listener *listener, void *data)
 static void
 layer_unmap(struct wl_listener *listener, void *data)
 {
-	DLOG("layer_unmap\n");
+	//DLOG("layer_unmap\n");
 	// struct sc_layer_view *layer_view =
 	// 	wl_container_of(listener, layer_view, on_unmap);
 	// struct sc_view *view = (struct sc_view *) layer_view;
@@ -48,7 +48,7 @@ layer_unmap(struct wl_listener *listener, void *data)
 static void
 layer_destroy(struct wl_listener *listener, void *data)
 {
-	DLOG("layer_destroy\n");
+	//DLOG("layer_destroy\n");
 	// struct sc_layer_view *layer_view =
 	// 	wl_container_of(listener, layer_view, on_destroy);
 
@@ -62,7 +62,7 @@ layer_destroy(struct wl_listener *listener, void *data)
 static void
 layer_surface_commit(struct wl_listener *listener, void *data)
 {
-	DLOG("layer_surface_commit\n");
+	//DLOG("layer_surface_commit\n");
 	struct sc_layer_view *layer_view =
 	 	wl_container_of(listener, layer_view, on_surface_commit);
 
@@ -75,10 +75,37 @@ layer_surface_commit(struct wl_listener *listener, void *data)
 		//sc_layer_surface_v1_configure(layer_surface, view->frame.width,
 		//							   view->frame.height);
 	}
-	LOG("add damage\n");
+	//LOG("add damage\n");
 	sc_output_add_damage_from_view(view->output, view, true);
 }
 
+static void
+layer_new_animation(struct wl_listener *listener, void *data)
+{
+	LOG("layer_new_animation\n");
+	struct sc_layer_view *layer_view =
+	 	wl_container_of(listener, layer_view, on_new_animation);
+
+	struct sc_view *view = (struct sc_view *) layer_view;
+	struct sc_animation_v1 *animation = data;
+
+	wl_list_insert(&view->compositor->running_animations,
+		&animation->link);
+
+	sc_view_damage_whole(view);
+}
+
+static void
+layer_animation_update(struct wl_listener *listener, void *data)
+{
+	LOG("layer_animation_update\n");
+//	struct sc_layer_view *layer_view =
+//	 	wl_container_of(listener, layer_view, on_animation_update);
+//
+//	struct sc_view *view = (struct sc_view *) layer_view;
+//
+//	sc_view_damage_whole(view);
+}
 //static void
 //layer_for_each_surface(struct sc_view *view,
 //						  wlr_surface_iterator_func_t iterator, void *user_data)
@@ -125,5 +152,12 @@ sc_layer_view_create(struct sc_layer_surface_v1 *layer_surface,
 	wl_signal_add(&layer_surface->surface->events.commit,
 				  &layer_view->on_surface_commit);
 
+	layer_view->on_new_animation.notify = layer_new_animation;
+	wl_signal_add(&layer_surface->events.add_animation,
+				  &layer_view->on_new_animation);
+
+	layer_view->on_animation_update.notify = layer_animation_update;
+	wl_signal_add(&layer_surface->events.animation_update,
+				  &layer_view->on_animation_update);
 	return layer_view;
 }

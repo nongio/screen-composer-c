@@ -19,6 +19,8 @@ struct sc_layer_view {
 	struct wl_listener on_unmap;
 	struct wl_listener on_destroy;
 	struct wl_listener on_surface_commit;
+	struct wl_listener on_new_animation;
+	struct wl_listener on_animation_update;
 };
 
 struct sc_layer_view *

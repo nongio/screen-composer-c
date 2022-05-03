@@ -89,7 +89,23 @@ struct sc_layer_surface_v1 {
 		struct wl_signal destroy;
 		struct wl_signal map;
 		struct wl_signal unmap;
+		struct wl_signal add_animation;
+		struct wl_signal animation_update;
 	} events;
+
+	struct {
+		struct sc_animation_v1 *bounds;
+		struct sc_animation_v1 *z_position;
+		struct sc_animation_v1 *position;
+		struct sc_animation_v1 *anchor_point;
+		struct sc_animation_v1 *content_scale;
+		struct sc_animation_v1 *opacity;
+		struct sc_animation_v1 *hidden;
+		struct sc_animation_v1 *border_corner_radius;
+		struct sc_animation_v1 *border_width;
+		struct sc_animation_v1 *border_color;
+		struct sc_animation_v1 *background_color;
+	} animators;
 
 	void *data;
 };
@@ -118,11 +134,13 @@ struct sc_animation_impl {
 struct sc_animation_v1 {
 	struct wl_resource *resource;
 	struct sc_layer_shell_v1 *shell;
+	struct wl_list link;
 
 	char *keypath;
 
 	const struct sc_animation_impl *impl;
 	void *impl_data;
+	void *key;
 
 	double duration;
 	double begin_time;
@@ -130,6 +148,7 @@ struct sc_animation_v1 {
 	float repeat_count;
 
 	bool autoreverse;
+	bool is_running;
 
 	struct {
 		struct wl_signal destroy;

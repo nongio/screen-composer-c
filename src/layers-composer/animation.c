@@ -162,6 +162,15 @@ animation_handle_set_removed_on_completion(struct wl_client *client,
 {
 }
 
+void * animation_value_at(struct sc_animation_v1 *animation, double timestamp) {
+	double fraction = (timestamp - animation->begin_time) / animation->duration;
+	if(fraction >= 1.0) {
+		animation->is_running = false;
+		fraction = 1.0;
+	}
+	return animation->impl->value(fraction, animation->impl_data);
+}
+
 const struct sc_animation_v1_interface sc_animation_implementation = {
 	.set_duration = animation_handle_set_duration,
 	.set_keypath = animation_handle_set_keypath,

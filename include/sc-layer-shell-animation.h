@@ -1,6 +1,13 @@
 #ifndef _SC_LAYER_SHELL_ANIMATION_H
 #define _SC_LAYER_SHELL_ANIMATION_H
 
+#include "sc-layer-shell.h"
+
+void *
+decode_animation_value_for_type(
+	struct wl_array *data,
+	enum sc_animation_v1_animation_value_type animation_type);
+
 void shell_handle_get_animation(struct wl_client *wl_client,
 				struct wl_resource *client_resource,
 				uint32_t id,
@@ -15,6 +22,8 @@ void shell_handle_get_basic_animation(struct wl_client *wl_client,
 				uint32_t value_type,
 				struct wl_resource *animation_resource,
 				struct wl_resource *timing_resource);
+
+void * animation_value_at(struct sc_animation_v1 *animation, double timestamp);
 #endif
 
 
