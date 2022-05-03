@@ -35,6 +35,7 @@ struct sc_compositor {
 	struct sc_workspace *current_workspace;
 	struct sc_view *current_view;
 	struct wl_list workspaces;
+	struct wl_list running_animations;
 
 	/* seat */
 	struct wlr_seat *seat;

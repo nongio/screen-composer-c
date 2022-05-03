@@ -30,6 +30,7 @@ sc_compositor_create()
 	compositor = calloc(1, sizeof(struct sc_compositor));
 
 	wl_list_init(&compositor->outputs);
+	wl_list_init(&compositor->running_animations);
 	DLOG("screen-composer initializaton.\n");
 
 	compositor->wl_display = wl_display_create();
